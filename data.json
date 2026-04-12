@@ -1,7 +1,7 @@
 {
   "profile": {
-    "name": "Trần Văn Tiến (NIX)",
-    "title": "Unity Game Developer",
+    "name": "Trần Văn Tiến [NIX]",
+    "title": "Game Developer, Team Leader, Unity Trainer",
     "location": "Ha Noi City, VN",
     "status": "available",
     "statusLabel": "Available for work",
@@ -14,8 +14,8 @@
     ],
     "contact": {
       "email": "tientv.0702@gmail.com",
-      "linkedin": "linkedin.com/in/yourname",
-      "github": "github.com/yourname",
+      "linkedin": "",
+      "github": "github.com/tien0702",
       "itchio": ""
     }
   },
@@ -60,51 +60,29 @@
   ],
 
   "personalProjects": [
-    {
-      "title": "My Indie Game",
-      "description": "A short description of the game and what makes it unique.",
-      "skills": ["Unity", "C#", "Mobile"],
-      "youtubeId": "VIDEO_ID_1",
-      "downloadLink": "#",
-      "featured": true,
-      "genre": "Platformer",
-      "platform": "Mobile",
-      "accentColor": "#90caf9"
-    },
-    {
-      "title": "Gun Gun",
-      "description": "Fast-paced shooter with procedurally generated levels and roguelite mechanics.",
-      "skills": ["Unity", "C#", "Procedural"],
-      "youtubeId": "VIDEO_ID_2",
-      "downloadLink": "#",
-      "featured": false,
-      "genre": "Shooter",
-      "platform": "PC",
-      "accentColor": "#80cbc4"
-    }
   ],
 
   "companyProjects": [
     {
       "title": "Jelly Master: Mukbang Asmr",
       "description": "Hyper-casual game developed at XYZ Studio. Reached top charts in multiple countries.",
-      "role": "Gameplay Programmer – responsible for core gameplay loop, ASMR feedback systems, and UI integration.",
+      "role": "Main Dev",
       "youtubeId": "VIDEO_ID_3",
-      "downloadLink": "#",
-      "featured": true,
+      "downloadLink": "https://play.google.com/store/apps/details?id=com.fc.p.cp.jelly.mukbang.asmr.live.diy&hl=vi",
+      "featured": false,
       "downloads": "50M+",
-      "studio": "XYZ Studio",
+      "studio": "Champion Game Studio",
       "accentColor": "#f48fb1"
     },
     {
-      "title": "Left Right 2",
+      "title": "Style Star: Left Right Fashion",
       "description": "Sequel to the hit reflex game. Developed new level framework used across the studio.",
-      "role": "Lead Programmer – architected the level system, mentored junior devs, and optimized for low-end Android.",
+      "role": "Main Dev",
       "youtubeId": "VIDEO_ID_4",
-      "downloadLink": "#",
+      "downloadLink": "https://play.google.com/store/apps/details?id=com.left.right.girl.dressup.game",
       "featured": false,
       "downloads": "10M+",
-      "studio": "XYZ Studio",
+      "studio": "Champion Game Studio",
       "accentColor": "#ce93d8"
     }
   ]
