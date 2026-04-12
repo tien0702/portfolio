@@ -741,7 +741,7 @@
       const { profile, skills, personalProjects, companyProjects } = data;
 
       // Header logo
-      document.getElementById('header-logo').textContent = profile.name.split(' ').map(w => w[0]).join('') + '.DEV';
+      document.getElementById('header-logo').textContent = profile.name.split(' ').map(w => w[0]).join('').replace('[', '') + '.DEV';
       document.title = profile.name + ' — Unity Developer';
 
       // Hero
