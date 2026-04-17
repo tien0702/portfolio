@@ -1572,7 +1572,14 @@
     }
 
     // ── INIT — fetch data.json then boot ──
-    fetch('data.json')
+    // Build URL relative to this HTML file — works in GitHub Pages subfolders
+    const _dataUrl = (function() {
+      const scripts = document.getElementsByTagName('script');
+      // currentScript is null for inline scripts, so derive from location
+      const base = window.location.href.replace(/\/[^/]*$/, '/');
+      return base + 'data.json';
+    })();
+    fetch(_dataUrl)
       .then(function(r) {
         if (!r.ok) throw new Error('Failed to load data.json: ' + r.status);
         return r.json();
