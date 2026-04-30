@@ -1,0 +1,88 @@
+{
+  "profile": {
+    "name": "Trần Văn Tiến [NIX]",
+    "title": {
+      "en": "Game Developer, Team Leader, Unity Trainer",
+      "vi": "Lập Trình Viên Game, Trưởng Nhóm, Huấn Luyện Viên Unity"
+    },
+    "location": "Ha Noi City, VN",
+    "status": "available",
+    "statusLabel": {
+      "en": "Available for work",
+      "vi": "Sẵn sàng nhận việc"
+    },
+    "bio": {
+      "en": "I build interactive experiences that feel good to play. Specializing in mobile and casual games with a focus on tight gameplay loops and polished feel.",
+      "vi": "Tôi xây dựng những trải nghiệm tương tác thú vị và mượt mà. Chuyên về game mobile và casual với trọng tâm là vòng lặp gameplay chặt chẽ và cảm giác chơi được trau chuốt kỹ."
+    },
+    "avatar": "",
+    "stats": [
+      {
+        "value": "12",
+        "label": {
+          "en": "Projects shipped",
+          "vi": "Dự án hoàn thành"
+        }
+      },
+      {
+        "value": "3+",
+        "label": {
+          "en": "Years in Unity",
+          "vi": "Năm kinh nghiệm Unity"
+        }
+      },
+      {
+        "value": "60M+",
+        "label": {
+          "en": "Total downloads",
+          "vi": "Tổng lượt tải"
+        }
+      }
+    ],
+    "contact": {
+      "email": "tientv.0702@gmail.com",
+      "linkedin": "https://www.linkedin.com/in/ti%E1%BA%BFn-tr%E1%BA%A7n-a675a8223/",
+      "github": "github.com/tien0702",
+      "blog": "https://tien0702.github.io/nix-blog/",
+      "itchio": "https://tiennix.itch.io/"
+    }
+  },
+  "i18n": {
+    "en": {
+      "nav_about": "About",
+      "nav_skills": "Skills",
+      "nav_projects": "Projects",
+      "nav_contact": "Contact",
+      "section_skills": "Skills",
+      "section_projects": "Projects",
+      "section_contact": "Contact",
+      "tab_games": "Games",
+      "tab_packages": "Packages",
+      "view_on_store": "View on Store",
+      "view_on_github": "View on GitHub",
+      "contact_title": "Get In Touch",
+      "contact_sub": "Open to new opportunities and collaborations.",
+      "send_email": "Send Email",
+      "package_list_title": "Open Source Packages",
+      "package_list_sub": "Tools and libraries I've built for the Unity community."
+    },
+    "vi": {
+      "nav_about": "Giới thiệu",
+      "nav_skills": "Kỹ năng",
+      "nav_projects": "Dự án",
+      "nav_contact": "Liên hệ",
+      "section_skills": "Kỹ Năng",
+      "section_projects": "Dự Án",
+      "section_contact": "Liên Hệ",
+      "tab_games": "Game",
+      "tab_packages": "Package",
+      "view_on_store": "Xem trên Store",
+      "view_on_github": "Xem trên GitHub",
+      "contact_title": "Liên Hệ Với Tôi",
+      "contact_sub": "Sẵn sàng cho cơ hội mới và hợp tác.",
+      "send_email": "Gửi Email",
+      "package_list_title": "Thư Viện Mã Nguồn Mở",
+      "package_list_sub": "Các công cụ và thư viện tôi xây dựng cho cộng đồng Unity."
+    }
+  }
+}
