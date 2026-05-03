@@ -3,19 +3,19 @@
     "name": "Trần Tiến - [NIX]",
     "title": {
       "en": "Game Developer, Team Leader, Unity Trainer",
-      "vi": "Lập Trình Viên Game, Trưởng Nhóm, Huấn Luyện Viên Unity"
+      "vi": "Game Developer, Team Leader, Unity Trainer"
     },
     "location": "Ha Noi City, VN",
     "status": "available",
     "statusLabel": {
-      "en": "Available for work",
-      "vi": "Sẵn sàng nhận việc"
+      "en": "Available",
+      "vi": "Available"
     },
     "bio": {
       "en": "I build interactive experiences that feel good to play. Specializing in mobile and casual games with a focus on tight gameplay loops and polished feel.",
       "vi": "Tôi xây dựng những trải nghiệm tương tác thú vị và mượt mà. Chuyên về game mobile và casual với trọng tâm là vòng lặp gameplay chặt chẽ và cảm giác chơi được trau chuốt kỹ."
     },
-    "avatar": "",
+    "avatar": "assets/images/avt.jpg",
     "stats": [
       {
         "value": "12",
@@ -42,7 +42,6 @@
     "contact": {
       "email": "tientv.0702@gmail.com",
       "linkedin": "https://www.linkedin.com/in/ti%E1%BA%BFn-tr%E1%BA%A7n-a675a8223/",
-      "github": "github.com/tien0702",
       "blog": "https://tien0702.github.io/nix-blog/",
       "itchio": "https://tiennix.itch.io/"
     }

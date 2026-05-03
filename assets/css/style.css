@@ -918,6 +918,12 @@ footer {
   border: 1px solid var(--border);
   background: #000;
 }
+.modal-video img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
 .modal-video-label {
   font-family: var(--mono);
   font-size: 0.65rem;
@@ -1059,3 +1065,165 @@ footer {
   .games-grid { grid-template-columns: 1fr; }
   .contact-box { padding: 2rem 1.5rem; }
 }
+
+/* ══════════════════════════════════════════
+   VISUAL ENHANCEMENTS — More depth & impact
+   ══════════════════════════════════════════ */
+
+/* Subtle dot grid across the background */
+body {
+  background-image: radial-gradient(rgba(0,229,255,0.055) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+
+/* Ambient glow in hero area */
+#about::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(ellipse 65% 55% at 18% 40%, rgba(0,229,255,0.07) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 40% at 80% 20%, rgba(124,77,255,0.05) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* H1 subtle accent glow */
+h1 { text-shadow: 0 0 70px rgba(0,229,255,0.12); }
+h1 .name-tag { text-shadow: 0 0 30px rgba(0,229,255,0.35); }
+
+/* Terminal blinking cursor on eyebrow */
+#heroEyebrow::after {
+  content: '_';
+  color: var(--accent);
+  margin-left: 2px;
+  animation: termBlink 1.1s step-end infinite;
+}
+@keyframes termBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Avatar deeper hover glow */
+.avatar-box:hover {
+  border-color: rgba(0,229,255,0.5);
+  box-shadow: 0 0 0 4px rgba(0,229,255,0.06), 0 10px 40px rgba(0,0,0,0.45);
+}
+
+/* Stats hover depth */
+.stat-item:hover {
+  box-shadow: 0 6px 28px rgba(0,0,0,0.3), 0 0 0 1px rgba(0,229,255,0.1);
+}
+
+/* Section marker glow */
+.section-marker {
+  font-size: 1rem;
+  text-shadow: 0 0 10px var(--pink);
+}
+
+/* Game card stronger hover */
+.game-card:hover {
+  box-shadow: 0 22px 60px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.04);
+}
+
+/* Skill card left-accent glow on hover */
+.skill-card:hover {
+  box-shadow: 0 6px 28px rgba(0,0,0,0.25), inset 2px 0 0 var(--purple);
+  border-left-color: rgba(124,77,255,0.35);
+}
+
+/* Package item left-accent on hover */
+.pkg-item:hover {
+  box-shadow: inset 3px 0 0 var(--purple), 0 2px 20px rgba(0,0,0,0.2);
+}
+
+/* Nav scrolled: tint border + deeper shadow */
+nav.scrolled {
+  border-bottom-color: rgba(0,229,255,0.1);
+  box-shadow: 0 2px 28px rgba(0,0,0,0.4), 0 1px 0 rgba(0,229,255,0.05);
+}
+
+/* Contact box: wider top line + inner ambient */
+.contact-box::before {
+  width: 220px;
+  background: linear-gradient(90deg, transparent, var(--accent), var(--purple), transparent);
+  opacity: 0.85;
+}
+.contact-box::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(0,229,255,0.045) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+/* Email button stronger hover glow */
+.btn-email:hover {
+  box-shadow: 0 8px 32px rgba(0,229,255,0.3), 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* Contact chips subtle depth on hover */
+.contact-chip:hover {
+  box-shadow: 0 2px 14px rgba(0,0,0,0.25);
+}
+
+/* ══════════════════════════════════════════
+   SKILLS — Enhanced cards
+   ══════════════════════════════════════════ */
+
+/* Thicker progress bar */
+.skill-bar-bg { height: 7px; }
+
+/* Glow along the fill */
+.skill-bar-fill {
+  box-shadow: 0 0 8px rgba(0,229,255,0.22), 0 0 2px rgba(0,229,255,0.4);
+}
+
+/* Percentage label — more prominent */
+.skill-pct { font-size: 0.84rem; }
+
+/* Icon + name row */
+.skill-name-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.skill-icon {
+  display: flex;
+  align-items: center;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+
+/* Level label chip below bar */
+.skill-footer { margin: 7px 0 9px; }
+.skill-level-label {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 2px 9px;
+  border-radius: 20px;
+  border: 1px solid;
+}
+
+/* Level-based left accent border */
+.skill-card.skill-lvl-high { border-left: 2px solid rgba(0,229,255,0.35); }
+.skill-card.skill-lvl-mid  { border-left: 2px solid rgba(124,77,255,0.35); }
+.skill-card.skill-lvl-low  { border-left: 2px solid rgba(255,45,117,0.35); }
+
+/* Level label colors */
+.skill-lvl-high .skill-level-label { color: var(--accent);  border-color: rgba(0,229,255,0.2);   background: rgba(0,229,255,0.06); }
+.skill-lvl-mid  .skill-level-label { color: var(--purple); border-color: rgba(124,77,255,0.2);  background: var(--purple-dim); }
+.skill-lvl-low  .skill-level-label { color: var(--pink);   border-color: rgba(255,45,117,0.2);  background: var(--pink-dim); }
+
+/* Hover: remove inset from generic rule, use level colors */
+.skill-card.skill-lvl-high:hover,
+.skill-card.skill-lvl-mid:hover,
+.skill-card.skill-lvl-low:hover {
+  box-shadow: 0 6px 28px rgba(0,0,0,0.25);
+}
+.skill-card.skill-lvl-high:hover { border-left-color: var(--accent); }
+.skill-card.skill-lvl-mid:hover  { border-left-color: var(--purple); }
+.skill-card.skill-lvl-low:hover  { border-left-color: var(--pink); }

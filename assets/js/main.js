@@ -55,7 +55,7 @@ function parsePackagesMd(md) {
     var lines = block.trim().split('\n');
     var title = lines[0].trim();
     if (title.startsWith('#')) return;
-    var obj = { title: title, tags: [], githubLink: '', stars: 0, version: '', description: { en: '', vi: '' } };
+    var obj = { title: title, tags: [], githubLink: '', stars: 0, version: '', youtubeId: '', image: '', description: { en: '', vi: '' } };
     lines.slice(1).forEach(function(line) {
       var m = line.match(/^- (\w+):\s*(.*)$/);
       if (m) {
@@ -64,6 +64,8 @@ function parsePackagesMd(md) {
         else if (k === 'github') obj.githubLink = v;
         else if (k === 'stars') obj.stars = parseInt(v) || 0;
         else if (k === 'version') obj.version = v;
+        else if (k === 'youtubeId') obj.youtubeId = v;
+        else if (k === 'image') obj.image = v;
         else if (k === 'en') obj.description.en = v;
         else if (k === 'vi') obj.description.vi = v;
       }
@@ -145,6 +147,18 @@ var ICONS = {
 };
 
 // ══════════════════════════════
+// SKILL ICONS (per category)
+// ══════════════════════════════
+var SKILL_ICONS = {
+  unity:  '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 2.5L22 7.5v9l-8.5 5-8.5-5v-9zm0 2.3L7 8.4v7.2l6.5 3.8 6.5-3.8V8.4z"/></svg>',
+  code:   '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>',
+  design: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4z"/></svg>',
+  vfx:    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+  ui:     '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>',
+  mobile: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>'
+};
+
+// ══════════════════════════════
 // RENDER FUNCTIONS
 // ══════════════════════════════
 function renderAll() {
@@ -221,9 +235,20 @@ function renderSkills() {
   var grid = document.getElementById('skillsGrid');
   grid.innerHTML = SKILLS.map(function(s, i) {
     var dc = ' reveal reveal-d' + Math.min(i + 1, 7);
-    return '<div class="skill-card' + dc + '" onclick=\'openSkillModal(' + JSON.stringify(s).replace(/'/g, "\\'") + ')\'>' +
-      '<div class="skill-top"><span class="skill-name">' + s.name + '</span><span class="skill-pct">' + s.level + '%</span></div>' +
+    var lvlClass = s.level >= 75 ? ' skill-lvl-high' : s.level >= 50 ? ' skill-lvl-mid' : ' skill-lvl-low';
+    var lvlLabel = lang === 'vi'
+      ? (s.level >= 75 ? 'Thành thạo' : s.level >= 50 ? 'Trung cấp' : 'Đang học')
+      : (s.level >= 75 ? 'Proficient' : s.level >= 50 ? 'Intermediate' : 'Learning');
+    var iconHtml = (s.icon && SKILL_ICONS[s.icon])
+      ? '<span class="skill-icon">' + SKILL_ICONS[s.icon] + '</span>'
+      : '';
+    return '<div class="skill-card' + dc + lvlClass + '" onclick=\'openSkillModal(' + JSON.stringify(s).replace(/'/g, "\\'") + ')\'>' +
+      '<div class="skill-top">' +
+        '<div class="skill-name-row">' + iconHtml + '<span class="skill-name">' + s.name + '</span></div>' +
+        '<span class="skill-pct">' + s.level + '%</span>' +
+      '</div>' +
       '<div class="skill-bar-bg"><div class="skill-bar-fill" style="width:0%" data-level="' + s.level + '"></div></div>' +
+      '<div class="skill-footer"><span class="skill-level-label">' + lvlLabel + '</span></div>' +
       '<p class="skill-desc">' + loc(s.description) + '</p></div>';
   }).join('');
   refreshObserver();
@@ -431,6 +456,18 @@ function openPkgModal(pkg) {
   document.getElementById('modalPkgTags').innerHTML = (pkg.tags || []).map(function(tag) { return '<span class="pkg-tag">' + tag + '</span>'; }).join('');
   document.getElementById('modalPkgStars').textContent = pkg.stars ? '★ ' + pkg.stars : '';
   document.getElementById('modalPkgVersion').textContent = pkg.version || '';
+  if (pkg.youtubeId) {
+    document.getElementById('modalVideoSection').style.display = 'block';
+    document.getElementById('modalVideoBox').innerHTML =
+      '<div class="yt-placeholder" onclick="loadYTIframe(this,\'' + pkg.youtubeId + '\')">' +
+      '<img src="https://img.youtube.com/vi/' + pkg.youtubeId + '/maxresdefault.jpg" ' +
+      'onerror="this.src=\'https://img.youtube.com/vi/' + pkg.youtubeId + '/hqdefault.jpg\'" alt="Demo" />' +
+      '<div class="yt-play-btn">' + ICONS.playLg + '</div></div>';
+  } else if (pkg.image) {
+    document.getElementById('modalVideoSection').style.display = 'block';
+    document.getElementById('modalVideoBox').innerHTML =
+      '<img src="' + pkg.image + '" alt="' + pkg.title + '">';
+  }
   if (pkg.githubLink) {
     var btn = document.getElementById('modalLink');
     btn.style.display = 'inline-block';
@@ -475,6 +512,7 @@ function loadAll() {
     setTimeout(function() {
       document.getElementById('loader').classList.add('hidden');
       refreshObserver();
+      countUpStats();
     }, 600);
   }).catch(function(err) {
     console.error(err);
@@ -483,6 +521,26 @@ function loadAll() {
       '⚠ Could not load data files.<br><br>' +
       'Make sure <b>web-config.json</b> and <b>Database/</b> folder (skills.md, packages.md, projects.md) are alongside index.html.<br><br>' +
       '<span style="color:#6a7590;font-size:0.68rem;">Error: ' + err.message + '</span></div>';
+  });
+}
+
+function countUpStats() {
+  document.querySelectorAll('.stat-val').forEach(function(el) {
+    var text = el.textContent.trim();
+    var match = text.match(/^(\d+)(.*)/);
+    if (!match) return;
+    var target = parseInt(match[1]);
+    var suffix = match[2];
+    var duration = 900;
+    var startTime = null;
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      var p = Math.min((ts - startTime) / duration, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.floor(eased * target) + suffix;
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
   });
 }
 
