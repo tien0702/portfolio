@@ -8,6 +8,14 @@
 - en: Framework built to be used for all of my games, a mandatory dependency for all other modules. Includes many essential features like Design Patterns, Extend, Utils, etc... Born with the purpose of reusability and optimization across multiple projects, helping speed up development and limit bugs when having to build from scratch for each new project.
 - vi: Framework được xây dựng để sử dụng cho tất cả các game của tôi, là một depedency bắt buộc của tất cả module khác. Bao gồm nhiều chức năng cần thiết như Design Pattern, Extend, Utils, v.v.... Được sinh ra với mục đích tái sử dụng và tối ưu hoá qua nhiều dự án, giúp tăng tốc độ phát triển và hạn chế bug xảy ra khi phải xây dựng lại từ đầu cho mỗi dự án mới.
 
+## Localization
+- tags: Unity, uGUI, C#
+- github: https://github.com/tien0702
+- stars: 0
+- version: v1.0.0
+- en: FThis package handles issues that arise during Localization work, such as: synchronizing size consistency across fonts, and optimizing heavy CJK (Chinese/Japanese/Korean) fonts. The package uses automated APIs within Unity's pipeline to automate the processing and synchronization. Translation is done on Google Sheets and synced from Unity.
+- vi: Package này xử lý các vấn đề khi làm Localization như: xử lý đồng bộ size giữa các font, tối ưu font JCK nặng. Package sử dụng các API tự động trong pipeline của Unity để việc xử lý và đồng bộ được tự động hóa. Dịch trên googlesheet và đồng bộ từ Unity.
+
 ## UI Framework
 - tags: Unity, uGUI, C#
 - youtubeId: Yd7vDterctQ
