@@ -6,7 +6,7 @@
 - youtubeId: Yd7vDterctQ
 - downloadLink: https://play.google.com/store/apps/details?id=com.fc.p.cp.jelly.mukbang.asmr.live.diy&hl=vi
 - featured: false
-- downloads: 50M+
+- downloads: 70M+
 - studio: Champion Game Studio
 - accentColor: #f48fb1
 - en: 
