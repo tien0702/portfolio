@@ -1,0 +1,117 @@
+{
+  "placeholder": true,
+  "title": "Tictac Transform: Mini Games",
+  "studio": "Champion Game Studio",
+  "accentColor": "#ce93d8",
+  "downloads": "",
+  "store": {
+    "googlePlay": "https://play.google.com/store/apps/details?id=com.fc.p.cp.transform.game.tricky.puzzle&hl=vi",
+    "appStore": ""
+  },
+  "video": {
+    "youtube": "Yd7vDterctQ",
+    "file": "",
+    "orientation": "landscape"
+  },
+  "poster": "",
+  "icon": "",
+  "tagline": {
+    "en": "A collection of tricky transformation puzzles with surprising twists.",
+    "vi": "Bộ sưu tập puzzle biến hình đầy mẹo với những cú twist bất ngờ."
+  },
+  "team": 5,
+  "duration": {
+    "en": "6 months",
+    "vi": "6 tháng"
+  },
+  "status": {
+    "en": "Live",
+    "vi": "Đang phát hành"
+  },
+  "platform": "Android",
+  "engine": "Unity · C#",
+  "year": "20XX",
+  "overview": {
+    "en": "A mini-game collection where each level is a small puzzle with its own mechanic. I led the dev team and built the framework that let us ship many unique mini-games quickly.",
+    "vi": "Bộ mini-game mà mỗi level là một puzzle với cơ chế riêng. Tôi dẫn dắt team dev và xây framework giúp ra nhiều mini-game khác nhau thật nhanh."
+  },
+  "roles": [
+    {
+      "name": {
+        "en": "Team Leader",
+        "vi": "Team Leader"
+      },
+      "summary": {
+        "en": "Led a team of developers from kickoff to launch.",
+        "vi": "Dẫn dắt team dev từ lúc khởi động đến khi ra mắt."
+      },
+      "did": {
+        "en": [
+          "Planned sprints and split work with GD and art",
+          "Ran code reviews and set coding conventions",
+          "Onboarded and mentored junior developers"
+        ],
+        "vi": [
+          "Lên kế hoạch sprint, chia việc cùng GD và art",
+          "Code review và đặt coding convention",
+          "Onboard và kèm cặp các bạn junior"
+        ]
+      }
+    },
+    {
+      "name": {
+        "en": "Developer",
+        "vi": "Developer"
+      },
+      "summary": {
+        "en": "Built the modular mini-game framework.",
+        "vi": "Xây framework mini-game dạng module."
+      },
+      "did": {
+        "en": [
+          "Designed a plug-in architecture so each mini-game is an isolated module",
+          "Built shared systems: input, hints, level flow, rewards"
+        ],
+        "vi": [
+          "Thiết kế kiến trúc plug-in, mỗi mini-game là một module độc lập",
+          "Xây các hệ thống dùng chung: input, gợi ý, luồng level, phần thưởng"
+        ]
+      }
+    }
+  ],
+  "learned": [
+    {
+      "title": {
+        "en": "Clear boundaries, fewer conflicts",
+        "vi": "Ranh giới rõ, ít xung đột"
+      },
+      "text": {
+        "en": "Splitting work by module ownership prevented most merge conflicts — and most arguments.",
+        "vi": "Chia việc theo module giúp tránh phần lớn conflict khi merge — và cả tranh cãi."
+      }
+    },
+    {
+      "title": {
+        "en": "Reviews should teach",
+        "vi": "Review là để dạy"
+      },
+      "text": {
+        "en": "A good review comment explains the why, so juniors improve instead of just fixing one line.",
+        "vi": "Comment review tốt giải thích lý do, để junior tiến bộ chứ không chỉ sửa một dòng."
+      }
+    },
+    {
+      "title": {
+        "en": "Architecture enables variety",
+        "vi": "Kiến trúc tạo ra sự đa dạng"
+      },
+      "text": {
+        "en": "A plug-in mini-game framework is what let a small team ship many different mechanics quickly.",
+        "vi": "Framework mini-game dạng plug-in là thứ giúp team nhỏ ra nhiều cơ chế khác nhau thật nhanh."
+      }
+    }
+  ],
+  "challenges": [],
+  "results": [],
+  "screenshots": []
+}

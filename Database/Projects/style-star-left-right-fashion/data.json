@@ -1,0 +1,33 @@
+{
+  "title": "Style Star: Left Right Fashion",
+  "studio": "Champion Game Studio",
+  "accentColor": "#ce93d8",
+  "downloads": "10M+",
+  "store": {
+    "googlePlay": "https://play.google.com/store/apps/details?id=com.left.right.girl.dressup.game",
+    "appStore": ""
+  },
+  "video": {
+    "youtube": "LW7WeL4VWwE",
+    "file": "",
+    "orientation": "portrait"
+  },
+  "poster": "",
+  "icon": "",
+  "overview": {
+    "en": "",
+    "vi": ""
+  },
+  "roles": [
+    {
+      "name": {
+        "en": "Main Dev",
+        "vi": "Main Dev"
+      }
+    }
+  ],
+  "learned": [],
+  "challenges": [],
+  "results": [],
+  "screenshots": []
+}

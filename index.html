@@ -3,182 +3,174 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>[NIX] - Portfolio</title>
+  <title>Trần Tiến [NIX] — Game Developer</title>
+  <meta name="description" content="Trần Tiến [NIX] — Unity game developer, team leader and trainer. Mobile & casual games with 80M+ downloads." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Trần Tiến [NIX] — Game Developer" />
+  <meta property="og:description" content="Unity game developer, team leader and trainer. Mobile & casual games with 80M+ downloads." />
+  <meta property="og:image" content="assets/images/avt.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#07090f" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%23141820'/><rect x='4' y='4' width='92' height='92' rx='12' fill='none' stroke='%2300e5ff' stroke-width='3'/><text x='50' y='64' font-family='monospace' font-size='36' font-weight='bold' fill='%2300e5ff' text-anchor='middle'>NIX</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
-<body>
+<body data-page="home">
+  <a class="skip" href="#work" data-i18n="skip">Skip to content</a>
 
   <!-- LOADER -->
-  <div id="loader">
-    <div class="loader-text">[NIX] LOADING...</div>
-    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+  <div id="loader" aria-hidden="true">
+    <div class="ld-logo"><b>[</b><span>NIX</span><b>]</b></div>
+    <div class="ld-bar"><i id="ldFill"></i></div>
+    <div class="ld-txt" id="ldTxt">BOOTING PORTFOLIO…</div>
   </div>
 
-  <!-- MODAL -->
-  <div id="projectModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-close" onclick="closeModal()">×</div>
-      <div class="modal-title" id="modalTitle"></div>
-      <div class="modal-sub" id="modalSub"></div>
-      <p class="modal-desc" id="modalDesc"></p>
-
-      <div class="modal-meta" id="modalMetaRow" style="display:none">
-        <span id="modalRole"></span>
-        <span id="modalDownloads"></span>
-      </div>
-
-      <div id="modalSkillSection" style="display:none">
-        <div class="modal-video-label">// proficiency</div>
-        <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">
-          <div style="flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;">
-            <div id="modalSkillBar" style="height:100%;background:linear-gradient(90deg,var(--purple),var(--accent));border-radius:3px;width:0%;transition:width 0.8s cubic-bezier(0.16,1,0.3,1);"></div>
-          </div>
-          <span id="modalSkillPct" style="font-family:var(--mono);font-size:0.78rem;color:var(--accent);min-width:36px;text-align:right;"></span>
-        </div>
-      </div>
-
-      <div id="modalPkgSection" style="display:none;margin-bottom:18px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
-          <div id="modalPkgTags" style="display:flex;gap:5px;flex-wrap:wrap;"></div>
-          <div style="display:flex;align-items:center;gap:14px;">
-            <span id="modalPkgStars" style="font-family:var(--mono);font-size:0.72rem;color:#ffd54f;"></span>
-            <span id="modalPkgVersion" style="font-family:var(--mono);font-size:0.62rem;color:var(--purple);background:var(--purple-dim);border:1px solid rgba(124,77,255,0.15);padding:3px 10px;border-radius:20px;"></span>
-          </div>
-        </div>
-      </div>
-
-      <div id="modalVideoSection" style="display:none">
-        <div class="modal-video-label">// demo</div>
-        <div class="modal-video" id="modalVideoBox"></div>
-      </div>
-
-      <div class="modal-case" id="modalCaseSection" style="display:none">
-        <div class="modal-case-title">// case study</div>
-        <div id="modalCaseStudy"></div>
-      </div>
-
-      <a id="modalLink" class="modal-btn" target="_blank" style="display:none"></a>
-    </div>
-  </div>
+  <div class="scroll-prog" id="scrollProg"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow" id="glow" aria-hidden="true"></div>
 
   <!-- NAV -->
-  <nav>
-    <a class="nav-logo" href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
-      <img class="logo-img" id="logoImg" src="" alt="NIX" />
-      <span id="logoName"><span class="bracket">[</span>NIX<span class="bracket">]</span></span>
-    </a>
-
-    <ul class="nav-links" id="navLinks">
-      <li><a href="#about" data-i18n="nav_about">About</a></li>
-      <li><a href="#projects" data-i18n="nav_projects">Projects</a></li>
+  <nav id="nav">
+    <a class="logo" href="#top" aria-label="Home"><img id="navAva" src="" alt="" /><span><b>[</b>NIX<b>]</b></span></a>
+    <ul class="links" id="navLinks">
+      <li><a href="#work" data-i18n="nav_work">Projects</a></li>
       <li><a href="#skills" data-i18n="nav_skills">Skills</a></li>
+      <li><a href="#experience" data-i18n="nav_experience">Experience</a></li>
       <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
     </ul>
-
-    <div class="nav-right">
-      <div class="lang-toggle">
-        <button class="lang-btn" id="btnEn" onclick="setLang('en')">EN</button>
-        <button class="lang-btn" id="btnVi" onclick="setLang('vi')">VI</button>
+    <div class="nav-r">
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="en">EN</button><button type="button" data-lang="vi">VI</button>
       </div>
-      <button class="nav-hamburger" id="hamburger" onclick="toggleMobileNav()">
-        <span></span><span></span><span></span>
-      </button>
+      <a class="btn btn-pri btn-sm hide-sm" href="#contact" data-i18n="hire">Hire me</a>
+      <button class="burger" id="burger" type="button" aria-label="Menu" aria-expanded="false"><i></i><i></i><i></i></button>
     </div>
   </nav>
 
-  <!-- MAIN CONTENT -->
-  <main>
+  <!-- MOBILE DRAWER -->
+  <div class="drawer" id="drawer" aria-hidden="true">
+    <ul>
+      <li><a href="#work" data-i18n="nav_work">Projects</a></li>
+      <li><a href="#skills" data-i18n="nav_skills">Skills</a></li>
+      <li><a href="#experience" data-i18n="nav_experience">Experience</a></li>
+      <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
+    </ul>
+    <div class="drawer-soc" id="drawerSoc"></div>
+  </div>
 
-    <!-- HERO / ABOUT -->
-    <section id="about">
-      <div class="container">
-        <div class="hero-grid">
-          <div class="hero-left">
-            <div class="hero-eyebrow" id="heroEyebrow"></div>
-            <h1 id="heroName"></h1>
-            <p class="hero-title" id="heroTitle"></p>
-
-            <div class="status-badge">
-              <div class="status-dot-wrap"><div class="status-dot"></div></div>
-              <div>
-                <div class="status-text" id="statusText"></div>
-                <div class="status-label-sub" id="statusSub"></div>
-              </div>
-            </div>
-
-            <div class="stats-row" id="statsRow"></div>
-            <div class="contact-links" id="contactLinks"></div>
-          </div>
-
-          <div class="avatar-card">
-            <div class="avatar-box" id="avatarBox"></div>
-          </div>
+  <!-- HERO -->
+  <header class="hero wrap" id="top">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow rv"><span class="dot"></span><span id="heroStatus"></span></div>
+        <h1 class="rv" id="heroH1"></h1>
+        <p class="typed rv" aria-hidden="true"><span id="typed"></span></p>
+        <p class="lead rv" id="heroBio"></p>
+        <div class="cta rv">
+          <a class="btn btn-pri" href="#work"><span data-i18n="view_work">View my work</span> <span aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" id="cvBtn" href="#" target="_blank" rel="noopener" hidden>⬇ <span data-i18n="download_cv">Download CV</span></a>
+          <a class="btn btn-ghost" href="#contact" id="ctaContact" data-i18n="contact_me">Contact me</a>
         </div>
+        <div class="socials rv" id="heroSoc"></div>
       </div>
-    </section>
 
+      <div class="card-wrap rv">
+        <div class="pcard" id="pcard">
+          <div class="pc-top"><span>PLAYER // NIX</span><span class="lv" id="pcLv"></span></div>
+          <div class="pc-img">
+            <img id="pcImg" src="" alt="" />
+            <i class="corner c1"></i><i class="corner c2"></i><i class="corner c3"></i><i class="corner c4"></i>
+            <div class="pc-name"><b id="pcName"></b><span id="pcClass"></span></div>
+          </div>
+          <div class="pc-stats" id="pcStats"></div>
+        </div>
+        <div class="float f1" id="float1"></div>
+        <div class="float f2" id="float2"></div>
+      </div>
+    </div>
+
+    <div class="strip rv" id="strip"></div>
+  </header>
+
+  <div class="marquee" aria-hidden="true"><div class="mq-track" id="mq"></div></div>
+
+  <main class="wrap">
     <!-- PROJECTS -->
-    <section id="projects">
-      <div class="container">
-        <div class="section-header reveal">
-          <span class="section-marker">›</span>
-          <span class="section-label" data-i18n="section_projects">PROJECTS</span>
-        </div>
-
-        <div class="project-tabs reveal reveal-d1">
-          <button class="tab-btn active" id="tabGames" onclick="switchTab('games')" data-i18n="tab_games">Games</button>
-          <button class="tab-btn" id="tabPackages" onclick="switchTab('packages')" data-i18n="tab_packages">Packages</button>
-        </div>
-
-        <div class="tab-panel active" id="panelGames">
-          <div class="games-grid" id="gamesGrid"></div>
-        </div>
-
-        <div class="tab-panel" id="panelPackages">
-          <div class="packages-header">
-            <div class="packages-subtitle" data-i18n="package_list_sub">Tools and libraries I've built for the Unity community.</div>
-          </div>
-          <div class="packages-list" id="packagesList"></div>
-        </div>
+    <section id="work">
+      <div class="sh rv">
+        <div><div class="sh-k">01 // <span data-i18n="work_k">PROJECTS</span></div><h2 data-i18n="work_t">Games in players' hands</h2></div>
+        <p data-i18n="work_p">Each project lists the roles I played — open one to see what I did and what I learned.</p>
       </div>
+      <div class="prj-list" id="prjList"></div>
     </section>
 
     <!-- SKILLS -->
     <section id="skills">
-      <div class="container">
-        <div class="section-header reveal">
-          <span class="section-marker">›</span>
-          <span class="section-label" data-i18n="section_skills">SKILLS</span>
-        </div>
-        <div class="skills-grid" id="skillsGrid"></div>
+      <div class="sh rv">
+        <div><div class="sh-k">02 // <span data-i18n="skills_k">SKILL TREE</span></div><h2 data-i18n="skills_t">What I bring to a team</h2></div>
+        <p data-i18n="skills_p">Ranked like a game character — click a skill to inspect it.</p>
       </div>
+      <div class="bento" id="bento"></div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience">
+      <div class="sh rv">
+        <div><div class="sh-k">03 // <span data-i18n="exp_k">EXPERIENCE</span></div><h2 data-i18n="exp_t">Quest log</h2></div>
+        <p data-i18n="exp_p">Roles I've played — and what I brought to each team.</p>
+      </div>
+      <div class="tl" id="timeline"></div>
     </section>
 
     <!-- CONTACT -->
-    <section id="contact">
-      <div class="container">
-        <div class="contact-box reveal">
-          <div class="contact-title" data-i18n="contact_title">Get In Touch</div>
-          <div class="contact-sub" data-i18n="contact_sub">Open to new opportunities and collaborations.</div>
-          <a href="#" class="btn-email" id="emailBtn">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="2" y="4" width="20" height="16" rx="2"/>
-              <polyline points="2,4 12,13 22,4"/>
-            </svg>
-            <span data-i18n="send_email">Send Email</span>
-          </a>
-        </div>
+    <section class="contact rv" id="contact">
+      <div class="term">&gt; nix.status() <b id="termStatus">// OPEN TO OPPORTUNITIES</b></div>
+      <h2 data-i18n-html="contact_t">Let's build something<br>players will love.</h2>
+      <p data-i18n="contact_p">Open to new roles, collaborations and Unity training.</p>
+      <div class="mailbox"><span id="mailTxt"></span>
+        <button class="btn btn-pri btn-sm" id="copyBtn" type="button" data-i18n="copy">Copy</button>
+        <a class="btn btn-ghost btn-sm" id="mailBtn" href="#"><span data-i18n="send">Send</span> ↗</a>
       </div>
+      <div class="socials center" id="contactSoc"></div>
     </section>
 
+    <footer>
+      <span id="footL"></span>
+      <span id="footR"></span>
+    </footer>
   </main>
 
-  <footer>
-    <span id="footerText">© 2025 — Built with ☕</span>
-  </footer>
+  <!-- BACK TO TOP -->
+  <button class="totop" id="totop" type="button" aria-label="Back to top">
+    <svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="20" class="trk"/><circle cx="22" cy="22" r="20" class="prg" id="totopRing"/></svg>
+    <span aria-hidden="true">↑</span>
+  </button>
+
+  <!-- MODAL -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle" hidden>
+    <div class="m-backdrop" data-close></div>
+    <div class="m-panel" id="mPanel">
+      <button class="m-close" type="button" data-close aria-label="Close">✕</button>
+      <div class="m-media" id="mMedia"></div>
+      <div class="m-body">
+        <div class="m-kicker" id="mKicker"></div>
+        <h3 id="mTitle"></h3>
+        <div class="meta" id="mTags"></div>
+        <div class="m-stats" id="mStats"></div>
+        <div class="m-desc" id="mDesc"></div>
+        <div class="m-actions" id="mActions"></div>
+      </div>
+      <div class="m-nav">
+        <button type="button" id="mPrev">← <span id="mPrevT"></span></button>
+        <span class="m-count" id="mCount"></span>
+        <button type="button" id="mNext"><span id="mNextT"></span> →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="assets/js/main.js"></script>
 </body>

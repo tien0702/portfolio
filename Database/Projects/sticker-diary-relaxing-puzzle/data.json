@@ -1,0 +1,33 @@
+{
+  "title": "Sticker Diary: Relaxing Puzzle",
+  "studio": "Champion Game Studio",
+  "accentColor": "#ce93d8",
+  "downloads": "",
+  "store": {
+    "googlePlay": "https://play.google.com/store/apps/details?id=com.fc.p.cp.transform.game.tricky.puzzle&hl=vi",
+    "appStore": ""
+  },
+  "video": {
+    "youtube": "Yd7vDterctQ",
+    "file": "",
+    "orientation": "landscape"
+  },
+  "poster": "",
+  "icon": "",
+  "overview": {
+    "en": "",
+    "vi": ""
+  },
+  "roles": [
+    {
+      "name": {
+        "en": "Dev",
+        "vi": "Dev"
+      }
+    }
+  ],
+  "learned": [],
+  "challenges": [],
+  "results": [],
+  "screenshots": []
+}
