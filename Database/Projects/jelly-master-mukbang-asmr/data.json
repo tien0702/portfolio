@@ -1,28 +1,29 @@
 {
-  "placeholder": true,
+  "placeholder": false,
   "title": "Jelly Master: Mukbang Asmr",
   "studio": "Champion Game Studio",
   "accentColor": "#f48fb1",
   "downloads": "70M+",
   "store": {
     "googlePlay": "https://play.google.com/store/apps/details?id=com.fc.p.cp.jelly.mukbang.asmr.live.diy&hl=vi",
-    "appStore": ""
+    "appStore": "https://apps.apple.com/vn/app/jelly-master-mukbang-asmr/id6738694162"
   },
   "video": {
-    "youtube": "Yd7vDterctQ",
+    "youtube": "bd1-CtXfTS0",
     "file": "",
-    "orientation": "landscape"
+    "orientation": "portrait"
   },
-  "poster": "",
-  "icon": "",
+  "poster": "images/poster.png",
+  "icon": "images/icon.png",
   "tagline": {
     "en": "Craft colorful jelly desserts and enjoy satisfying ASMR mukbang moments.",
     "vi": "Tự tay làm những món thạch đầy màu sắc và tận hưởng khoảnh khắc mukbang ASMR đã tai."
   },
   "team": 6,
+  "teamDetail": "1Dev - 2Art - 2GD - 1Anim",
   "duration": {
-    "en": "8 months",
-    "vi": "8 tháng"
+    "en": "2.5 months",
+    "vi": "2.5 tháng"
   },
   "status": {
     "en": "Live",
@@ -30,10 +31,10 @@
   },
   "platform": "Android · iOS",
   "engine": "Unity · C#",
-  "year": "20XX",
+  "year": "2024",
   "overview": {
-    "en": "A casual ASMR simulation where players craft jelly desserts step by step, then enjoy them in a mukbang scene. The core challenge was making every tap, pour and bite feel satisfying on low-end Android phones.",
-    "vi": "Game mô phỏng ASMR casual, người chơi làm món thạch theo từng bước rồi thưởng thức trong cảnh mukbang. Thử thách chính là làm cho mỗi lần chạm, rót, cắn đều đã tay trên cả máy Android cấu hình thấp."
+    "en": "Casual ASMR simulation game where players make jelly desserts step by step and enjoy them in a mukbang scene. The main challenge is to make every tap, pour, and bite feel satisfying for the player.",
+    "vi": "Game mô phỏng ASMR casual, người chơi làm món thạch theo từng bước rồi thưởng thức trong cảnh mukbang. Thử thách chính là làm cho mỗi lần chạm, rót, cắn đều mang lại một feeling cho player."
   },
   "roles": [
     {
@@ -47,25 +48,25 @@
       },
       "did": {
         "en": [
-          "Built the core crafting loop: pour, mix, shape and decorate jelly",
-          "Implemented the ASMR eating scene with synced sound, haptics and particles",
-          "Created a data-driven level pipeline so designers could add content without code"
         ],
         "vi": [
-          "Xây vòng lặp chế tạo chính: rót, trộn, tạo hình và trang trí thạch",
-          "Làm cảnh ăn ASMR đồng bộ âm thanh, haptic và particle",
-          "Tạo pipeline level theo dữ liệu để GD tự thêm nội dung không cần code"
+          "Thiết kế kiến trúc và Cơ chế kỹ thuật cốt lõi: State machine, event system, data-driven level pipeline, save/load, pool, particle, haptic, sound",
+          "Tích hợp SDK Ads/IAP/analytics",
+          "Đóng góp ý tưởng cho game",
+          "Đặt ra quy tắc cho asset từ Artist/Animator và quản lý tài nguyên (Asset Management & Pooling)",
+          "Tool liên kết asset vào database của game",
+          "Nâng cấp/thay đổi các SDK theo yêu cầu của đối tác"
         ]
       }
     },
     {
       "name": {
-        "en": "Performance & SDK",
-        "vi": "Hiệu năng & SDK"
+        "en": "LiveOps PM",
+        "vi": "LiveOps PM"
       },
       "summary": {
-        "en": "Kept the game smooth and monetized on a wide range of devices.",
-        "vi": "Giữ game mượt và kiếm tiền tốt trên nhiều loại thiết bị."
+        "en": "Managed the project during the LiveOps phase.",
+        "vi": "Quản lý quy trình giai đoạn LiveOps."
       },
       "did": {
         "en": [
@@ -74,9 +75,32 @@
           "Set up event tracking to support A/B testing of levels"
         ],
         "vi": [
-          "Profiling và giảm bộ nhớ trên máy Android cấu hình thấp",
-          "Tích hợp Ads, IAP, analytics SDK qua Monetization Kit nội bộ",
-          "Thiết lập event tracking để A/B test level"
+          "Quy tắc làm việc (Naming convention, Folder structure): Đưa ra quy trình phối hợp để team không bị chồng chéo, rối loạn.",
+          "Trao đổi với đối tác publisher về các sự kiện và nội dung mới",
+          "Làm việc với Lead Artist, Animator, Game Designer để lên lên timeline cho feature/limited event mới."
+        ]
+      }
+    },
+    {
+      "name": {
+        "en": "LiveOps PO",
+        "vi": "LiveOps PO"
+      },
+      "summary": {
+        "en": "Managed the project during the LiveOps phase.",
+        "vi": "Quản lý sản phẩm giai đoạn LiveOps."
+      },
+      "did": {
+        "en": [
+          "Profiled and cut memory usage on low-end Android devices",
+          "Integrated Ads, IAP and analytics SDKs through the in-house Monetization Kit",
+          "Set up event tracking to support A/B testing of levels"
+        ],
+        "vi": [
+          "Quản lý Playstore: Build Production/Internal Test, gói purchase",
+          "Quản lý Firebase: Crashlytics, Remote Config, A/B Testing, Analytics",
+          "Setup tracking event và A/B testing cho các tính năng mới",
+          "Setup remote config để bật/tắt tính năng mới mà không cần update app"
         ]
       }
     }
@@ -84,72 +108,53 @@
   "learned": [
     {
       "title": {
-        "en": "Game feel is a system",
-        "vi": "Game feel là một hệ thống"
+        "en": "As a Unity Developer, I learned...",
+        "vi": "Là một Unity Developer, tôi đã học được..."
       },
       "text": {
-        "en": "Satisfaction comes from timing — sound, haptics and animation landing on the same frame — not from adding more effects at the end.",
-        "vi": "Cảm giác đã tay đến từ timing — âm thanh, haptic và animation cùng khớp một frame — chứ không phải từ việc thêm hiệu ứng ở cuối."
+        "en": [
+          "Designed an event system to let gameplay mechanics communicate with each other",
+          "Optimized the game using techniques: Pooling, Sprite Atlas, Texture Compression",
+          "Used StateMachine to manage Character states",
+          "Implemented feeling techniques: Spring, Juice, Easing, Haptic, Particle, Sound"
+        ],
+        "vi": [
+          "Thiết kế hệ thống event để các cơ chế gameplay có thể phối hợp với nhau",
+          "Tối ưu game bằng các kỹ thuật: Pooling, Sprite Atlas, Texture Compression",
+          "Sử dụng StateMachine để quản lý trạng thái cho Character",
+          "Các kỹ thuật feeling: Spring, Juice, Easing, Haptic, Particle, Sound"
+        ]
       }
     },
     {
       "title": {
-        "en": "Measure before optimizing",
-        "vi": "Đo trước khi tối ưu"
+        "en": "As a LiveOps PM, I learned...",
+        "vi": "Là một LiveOps PM, tôi đã học được..."
       },
       "text": {
-        "en": "The Profiler beat my intuition every time; the real bottlenecks on low-end devices were rarely where I expected.",
-        "vi": "Profiler luôn đúng hơn cảm tính; điểm nghẽn thật trên máy yếu hiếm khi nằm ở chỗ tôi đoán."
+        "en": [],
+        "vi": [
+          "Cách đặt ra quy tắc làm việc (nameing convention, folder structure) để tìm kiếm và quản lý tài nguyên hiệu quả.",
+          "Cách ưu tiên thứ tự công việc để đạt được deadline, và cách phối hợp với các bộ phận khác để đạt được mục tiêu chung."
+        ]
       }
     },
     {
       "title": {
-        "en": "Tools multiply a team",
-        "vi": "Tool nhân sức cả team"
+        "en": "As a LiveOps PO, I learned...",
+        "vi": "Là một LiveOps PO, tôi đã học được..."
       },
       "text": {
-        "en": "A data-driven editor let designers ship levels without waiting for code — the biggest speed-up of the project.",
-        "vi": "Editor theo dữ liệu giúp GD tự ra level không phải chờ code — đây là cú tăng tốc lớn nhất của dự án."
-      }
-    },
-    {
-      "title": {
-        "en": "Abstract SDKs early",
-        "vi": "Trừu tượng hoá SDK sớm"
-      },
-      "text": {
-        "en": "Wrapping Ads/IAP/analytics behind one interface saved weeks every time a partner SDK changed.",
-        "vi": "Bọc Ads/IAP/analytics sau một interface giúp tiết kiệm hàng tuần mỗi khi đổi SDK đối tác."
-      }
-    }
-  ],
-  "challenges": [
-    {
-      "title": {
-        "en": "Satisfying feel on cheap phones",
-        "vi": "Cảm giác đã tay trên máy yếu"
-      },
-      "problem": {
-        "en": "Fluid jelly and particle effects dropped below 30 FPS on low-end devices.",
-        "vi": "Hiệu ứng thạch và particle tụt dưới 30 FPS trên máy yếu."
-      },
-      "solution": {
-        "en": "Baked deformation into shader parameters and pooled particles — stable 60 FPS.",
-        "vi": "Bake biến dạng vào tham số shader và pool particle — ổn định 60 FPS."
-      }
-    },
-    {
-      "title": {
-        "en": "Shipping content fast",
-        "vi": "Ra nội dung nhanh"
-      },
-      "problem": {
-        "en": "Every new dessert needed a programmer.",
-        "vi": "Mỗi món mới đều cần lập trình viên."
-      },
-      "solution": {
-        "en": "ScriptableObject-based recipe editor so designers build levels themselves.",
-        "vi": "Recipe editor dựa trên ScriptableObject để GD tự làm level."
+        "en": [
+          "How to create Internal Test and when to push to Production, how to rollout to a percentage of users, and when to push to 100% of users.",
+          "How to create purchase packages, subscriptions, and set prices for different countries.",
+          "How to set up event tracking, A/B testing, and remote config to enable/disable new features without updating the app."
+        ],
+        "vi": [
+          "Cách tạo Internal Test và khi nào đẩy lên Production, đẩy lên Production thì rollout bao nhiêu % người dùng, khi nào thì đẩy lên 100% người dùng.",
+          "Cách tạo gói purchase, cách tạo subscription, đặt giá cho từng quốc gia.",
+          "Cách tạo event tracking, A/B testing, remote config để bật/tắt tính năng mới mà không cần update app."
+        ]
       }
     }
   ],
@@ -160,14 +165,14 @@
         "en": "downloads on Google Play",
         "vi": "lượt tải trên Google Play"
       }
-    },
-    {
-      "value": "60 FPS",
-      "label": {
-        "en": "on low-end Android after optimization",
-        "vi": "trên Android yếu sau tối ưu"
-      }
     }
   ],
-  "screenshots": []
+  "screenshots": [
+    "images/screenshots/halloween_2.png",
+    "images/screenshots/halloween_3.png",
+    "images/screenshots/halloween_4.png",
+    "images/screenshots/halloween_6.png",
+    "images/screenshots/halloween-live.png",
+    "images/screenshots/halloween-popup.png"
+  ]
 }

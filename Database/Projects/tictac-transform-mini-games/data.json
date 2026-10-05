@@ -9,11 +9,11 @@
     "appStore": ""
   },
   "video": {
-    "youtube": "Yd7vDterctQ",
+    "youtube": "isc1jtwqWro",
     "file": "",
-    "orientation": "landscape"
+    "orientation": "portrait"
   },
-  "poster": "",
+  "poster": "images/poster.png",
   "icon": "",
   "tagline": {
     "en": "A collection of tricky transformation puzzles with surprising twists.",
@@ -86,8 +86,12 @@
         "vi": "Ranh giới rõ, ít xung đột"
       },
       "text": {
-        "en": "Splitting work by module ownership prevented most merge conflicts — and most arguments.",
-        "vi": "Chia việc theo module giúp tránh phần lớn conflict khi merge — và cả tranh cãi."
+        "en": [
+          "Splitting work by module ownership prevented most merge conflicts — and most arguments."
+        ],
+        "vi": [
+          "Chia việc theo module giúp tránh phần lớn conflict khi merge — và cả tranh cãi."
+        ]
       }
     },
     {
@@ -96,8 +100,12 @@
         "vi": "Review là để dạy"
       },
       "text": {
-        "en": "A good review comment explains the why, so juniors improve instead of just fixing one line.",
-        "vi": "Comment review tốt giải thích lý do, để junior tiến bộ chứ không chỉ sửa một dòng."
+        "en": [
+          "A good review comment explains the why, so juniors improve instead of just fixing one line."
+        ],
+        "vi": [
+          "Comment review tốt giải thích lý do, để junior tiến bộ chứ không chỉ sửa một dòng."
+        ]
       }
     },
     {
@@ -106,8 +114,12 @@
         "vi": "Kiến trúc tạo ra sự đa dạng"
       },
       "text": {
-        "en": "A plug-in mini-game framework is what let a small team ship many different mechanics quickly.",
-        "vi": "Framework mini-game dạng plug-in là thứ giúp team nhỏ ra nhiều cơ chế khác nhau thật nhanh."
+        "en": [
+          "A plug-in mini-game framework is what let a small team ship many different mechanics quickly."
+        ],
+        "vi": [
+          "Framework mini-game dạng plug-in là thứ giúp team nhỏ ra nhiều cơ chế khác nhau thật nhanh."
+        ]
       }
     }
   ],

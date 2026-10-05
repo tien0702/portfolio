@@ -1,33 +1,93 @@
 {
+  "placeholder": true,
   "title": "Style Star: Left Right Fashion",
   "studio": "Champion Game Studio",
   "accentColor": "#ce93d8",
   "downloads": "10M+",
   "store": {
     "googlePlay": "https://play.google.com/store/apps/details?id=com.left.right.girl.dressup.game",
-    "appStore": ""
+    "appStore": "https://apps.apple.com/us/app/star-style-left-right-fashion/id6753162039?l=vi"
   },
   "video": {
-    "youtube": "LW7WeL4VWwE",
+    "youtube": "gXwlFMIPnlc",
     "file": "",
     "orientation": "portrait"
   },
-  "poster": "",
-  "icon": "",
+  "poster": "images/poster.png",
+  "icon": "images/icon.png",
+  "tagline": {
+    "en": "Swipe left or right to style the perfect outfit and become a fashion star.",
+    "vi": "Vuốt trái hoặc phải để phối bộ đồ hoàn hảo và trở thành ngôi sao thời trang."
+  },
+  "team": 5,
+  "teamDetail": "1Dev - 2Art - 1GD - 1Anim",
+  "duration": {
+    "en": "3 months",
+    "vi": "3 tháng"
+  },
+  "status": {
+    "en": "Live",
+    "vi": "Đang phát hành"
+  },
+  "platform": "Android · iOS",
+  "engine": "Unity · C#",
+  "year": "2025",
   "overview": {
-    "en": "",
-    "vi": ""
+    "en": "A casual dress-up game built around a simple left/right choice: each swipe picks an outfit piece, and the final look is scored against the theme. The goal was to make every choice fast, readable and fun to repeat.",
+    "vi": "Game dress-up casual xoay quanh lựa chọn trái/phải: mỗi lần vuốt chọn một món đồ, bộ trang phục cuối cùng được chấm điểm theo chủ đề. Mục tiêu là mỗi lựa chọn phải nhanh, dễ hiểu và vui khi chơi lại."
   },
   "roles": [
     {
       "name": {
         "en": "Main Dev",
         "vi": "Main Dev"
+      },
+      "summary": {
+        "en": "Owned gameplay programming from prototype to release.",
+        "vi": "Phụ trách lập trình gameplay từ prototype đến khi phát hành."
+      },
+      "did": {
+        "en": [
+          "Built the left/right choice loop and outfit scoring system",
+          "Character customization: layered outfits, colors and accessories",
+          "Data-driven level pipeline so designers can add themes and outfits",
+          "Integrated Ads/IAP/analytics SDKs"
+        ],
+        "vi": [
+          "Xây vòng lặp chọn trái/phải và hệ thống chấm điểm trang phục",
+          "Tuỳ biến nhân vật: trang phục theo lớp, màu sắc và phụ kiện",
+          "Pipeline level theo dữ liệu để GD tự thêm chủ đề và trang phục",
+          "Tích hợp SDK Ads/IAP/analytics"
+        ]
       }
     }
   ],
-  "learned": [],
-  "challenges": [],
-  "results": [],
+  "learned": [
+    {
+      "title": {
+        "en": "As a Main Dev, I learned...",
+        "vi": "Là Main Dev, tôi đã học được..."
+      },
+      "text": {
+        "en": [
+          "Structuring layered character art so new outfits don't need code changes",
+          "Keeping a simple core loop fresh with themes and progression"
+        ],
+        "vi": [
+          "Tổ chức art nhân vật theo lớp để thêm trang phục mới không cần sửa code",
+          "Giữ vòng lặp đơn giản luôn mới mẻ bằng chủ đề và tiến trình"
+        ]
+      }
+    }
+  ],
+  "results": [
+    {
+      "value": "10M+",
+      "label": {
+        "en": "downloads on Google Play",
+        "vi": "lượt tải trên Google Play"
+      }
+    }
+  ],
   "screenshots": []
 }

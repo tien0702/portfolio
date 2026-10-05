@@ -2,8 +2,8 @@
   "profile": {
     "name": "Trần Tiến - [NIX]",
     "title": {
-      "en": "Game Developer, Team Leader, Unity Trainer",
-      "vi": "Game Developer, Team Leader, Unity Trainer"
+      "en": "Game Developer, Unity Trainer, Team Leader",
+      "vi": "Game Developer, Team Leader, Team Leader"
     },
     "location": "Ha Noi City, VN",
     "status": "available",
@@ -12,8 +12,8 @@
       "vi": "Available"
     },
     "bio": {
-      "en": "I build interactive experiences that feel good to play. Specializing in mobile and casual games with a focus on tight gameplay loops and polished feel.",
-      "vi": "Tôi xây dựng những trải nghiệm tương tác thú vị và mượt mà. Chuyên về game mobile và casual với trọng tâm là vòng lặp gameplay chặt chẽ và cảm giác chơi được trau chuốt kỹ."
+      "en": "2D mobile game developer, focusing on quality and player feeling.",
+      "vi": "Phát triển game 2D trên mobile, tập trung vào chất lượng và feeling của người chơi."
     },
     "avatar": "assets/images/avt.jpg",
     "stats": [
@@ -27,8 +27,8 @@
       {
         "value": "3+",
         "label": {
-          "en": "Years in Unity",
-          "vi": "Năm kinh nghiệm Unity"
+          "en": "3 years of game development experience",
+          "vi": "3 năm kinh nghiệm phát triển game"
         }
       },
       {
@@ -52,8 +52,8 @@
       "placeholder": true,
       "current": true,
       "period": {
-        "en": "20XX — Now",
-        "vi": "20XX — Nay"
+        "en": "2025 — 2026",
+        "vi": "2025 — 2026"
       },
       "role": {
         "en": "Team Leader",
@@ -73,17 +73,17 @@
     {
       "placeholder": true,
       "period": {
-        "en": "20XX — 20XX",
-        "vi": "20XX — 20XX"
+        "en": "2022 — Now",
+        "vi": "2022 — Nay"
       },
       "role": {
         "en": "Unity Trainer",
         "vi": "Unity Trainer"
       },
-      "org": "—",
+      "org": "VTC Academy",
       "desc": {
-        "en": "Train junior developers on Unity fundamentals, clean architecture and mobile optimization.",
-        "vi": "Đào tạo lập trình viên mới về nền tảng Unity, kiến trúc sạch và tối ưu cho mobile."
+        "en": "Mentored new developers on game development knowledge from Cocos2dx to Unity, from project architecture to specialized game knowledge.",
+        "vi": "Đào tạo lập trình viên mới về kiến thức phát triển game từ Cocos2dx đến Unity, từ kiến trúc dự án cho tới các kiến thức chuyên ngành game."
       },
       "tags": [
         "Mentoring",
@@ -93,8 +93,8 @@
     {
       "placeholder": true,
       "period": {
-        "en": "20XX — 20XX",
-        "vi": "20XX — 20XX"
+        "en": "2024 — 2026",
+        "vi": "2024 — 2026"
       },
       "role": {
         "en": "Game Developer",
@@ -102,8 +102,8 @@
       },
       "org": "Champion Game Studio",
       "desc": {
-        "en": "Main developer on hit titles with 70M+ and 10M+ downloads — gameplay, UI, SDK integration and optimization.",
-        "vi": "Main dev cho các game hit 70M+ và 10M+ lượt tải — gameplay, UI, tích hợp SDK và tối ưu."
+        "en": "Main developer on hit titles with 70M+ and 10M+ downloads.",
+        "vi": "Main dev cho các game hit 70M+ và 10M+ lượt tải."
       },
       "tags": [
         "Gameplay",
@@ -111,5 +111,159 @@
         "Ads / IAP"
       ]
     }
-  ]
+  ],
+  "i18n": {
+    "en": {
+      "skip": "Skip to content",
+      "nav_work": "Projects",
+      "nav_experience": "Experience",
+      "nav_skills": "Skills",
+      "nav_contact": "Contact",
+      "hire": "Hire me",
+      "view_work": "View my projects",
+      "download_cv": "Download CV",
+      "contact_me": "Contact me",
+      "h1": "I build games<br>played by <span class=\"grad\">{n}</span> people.",
+      "installs": "installs",
+      "shipped": "{n} games shipped",
+      "available": "Available",
+      "skills_k": "SKILL TREE",
+      "skills_t": "What I bring to a team",
+      "skills_p": "Ranked like a game character — click a skill to inspect it.",
+      "also": "Also worked with",
+      "also_p": "Low-level background that shapes how I think about memory and rendering.",
+      "lead_t": "Leadership & Training",
+      "lead_p": "Leading a dev team, mentoring juniors, and building shared frameworks so every new project starts ahead.",
+      "proficiency": "Proficiency",
+      "skill": "Skill",
+      "exp_k": "EXPERIENCE",
+      "exp_t": "Quest log",
+      "exp_p": "Roles I've played — and what I brought to each team.",
+      "now": "NOW",
+      "work_k": "PROJECTS",
+      "work_t": "Games in players' hands",
+      "work_p": "Every game I shipped and the roles I played — open one to see my responsibilities and what I learned.",
+      "read_more": "Read more",
+      "google_play": "Google Play",
+      "app_store": "App Store",
+      "platform": "Platform",
+      "engine": "Engine",
+      "downloads": "Downloads",
+      "studio": "Studio",
+      "team": "Team",
+      "duration": "Duration",
+      "year": "Year",
+      "people": "{n} people",
+      "key_contrib": "Key contributions",
+      "view_case": "View case study",
+      "no_desc": "Detailed write-up coming soon.",
+      "all_projects": "All projects",
+      "watch": "Watch with sound",
+      "overview": "Overview",
+      "resp": "Responsibilities",
+      "roles_n": "{n} roles",
+      "what_learned": "What I learned",
+      "gallery": "Screenshots",
+      "screenshot": "Screenshot",
+      "challenges": "Challenges & solutions",
+      "problem": "Problem",
+      "solution": "Solution",
+      "results": "Results",
+      "prev_p": "Previous project",
+      "next_p": "Next project",
+      "not_found": "Project not found.",
+      "back_home": "Back to all projects",
+      "details_soon": "A detailed breakdown of my responsibilities in this project is coming soon.",
+      "play": "Play video",
+      "unmute": "Unmute",
+      "mute": "Mute",
+      "live": "PLAYING",
+      "contact_t": "Let's build something<br>players will love.",
+      "contact_p": "Open to new roles, collaborations and Unity training.",
+      "copy": "Copy",
+      "copied": "Email copied to clipboard",
+      "send": "Send",
+      "term": "// OPEN TO OPPORTUNITIES",
+      "built": "Built with ☕ in {city}",
+      "sample": "sample data",
+      "err": "Could not load data files.",
+      "booting": "LOADING…"
+    },
+    "vi": {
+      "skip": "Bỏ qua tới nội dung",
+      "nav_work": "Dự án",
+      "nav_experience": "Kinh nghiệm",
+      "nav_skills": "Kỹ năng",
+      "nav_contact": "Liên hệ",
+      "hire": "Thuê tôi",
+      "view_work": "Xem dự án",
+      "download_cv": "Tải CV",
+      "contact_me": "Liên hệ",
+      "h1": "Tôi làm game<br>cho <span class=\"grad\">{n}</span> người chơi.",
+      "installs": "lượt tải",
+      "shipped": "{n} game đã ra mắt",
+      "available": "Sẵn sàng nhận việc",
+      "skills_k": "CÂY KỸ NĂNG",
+      "skills_t": "Những gì tôi mang đến cho team",
+      "skills_p": "Xếp hạng như nhân vật game — bấm vào kỹ năng để xem chi tiết.",
+      "also": "Từng làm việc với",
+      "also_p": "Nền tảng low-level giúp tôi hiểu sâu về bộ nhớ và rendering.",
+      "lead_t": "Dẫn dắt & Đào tạo",
+      "lead_p": "Dẫn dắt team, kèm cặp junior và xây framework dùng chung để mỗi dự án mới khởi đầu nhanh hơn.",
+      "proficiency": "Mức độ",
+      "skill": "Kỹ năng",
+      "exp_k": "KINH NGHIỆM",
+      "exp_t": "Nhật ký hành trình",
+      "exp_p": "Những vai trò tôi đã đảm nhận — và những gì tôi mang lại cho team.",
+      "now": "HIỆN TẠI",
+      "work_k": "DỰ ÁN",
+      "work_t": "Game trong tay người chơi",
+      "work_p": "Những game tôi đã làm và vai trò của tôi — mở từng dự án để xem trách nhiệm và những điều tôi học được.",
+      "read_more": "Xem chi tiết",
+      "google_play": "Google Play",
+      "app_store": "App Store",
+      "platform": "Nền tảng",
+      "engine": "Engine",
+      "downloads": "Lượt tải",
+      "studio": "Studio",
+      "team": "Team",
+      "duration": "Thời gian",
+      "year": "Năm",
+      "people": "{n} người",
+      "key_contrib": "Đóng góp chính",
+      "view_case": "Xem case study",
+      "no_desc": "Mô tả chi tiết sẽ sớm được cập nhật.",
+      "all_projects": "Tất cả dự án",
+      "watch": "Xem có âm thanh",
+      "overview": "Tổng quan",
+      "resp": "Trách nhiệm",
+      "roles_n": "{n} vai trò",
+      "what_learned": "Những điều tôi học được",
+      "gallery": "Ảnh chụp màn hình",
+      "screenshot": "Ảnh",
+      "challenges": "Thử thách & giải pháp",
+      "problem": "Vấn đề",
+      "solution": "Giải pháp",
+      "results": "Kết quả",
+      "prev_p": "Dự án trước",
+      "next_p": "Dự án sau",
+      "not_found": "Không tìm thấy dự án.",
+      "back_home": "Về danh sách dự án",
+      "details_soon": "Phần chi tiết trách nhiệm của tôi trong dự án này sẽ sớm được cập nhật.",
+      "play": "Phát video",
+      "unmute": "Bật tiếng",
+      "mute": "Tắt tiếng",
+      "live": "ĐANG PHÁT",
+      "contact_t": "Cùng làm một game<br>người chơi yêu thích.",
+      "contact_p": "Sẵn sàng cho vị trí mới, hợp tác và đào tạo Unity.",
+      "copy": "Sao chép",
+      "copied": "Đã sao chép email",
+      "send": "Gửi",
+      "term": "// SẴN SÀNG CHO CƠ HỘI MỚI",
+      "built": "Làm với ☕ tại {city}",
+      "sample": "dữ liệu mẫu",
+      "err": "Không tải được dữ liệu.",
+      "booting": "ĐANG TẢI…"
+    }
+  }
 }

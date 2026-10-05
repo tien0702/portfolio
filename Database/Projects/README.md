@@ -40,9 +40,10 @@ File paths are relative to the project folder (e.g. `images/screenshot-1.jpg`); 
 | `poster`, `icon` | `"images/cover.jpg"` | optional; YouTube thumbnail is used as fallback |
 | `tagline` | `{ "en": "…", "vi": "…" }` | one line under the title |
 | `team`, `duration`, `status`, `platform`, `engine`, `year` | `6`, `{ "en": "8 months" }`, … | shown in the header / stats |
+| `teamDetail` | `"1Dev - 2Art - 2GD - 1Anim"` | shown under the team size instead of "TEAM" |
 | `overview` | `{ "en": "…", "vi": "…" }` | |
 | `roles` | `[{ "name": {…}, "summary": {…}, "did": { "en": ["…"], "vi": ["…"] } }]` | Responsibilities section |
-| `learned` | `[{ "title": {…}, "text": {…} }]` | What I learned section |
+| `learned` | `[{ "title": {…}, "text": { "en": ["…"], "vi": ["…"] } }]` | What I learned — each string is one bullet |
 | `challenges` | `[{ "title": {…}, "problem": {…}, "solution": {…} }]` | |
 | `results` | `[{ "value": "70M+", "label": {…} }]` | |
 | `screenshots` | `["images/screenshot-1.jpg", { "src": "images/screenshot-2.jpg", "caption": {…} }]` | portrait or landscape |

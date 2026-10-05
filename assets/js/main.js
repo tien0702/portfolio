@@ -17,60 +17,15 @@ var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 // ══════════════════════════════
 // UI STRINGS
 // ══════════════════════════════
-var UI = {
-  en: {
-    skip: 'Skip to content', nav_work: 'Projects', nav_experience: 'Experience', nav_skills: 'Skills', nav_contact: 'Contact',
-    hire: 'Hire me', view_work: 'View my projects', download_cv: 'Download CV', contact_me: 'Contact me',
-    h1: 'I build games<br>played by <span class="grad">{n}</span> people.',
-    installs: 'installs', shipped: '{n} games shipped', available: 'Available',
-    skills_k: 'SKILL TREE', skills_t: 'What I bring to a team', skills_p: 'Ranked like a game character — click a skill to inspect it.',
-    also: 'Also worked with', also_p: 'Low-level background that shapes how I think about memory and rendering.',
-    lead_t: 'Leadership & Training', lead_p: 'Leading a dev team, mentoring juniors, and building shared frameworks so every new project starts ahead.',
-    proficiency: 'Proficiency', skill: 'Skill',
-    exp_k: 'EXPERIENCE', exp_t: 'Quest log', exp_p: "Roles I've played — and what I brought to each team.", now: 'NOW',
-    work_k: 'PROJECTS', work_t: "Games in players' hands", work_p: 'Every game I shipped and the roles I played — open one to see my responsibilities and what I learned.',
-    read_more: 'Read more', google_play: 'Google Play', app_store: 'App Store',
-    platform: 'Platform', engine: 'Engine', downloads: 'Downloads', studio: 'Studio', team: 'Team', duration: 'Duration', year: 'Year',
-    people: '{n} people', key_contrib: 'Key contributions', view_case: 'View case study',
-    no_desc: 'Detailed write-up coming soon.',
-    all_projects: 'All projects', watch: 'Watch with sound', overview: 'Overview', resp: 'Responsibilities', roles_n: '{n} roles',
-    what_learned: 'What I learned', gallery: 'Screenshots', screenshot: 'Screenshot',
-    challenges: 'Challenges & solutions', problem: 'Problem', solution: 'Solution', results: 'Results',
-    prev_p: 'Previous project', next_p: 'Next project', not_found: 'Project not found.', back_home: 'Back to all projects',
-    details_soon: 'A detailed breakdown of my responsibilities in this project is coming soon.',
-    play: 'Play video', unmute: 'Unmute', mute: 'Mute', live: 'PLAYING',
-    contact_t: "Let's build something<br>players will love.", contact_p: 'Open to new roles, collaborations and Unity training.',
-    copy: 'Copy', copied: 'Email copied to clipboard', send: 'Send', term: '// OPEN TO OPPORTUNITIES',
-    built: 'Built with ☕ in {city}', sample: 'sample data', err: 'Could not load data files.', booting: 'LOADING…'
-  },
-  vi: {
-    skip: 'Bỏ qua tới nội dung', nav_work: 'Dự án', nav_experience: 'Kinh nghiệm', nav_skills: 'Kỹ năng', nav_contact: 'Liên hệ',
-    hire: 'Thuê tôi', view_work: 'Xem dự án', download_cv: 'Tải CV', contact_me: 'Liên hệ',
-    h1: 'Tôi làm game<br>cho <span class="grad">{n}</span> người chơi.',
-    installs: 'lượt tải', shipped: '{n} game đã ra mắt', available: 'Sẵn sàng nhận việc',
-    skills_k: 'CÂY KỸ NĂNG', skills_t: 'Những gì tôi mang đến cho team', skills_p: 'Xếp hạng như nhân vật game — bấm vào kỹ năng để xem chi tiết.',
-    also: 'Từng làm việc với', also_p: 'Nền tảng low-level giúp tôi hiểu sâu về bộ nhớ và rendering.',
-    lead_t: 'Dẫn dắt & Đào tạo', lead_p: 'Dẫn dắt team, kèm cặp junior và xây framework dùng chung để mỗi dự án mới khởi đầu nhanh hơn.',
-    proficiency: 'Mức độ', skill: 'Kỹ năng',
-    exp_k: 'KINH NGHIỆM', exp_t: 'Nhật ký hành trình', exp_p: 'Những vai trò tôi đã đảm nhận — và những gì tôi mang lại cho team.', now: 'HIỆN TẠI',
-    work_k: 'DỰ ÁN', work_t: 'Game trong tay người chơi', work_p: 'Những game tôi đã làm và vai trò của tôi — mở từng dự án để xem trách nhiệm và những điều tôi học được.',
-    read_more: 'Xem chi tiết', google_play: 'Google Play', app_store: 'App Store',
-    platform: 'Nền tảng', engine: 'Engine', downloads: 'Lượt tải', studio: 'Studio', team: 'Team', duration: 'Thời gian', year: 'Năm',
-    people: '{n} người', key_contrib: 'Đóng góp chính', view_case: 'Xem case study',
-    no_desc: 'Mô tả chi tiết sẽ sớm được cập nhật.',
-    all_projects: 'Tất cả dự án', watch: 'Xem có âm thanh', overview: 'Tổng quan', resp: 'Trách nhiệm', roles_n: '{n} vai trò',
-    what_learned: 'Những điều tôi học được', gallery: 'Ảnh chụp màn hình', screenshot: 'Ảnh',
-    challenges: 'Thử thách & giải pháp', problem: 'Vấn đề', solution: 'Giải pháp', results: 'Kết quả',
-    prev_p: 'Dự án trước', next_p: 'Dự án sau', not_found: 'Không tìm thấy dự án.', back_home: 'Về danh sách dự án',
-    details_soon: 'Phần chi tiết trách nhiệm của tôi trong dự án này sẽ sớm được cập nhật.',
-    play: 'Phát video', unmute: 'Bật tiếng', mute: 'Tắt tiếng', live: 'ĐANG PHÁT',
-    contact_t: 'Cùng làm một game<br>người chơi yêu thích.', contact_p: 'Sẵn sàng cho vị trí mới, hợp tác và đào tạo Unity.',
-    copy: 'Sao chép', copied: 'Đã sao chép email', send: 'Gửi', term: '// SẴN SÀNG CHO CƠ HỘI MỚI',
-    built: 'Làm với ☕ tại {city}', sample: 'dữ liệu mẫu', err: 'Không tải được dữ liệu.', booting: 'ĐANG TẢI…'
-  }
+// UI text lives in web-config.json → i18n. These two are only a fallback for the loader,
+// shown before (or if) web-config.json fails to load.
+var BOOT = {
+  en: { booting: 'LOADING…', err: 'Could not load data files.' },
+  vi: { booting: 'ĐANG TẢI…', err: 'Không tải được dữ liệu.' }
 };
 function t(k, vars) {
-  var s = (UI[lang] && UI[lang][k]) || UI.en[k] || k;
+  var D = (CONFIG && CONFIG.i18n) || {};
+  var s = (D[lang] && D[lang][k]) || (D.en && D.en[k]) || BOOT[lang][k] || BOOT.en[k] || k;
   if (vars) Object.keys(vars).forEach(function (v) { s = s.replace('{' + v + '}', vars[v]); });
   return s;
 }
@@ -78,8 +33,10 @@ function loc(o) { if (o == null) return ''; if (typeof o === 'string' || typeof 
 // Per-item fallback to English when a translation is missing.
 function locArr(o) {
   if (!o) return []; if (Array.isArray(o)) return o;
-  var a = o[lang] || [], en = o.en || [], out = [];
+  var arr = function (v) { return Array.isArray(v) ? v : v ? [v] : []; };
+  var a = arr(o[lang]), en = arr(o.en), out = [];
   for (var i = 0; i < Math.max(a.length, en.length); i++) if (a[i] || en[i]) out.push(a[i] || en[i]);
+  if (!out.length) Object.keys(o).forEach(function (k) { if (!out.length) out = arr(o[k]).filter(Boolean); }); // only one language filled
   return out;
 }
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -126,6 +83,8 @@ var IC = {
   team: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
   gauge: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14l4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>',
   play: '<svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><polygon points="6,3 20,12 6,21"/></svg>',
+  gplay: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.6 1.8c-.3.3-.4.7-.4 1.2v18c0 .5.1.9.4 1.2l.1.1L13.8 12v-.2L3.7 1.7l-.1.1zM17.2 15.4l-3.4-3.4v-.2l3.4-3.4.1.1 4 2.3c1.1.6 1.1 1.7 0 2.3l-4 2.3h-.1zM17.3 15.3L13.8 11.9 3.6 22.1c.4.4 1 .4 1.7.1l12-6.9M17.3 8.5L5.3 1.7c-.7-.4-1.3-.3-1.7.1l10.2 10.1 3.5-3.4z"/></svg>',
+  apple: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 12.6c-.02-2.3 1.88-3.4 1.97-3.46-1.07-1.57-2.74-1.78-3.33-1.8-1.42-.14-2.77.83-3.49.83-.72 0-1.83-.81-3.01-.79-1.55.02-2.98.9-3.78 2.29-1.61 2.8-.41 6.93 1.16 9.2.77 1.11 1.68 2.36 2.88 2.31 1.16-.05 1.6-.75 3-.75 1.4 0 1.79.75 3.01.73 1.25-.02 2.04-1.13 2.8-2.25.88-1.29 1.24-2.54 1.26-2.6-.03-.01-2.42-.93-2.47-3.71zM14.1 5.85c.64-.78 1.07-1.85.95-2.92-.92.04-2.03.61-2.69 1.38-.59.68-1.11 1.78-.97 2.83 1.02.08 2.07-.52 2.71-1.29z"/></svg>',
   muted: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>',
   sound: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>'
 };
@@ -187,8 +146,8 @@ function roleChips(p) {
 }
 function storeButtons(p, cls) {
   var s = p.store || {}, h = '';
-  if (s.googlePlay) h += '<a class="btn ' + cls[0] + '" href="' + esc(s.googlePlay) + '" target="_blank" rel="noopener">▶ ' + t('google_play') + '</a>';
-  if (s.appStore) h += '<a class="btn ' + cls[1] + '" href="' + esc(s.appStore) + '" target="_blank" rel="noopener"> ' + t('app_store') + '</a>';
+  if (s.googlePlay) h += '<a class="btn ' + cls[0] + '" href="' + esc(s.googlePlay) + '" target="_blank" rel="noopener">' + IC.gplay + t('google_play') + '</a>';
+  if (s.appStore) h += '<a class="btn ' + cls[1] + '" href="' + esc(s.appStore) + '" target="_blank" rel="noopener">' + IC.apple + t('app_store') + '</a>';
   return h;
 }
 
@@ -496,7 +455,7 @@ function renderProject() {
   if (vid && !portrait) h += '<div class="pj-player rv in">' + videoBox(p, 'hero') + '</div>';
   var stats = [];
   if (p.downloads) stats.push(['<b class="g">' + esc(p.downloads) + '</b>', t('downloads')]);
-  if (p.team) stats.push(['<b>' + esc(t('people', { n: p.team })) + '</b>', t('team')]);
+  if (p.team) stats.push(['<b>' + esc(t('people', { n: p.team })) + '</b>', loc(p.teamDetail) ? '<em class="raw">' + esc(loc(p.teamDetail)) + '</em>' : t('team')]);
   if (p.duration) stats.push(['<b>' + esc(loc(p.duration)) + '</b>', t('duration')]);
   if (p.engine) stats.push(['<b>' + esc(p.engine) + '</b>', t('engine')]);
   if (p.year) stats.push(['<b>' + esc(p.year) + '</b>', t('year')]);
@@ -509,7 +468,6 @@ function renderProject() {
   var roles = (p.roles || []).filter(function (r) { return locArr(r.did).length; });
   h += '<section class="pj-sec" id="roles"><h2 class="rv"><small>' + num() + '</small>' + t('resp') + (roles.length ? ' <span class="cnt">' + t('roles_n', { n: roles.length }) + '</span>' : '') + '</h2>';
   if (roles.length) {
-    if (roles.length > 1) h += '<div class="role-nav" id="roleNav" role="navigation">' + roles.map(function (r, i) { return '<a href="#role-' + i + '"' + (i ? '' : ' class="on"') + '>' + esc(loc(r.name)) + '</a>'; }).join('') + '</div>';
     h += roles.map(function (r, i) {
       return '<article class="spot role-card rv" id="role-' + i + '">' +
         '<div class="rc-head"><div class="rc-icon">' + roleIcon(loc(r.name)) + '</div><div><h3>' + esc(loc(r.name)) + sample(ph) + '</h3>' + (r.summary ? '<p>' + esc(loc(r.summary)) + '</p>' : '') + '</div><span class="rc-n">' + String(i + 1).padStart(2, '0') + '</span></div>' +
@@ -524,7 +482,7 @@ function renderProject() {
   var learned = p.learned || [];
   if (learned.length) {
     h += '<section class="pj-sec" id="learned"><h2 class="rv"><small>' + num() + '</small>' + t('what_learned') + '</h2><div class="learn">' + learned.map(function (l, i) {
-      return '<div class="spot lc rv"><span class="lc-n">' + String(i + 1).padStart(2, '0') + '</span><h4>' + esc(loc(l.title)) + sample(ph) + '</h4><p>' + esc(loc(l.text)) + '</p></div>';
+      return '<div class="spot lc rv"><span class="lc-n">' + String(i + 1).padStart(2, '0') + '</span><h4>' + esc(loc(l.title)) + sample(ph) + '</h4><ul class="did">' + locArr(l.text).map(function (x) { return '<li><span>' + esc(x) + '</span></li>'; }).join('') + '</ul></div>';
     }).join('') + '</div></section>';
   }
 
@@ -800,13 +758,6 @@ function bindStatic() {
         var r = tl.getBoundingClientRect(), mid = innerHeight * 0.6, tp = Math.min(Math.max((mid - r.top) / r.height, 0), 1);
         tl.style.setProperty('--tl', (tp * 100) + '%');
         tl.querySelectorAll('.tl-item').forEach(function (it) { it.classList.toggle('lit', it.getBoundingClientRect().top + 30 < mid); });
-      }
-    } else {
-      var rn = $('roleNav');
-      if (rn) {
-        var on = 0;
-        document.querySelectorAll('.role-card').forEach(function (c, i) { if (c.getBoundingClientRect().top < innerHeight * 0.4) on = i; });
-        rn.querySelectorAll('a').forEach(function (a, i) { a.classList.toggle('on', i === on); });
       }
     }
   }

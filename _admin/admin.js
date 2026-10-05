@@ -77,7 +77,7 @@ function confirmDlg(title, html, yesLabel) {
 // ══════════════════════════════
 // DATA ↔ FORM
 // ══════════════════════════════
-var KEY_ORDER = ['placeholder', 'title', 'studio', 'accentColor', 'downloads', 'store', 'video', 'poster', 'icon', 'tagline', 'team', 'duration', 'status', 'platform', 'engine', 'year', 'overview', 'roles', 'learned', 'challenges', 'results', 'screenshots'];
+var KEY_ORDER = ['placeholder', 'title', 'studio', 'accentColor', 'downloads', 'store', 'video', 'poster', 'icon', 'tagline', 'team', 'teamDetail', 'duration', 'status', 'platform', 'engine', 'year', 'overview', 'roles', 'learned', 'challenges', 'results', 'screenshots'];
 
 function toDraft(o) {
   o = o || {};
@@ -87,19 +87,30 @@ function toDraft(o) {
     store: { googlePlay: st.googlePlay || '', appStore: st.appStore || '' },
     video: { youtube: v.youtube || '', file: v.file || '', orientation: v.orientation === 'portrait' ? 'portrait' : 'landscape' },
     poster: o.poster || '', icon: o.icon || '',
-    tagline: L(o.tagline), team: o.team == null ? '' : String(o.team), duration: L(o.duration), status: L(o.status),
+    tagline: L(o.tagline), team: o.team == null ? '' : String(o.team), teamDetail: L(o.teamDetail), duration: L(o.duration), status: L(o.status),
     platform: o.platform || '', engine: o.engine || '', year: o.year == null ? '' : String(o.year), overview: L(o.overview),
-    roles: (o.roles || []).map(function (r) {
-      var en = (r.did && (Array.isArray(r.did) ? r.did : r.did.en)) || [], vi = (r.did && !Array.isArray(r.did) && r.did.vi) || [];
-      var n = Math.max(en.length, vi.length), did = [];
-      for (var i = 0; i < n; i++) did.push({ en: en[i] || '', vi: vi[i] || '' });
-      return { name: L(r.name), summary: L(r.summary), did: did };
-    }),
-    learned: (o.learned || []).map(function (x) { return { title: L(x.title), text: L(x.text) }; }),
+    roles: (o.roles || []).map(function (r) { return { name: L(r.name), summary: L(r.summary), did: pairs(r.did) }; }),
+    learned: (o.learned || []).map(function (x) { return { title: L(x.title), text: pairs(x.text) }; }),
     challenges: (o.challenges || []).map(function (x) { return { title: L(x.title), problem: L(x.problem), solution: L(x.solution) }; }),
     results: (o.results || []).map(function (x) { return { value: x.value || '', label: L(x.label) }; }),
     screenshots: (o.screenshots || []).map(function (x) { return typeof x === 'string' ? { src: x, caption: L('') } : { src: x.src || '', caption: L(x.caption) }; })
   };
+}
+
+// {en:[…], vi:[…]} (or a plain string / array) → [{en, vi}, …] rows for the form
+function pairs(v) {
+  var arr = function (x) { return Array.isArray(x) ? x : x ? [x] : []; };
+  var en = v && typeof v === 'object' && !Array.isArray(v) ? arr(v.en) : arr(v), vi = v && typeof v === 'object' && !Array.isArray(v) ? arr(v.vi) : [];
+  var out = [];
+  for (var i = 0; i < Math.max(en.length, vi.length); i++) out.push({ en: en[i] || '', vi: vi[i] || '' });
+  return out;
+}
+// rows → {en:[…], vi:[…]}, dropping empty rows
+function unpairs(rows) {
+  var r = rows.filter(function (b) { return (b.en || '').trim() || (b.vi || '').trim(); });
+  if (!r.length) return undefined;
+  var col = function (k) { var c = r.map(function (b) { return (b[k] || '').trim(); }); return c.some(Boolean) ? c : []; }; // a language with no text stays []
+  return { en: col('en'), vi: col('vi') };
 }
 
 // Build data.json from the draft: empty fields are dropped, unknown keys from the original file are kept.
@@ -116,17 +127,16 @@ function fromDraft(d, orig, vsrc) {
     placeholder: d.placeholder ? true : undefined,
     title: (d.title || '').trim(), studio: s(d.studio), accentColor: s(d.accentColor), downloads: s(d.downloads),
     store: Object.keys(store).length ? store : undefined, video: video, poster: s(d.poster), icon: s(d.icon),
-    tagline: l(d.tagline), team: team && /^\d+$/.test(team) ? +team : team, duration: l(d.duration), status: l(d.status),
+    tagline: l(d.tagline), team: team && /^\d+$/.test(team) ? +team : team, teamDetail: (function (x) { return x && !x.vi ? x.en : x; })(l(d.teamDetail)), duration: l(d.duration), status: l(d.status),
     platform: s(d.platform), engine: s(d.engine), year: s(d.year), overview: l(d.overview),
     roles: list(d.roles, function (r) {
       var name = l(r.name); if (!name) return null;
-      var did = r.did.filter(function (b) { return (b.en || '').trim() || (b.vi || '').trim(); });
       var out = { name: name };
       if (l(r.summary)) out.summary = l(r.summary);
-      if (did.length) out.did = { en: did.map(function (b) { return b.en.trim(); }), vi: did.map(function (b) { return b.vi.trim(); }) };
+      if (unpairs(r.did)) out.did = unpairs(r.did);
       return out;
     }),
-    learned: list(d.learned, function (x) { return l(x.title) || l(x.text) ? { title: l(x.title) || { en: '', vi: '' }, text: l(x.text) || { en: '', vi: '' } } : null; }),
+    learned: list(d.learned, function (x) { var tx = unpairs(x.text); return l(x.title) || tx ? { title: l(x.title) || { en: '', vi: '' }, text: tx || { en: [], vi: [] } } : null; }),
     challenges: list(d.challenges, function (x) { return l(x.title) || l(x.problem) || l(x.solution) ? { title: l(x.title) || { en: '', vi: '' }, problem: l(x.problem) || { en: '', vi: '' }, solution: l(x.solution) || { en: '', vi: '' } } : null; }),
     results: list(d.results, function (x) { return s(x.value) || l(x.label) ? { value: s(x.value) || '', label: l(x.label) || { en: '', vi: '' } } : null; }),
     screenshots: list(d.screenshots, function (x) { return !s(x.src) ? null : l(x.caption) ? { src: x.src, caption: l(x.caption) } : x.src; })
@@ -309,12 +319,20 @@ function itemHead(listPath, i, n, label) {
     '<button class="icon-btn" type="button" data-act="mvItem" data-path="' + listPath + '" data-i="' + i + '" data-d="1" ' + (i < n - 1 ? '' : 'disabled') + ' title="Xuống">↓</button>' +
     '<button class="icon-btn del" type="button" data-act="rmItem" data-path="' + listPath + '" data-i="' + i + '" title="Xoá">✕</button></div>';
 }
+function bulletRows(path, label) {
+  var rows = getPath(ED.d, path);
+  return '<div class="f"><span class="lbl">' + label + ' <code>EN | VI — mỗi dòng là một gạch đầu dòng</code></span><div class="bullets">' + rows.map(function (b, j) {
+    return '<div class="bullet"><input type="text" data-path="' + path + '.' + j + '.en" value="' + esc(b.en) + '" placeholder="EN">' +
+      '<input class="vi" type="text" data-path="' + path + '.' + j + '.vi" value="' + esc(b.vi) + '" placeholder="VI">' +
+      '<button class="icon-btn del" type="button" data-act="rmItem" data-path="' + path + '" data-i="' + j + '" title="Xoá dòng">✕</button></div>';
+  }).join('') + '</div><button class="btn ghost sm add" type="button" data-act="addItem" data-path="' + path + '" data-t="did">+ Dòng</button></div>';
+}
 function sec(id, title, body, note) { return '<section class="sec" id="' + id + '"><h2>' + title + (note ? '<small>' + note + '</small>' : '') + '</h2><div class="sec-b">' + body + '</div></section>'; }
 
 var TEMPLATES = {
   roles: function () { return { name: L(''), summary: L(''), did: [L('')] }; },
   did: function () { return L(''); },
-  learned: function () { return { title: L(''), text: L('') }; },
+  learned: function () { return { title: L(''), text: [L('')] }; },
   challenges: function () { return { title: L(''), problem: L(''), solution: L('') }; },
   results: function () { return { value: '', label: L('') }; }
 };
@@ -361,6 +379,7 @@ function renderEditor() {
     bi('tagline', 'Tagline', { key: 'tagline', hint: 'Một câu ngắn dưới tên dự án.' }) +
     '<div class="grid3">' + inp('team', 'Team (số người)', { key: 'team', ph: '5' }) + inp('platform', 'Nền tảng', { key: 'platform', ph: 'Android · iOS' }) + inp('engine', 'Engine', { key: 'engine', ph: 'Unity · C#' }) + '</div>' +
     '<div class="grid3">' + inp('year', 'Năm', { key: 'year', ph: '2024' }) + '</div>' +
+    bi('teamDetail', 'Cơ cấu team', { key: 'teamDetail', hint: 'Hiện dưới số người thay cho chữ "TEAM". VD: 1Dev - 2Art - 2GD - 1Anim (để trống ô VI nếu giống EN).' }) +
     bi('duration', 'Thời gian phát triển', { key: 'duration' }) + bi('status', 'Trạng thái', { key: 'status', hint: 'VD: Live / Đang phát hành' }) +
     bi('overview', 'Tổng quan', { key: 'overview', area: true, rows: 4 }));
 
@@ -368,17 +387,13 @@ function renderEditor() {
     '<div class="items">' + d.roles.map(function (r, i) {
       return '<div class="item">' + itemHead('roles', i, d.roles.length, 'Vai trò') + '<div class="item-b">' +
         bi('roles.' + i + '.name', 'Tên vai trò') + bi('roles.' + i + '.summary', 'Tóm tắt') +
-        '<div class="f"><span class="lbl">Đã làm gì</span><div class="bullets">' + r.did.map(function (b, j) {
-          return '<div class="bullet"><input type="text" data-path="roles.' + i + '.did.' + j + '.en" value="' + esc(b.en) + '" placeholder="EN">' +
-            '<input class="vi" type="text" data-path="roles.' + i + '.did.' + j + '.vi" value="' + esc(b.vi) + '" placeholder="VI">' +
-            '<button class="icon-btn del" type="button" data-act="rmItem" data-path="roles.' + i + '.did" data-i="' + j + '" title="Xoá dòng">✕</button></div>';
-        }).join('') + '</div><button class="btn ghost sm add" type="button" data-act="addItem" data-path="roles.' + i + '.did" data-t="did">+ Dòng</button></div>' +
+        bulletRows('roles.' + i + '.did', 'Đã làm gì') +
       '</div></div>';
     }).join('') + '</div><button class="btn ghost sm add" type="button" data-act="addItem" data-path="roles" data-t="roles">+ Vai trò</button>', 'roles[]');
 
   var learned = sec('s-learned', 'Những điều học được (What I learned)',
     '<div class="items">' + d.learned.map(function (x, i) {
-      return '<div class="item">' + itemHead('learned', i, d.learned.length, 'Bài học') + '<div class="item-b">' + bi('learned.' + i + '.title', 'Tiêu đề') + bi('learned.' + i + '.text', 'Nội dung', { area: true }) + '</div></div>';
+      return '<div class="item">' + itemHead('learned', i, d.learned.length, 'Bài học') + '<div class="item-b">' + bi('learned.' + i + '.title', 'Tiêu đề') + bulletRows('learned.' + i + '.text', 'Những điều học được') + '</div></div>';
     }).join('') + '</div><button class="btn ghost sm add" type="button" data-act="addItem" data-path="learned" data-t="learned">+ Bài học</button>', 'learned[]');
 
   var chal = sec('s-challenges', 'Thử thách & giải pháp',

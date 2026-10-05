@@ -8,12 +8,12 @@
     "appStore": ""
   },
   "video": {
-    "youtube": "Yd7vDterctQ",
+    "youtube": "FMr91afriiI",
     "file": "",
-    "orientation": "landscape"
+    "orientation": "portrait"
   },
-  "poster": "",
-  "icon": "",
+  "poster": "images/poster.png",
+  "icon": "images/icon.png",
   "overview": {
     "en": "",
     "vi": ""
