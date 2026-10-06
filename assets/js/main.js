@@ -17,11 +17,11 @@ var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 // ══════════════════════════════
 // UI STRINGS
 // ══════════════════════════════
-// UI text lives in web-config.json → i18n. These two are only a fallback for the loader,
+// UI text lives in web-config.json → i18n. This is only a fallback for the loader error,
 // shown before (or if) web-config.json fails to load.
 var BOOT = {
-  en: { booting: 'LOADING…', err: 'Could not load data files.' },
-  vi: { booting: 'ĐANG TẢI…', err: 'Không tải được dữ liệu.' }
+  en: { err: 'Could not load data files.' },
+  vi: { err: 'Không tải được dữ liệu.' }
 };
 function t(k, vars) {
   var D = (CONFIG && CONFIG.i18n) || {};
@@ -84,6 +84,7 @@ var IC = {
   gauge: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 14l4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg>',
   play: '<svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><polygon points="6,3 20,12 6,21"/></svg>',
   gplay: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.6 1.8c-.3.3-.4.7-.4 1.2v18c0 .5.1.9.4 1.2l.1.1L13.8 12v-.2L3.7 1.7l-.1.1zM17.2 15.4l-3.4-3.4v-.2l3.4-3.4.1.1 4 2.3c1.1.6 1.1 1.7 0 2.3l-4 2.3h-.1zM17.3 15.3L13.8 11.9 3.6 22.1c.4.4 1 .4 1.7.1l12-6.9M17.3 8.5L5.3 1.7c-.7-.4-1.3-.3-1.7.1l10.2 10.1 3.5-3.4z"/></svg>',
+  dl: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><polyline points="7 10 12 15 17 10"/><path d="M5 21h14"/></svg>',
   apple: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 12.6c-.02-2.3 1.88-3.4 1.97-3.46-1.07-1.57-2.74-1.78-3.33-1.8-1.42-.14-2.77.83-3.49.83-.72 0-1.83-.81-3.01-.79-1.55.02-2.98.9-3.78 2.29-1.61 2.8-.41 6.93 1.16 9.2.77 1.11 1.68 2.36 2.88 2.31 1.16-.05 1.6-.75 3-.75 1.4 0 1.79.75 3.01.73 1.25-.02 2.04-1.13 2.8-2.25.88-1.29 1.24-2.54 1.26-2.6-.03-.01-2.42-.93-2.47-3.71zM14.1 5.85c.64-.78 1.07-1.85.95-2.92-.92.04-2.03.61-2.69 1.38-.59.68-1.11 1.78-.97 2.83 1.02.08 2.07-.52 2.71-1.29z"/></svg>',
   muted: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>',
   sound: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>'
@@ -148,13 +149,16 @@ function storeButtons(p, cls) {
   var s = p.store || {}, h = '';
   if (s.googlePlay) h += '<a class="btn ' + cls[0] + '" href="' + esc(s.googlePlay) + '" target="_blank" rel="noopener">' + IC.gplay + t('google_play') + '</a>';
   if (s.appStore) h += '<a class="btn ' + cls[1] + '" href="' + esc(s.appStore) + '" target="_blank" rel="noopener">' + IC.apple + t('app_store') + '</a>';
+  if (s.apk) h += isURL(s.apk)
+    ? '<a class="btn ' + cls[1] + '" href="' + esc(s.apk) + '" target="_blank" rel="noopener">' + IC.dl + t('download_apk') + '</a>'
+    : '<a class="btn ' + cls[1] + '" href="' + esc(pAsset(p, s.apk)) + '" download>' + IC.dl + t('download_apk') + '</a>'; // file inside the project folder
   return h;
 }
 
 // ══════════════════════════════
 // VIDEO — autoplay in view, only one plays at a time
 // ══════════════════════════════
-var VM = { cur: null, muted: true, resume: null };
+var VM = { cur: null, muted: true, resume: null, hold: true }; // hold: no autoplay while the loader is up
 
 // Video box markup. mode: 'row' (home preview) | 'hero' (project page, with controls)
 function videoBox(p, mode) {
@@ -256,7 +260,7 @@ function observeVideos() {
   vmIO = new IntersectionObserver(function (es) {
     es.forEach(function (e) { vmRatios.set(e.target, e.intersectionRatio); });
     var lbEl = $('lb');
-    if (document.hidden || (lbEl && !lbEl.hidden)) return;
+    if (VM.hold || document.hidden || (lbEl && !lbEl.hidden)) return;
     var best = null, br = 0;
     vmRatios.forEach(function (r, box) { if (r > br) { br = r; best = box; } });
     if (VM.cur && (vmRatios.get(VM.cur) || 0) < 0.2) vmPause(VM.cur);
@@ -772,14 +776,96 @@ function toggleDrawer(open) {
 }
 
 // ══════════════════════════════
+// LOADER — "Warp": stars streak toward the viewer, speeding up with progress;
+// on finish it jumps to max speed, flashes, and reveals the page.
+// ══════════════════════════════
+function warpLoader(ld) {
+  var cv = $('ldWarp'), ctx = cv.getContext('2d'), pct = $('ldPct');
+  var W = 0, H = 0, stars = [], speed = 0, target = 2, raf = 0, running = false;
+  var fromNav = ld.classList.contains('nav'); // arrived from another page of this site → no intro
+  try { sessionStorage.removeItem('nix-warp'); } catch (e) {}
+  function resize() {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function loop() {
+    speed += (target - speed) * 0.05;
+    ctx.fillStyle = 'rgba(0,0,0,0.35)'; ctx.fillRect(0, 0, W, H);
+    var cx = W / 2, cy = H / 2, f = Math.max(W, H) * 0.25;
+    for (var i = 0; i < stars.length; i++) {
+      var s = stars[i], pz = s.z;
+      s.z -= 0.0025 * speed;
+      if (s.z <= 0.02) { s.x = Math.random() * 2 - 1; s.y = Math.random() * 2 - 1; s.z = 1; pz = 1; }
+      var b = 1 - s.z;
+      ctx.strokeStyle = b > 0.7 ? '#bff8ff' : 'rgba(0,229,255,' + b + ')'; ctx.lineWidth = b * 2.4;
+      ctx.beginPath(); ctx.moveTo(cx + s.x / pz * f, cy + s.y / pz * f); ctx.lineTo(cx + s.x / s.z * f, cy + s.y / s.z * f); ctx.stroke();
+    }
+    raf = requestAnimationFrame(loop);
+  }
+  function start(sp, tg) {
+    speed = sp; target = tg;
+    if (REDUCED || running) return;
+    running = true; resize(); addEventListener('resize', resize); loop();
+  }
+  function stop() { running = false; cancelAnimationFrame(raf); removeEventListener('resize', resize); }
+  for (var i = 0; i < 420; i++) stars.push({ x: Math.random() * 2 - 1, y: Math.random() * 2 - 1, z: Math.random() });
+  // intro: stars accelerate from rest (CSS fades the canvas + logo in); via in-site nav they're already at speed
+  start(fromNav ? 10 : 0, fromNav ? 10 : 2);
+
+  return {
+    progress: function (v) { target = 2 + v * 14; pct.textContent = Math.round(v * 100) + '%'; },
+    // reveal the page: boost → fade out with a soft glow while the page scales in
+    exit: function (onDone) {
+      if (REDUCED) { ld.className = 'done'; stop(); if (onDone) onDone(); return; }
+      target = 40; ld.classList.add('boost');
+      setTimeout(function () { ld.classList.add('out'); document.body.classList.add('page-in'); }, 300);
+      setTimeout(function () { ld.className = 'done'; stop(); if (onDone) onDone(); }, 1000);
+      setTimeout(function () { document.body.classList.remove('page-in'); }, 1400);
+    },
+    // cover the current page before navigating to another page of the site
+    cover: function (go) {
+      if (REDUCED) { go(); return; }
+      try { sessionStorage.setItem('nix-warp', '1'); sessionStorage.setItem('nix-scroll:' + location.pathname + location.search, String(Math.round(scrollY))); } catch (e) {}
+      ld.className = 'cover-pre'; void ld.offsetWidth; ld.className = 'cover';
+      start(4, 14);
+      setTimeout(go, 420);
+    },
+    // page restored from the back/forward cache while covered: keep the stars moving and reveal normally
+    resume: function () {
+      if (REDUCED) { ld.className = 'done'; return; }
+      ld.className = 'nav'; start(12, 12);
+      var self = this; setTimeout(function () { self.exit(); }, 450);
+    },
+    stop: stop
+  };
+}
+
+// In-site links (home ↔ project pages) play the warp cover before leaving the page.
+function bindPageTransitions(warp) {
+  window.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a || (a.target && a.target !== '_self') || a.hasAttribute('download')) return;
+    var url = new URL(a.getAttribute('href'), location.href);
+    if (url.origin !== location.origin || !/(^|\/)(index\.html|project\.html)?$/.test(url.pathname)) return;
+    if (url.pathname === location.pathname && url.search === location.search) return; // same page (e.g. #section)
+    e.preventDefault();
+    warp.cover(function () { location.href = url.href; });
+  });
+  // Coming back with the Back button restores the page from cache — make sure the cover is gone.
+  window.addEventListener('pageshow', function (e) { if (e.persisted && !ld().classList.contains('done')) warp.resume(); });
+  function ld() { return $('loader'); }
+}
+
+// ══════════════════════════════
 // BOOT
 // ══════════════════════════════
 function boot() {
-  var ld = $('loader'), fill = $('ldFill'), got = 0, total = 5, t0 = Date.now();
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  var ld = $('loader'), warp = warpLoader(ld), got = 0, total = 4, t0 = Date.now();
   try { var saved = localStorage.getItem('nix-lang'); if (saved === 'en' || saved === 'vi') lang = saved; else throw 0; }
   catch (e) { lang = (navigator.language || 'en').toLowerCase().indexOf('vi') === 0 ? 'vi' : 'en'; }
-  $('ldTxt').textContent = t('booting');
-  function tick(v) { got++; fill.style.width = Math.min(got / total * 100, 100) + '%'; return v; }
+  function tick(v) { got++; warp.progress(Math.min(got / total, 1)); return v; }
   function get(path, type) {
     return fetch(path).then(function (r) { if (!r.ok) throw new Error(path + ': ' + r.status); return type === 'json' ? r.json() : r.text(); }).then(tick);
   }
@@ -802,10 +888,25 @@ function boot() {
     renderAll();
     bindStatic();
     booted = true;
-    setTimeout(function () { ld.classList.add('done'); }, Math.max(0, (PAGE === 'home' ? 650 : 250) - (Date.now() - t0)));
+    warp.progress(1);
+    bindPageTransitions(warp);
+    // content is rendered dynamically, so jump to #section ourselves
+    var nav = performance.getEntriesByType('navigation')[0], saved = null;
+    try { saved = sessionStorage.getItem('nix-scroll:' + location.pathname + location.search); } catch (e) {}
+    if (nav && nav.type === 'back_forward' && saved != null) window.scrollTo({ top: +saved, behavior: 'instant' });
+    else if (location.hash) { var target = document.getElementById(decodeURIComponent(location.hash.slice(1))); if (target) target.scrollIntoView({ behavior: 'instant' }); }
+    // let layout/paint settle (two frames) before starting the reveal, then allow video autoplay
+    // minimum time on screen: enough for the intro on a fresh visit, and a short beat when arriving from another page
+    var wait = Math.max(0, (ld.classList.contains('nav') ? 550 : PAGE === 'home' ? 900 : 700) - (Date.now() - t0));
+    setTimeout(function () {
+      requestAnimationFrame(function () { requestAnimationFrame(function () {
+        warp.exit(function () { VM.hold = false; observeVideos(); });
+      }); });
+    }, wait);
   }).catch(function (err) {
     console.error(err);
-    ld.innerHTML = '<div class="ld-logo"><b>[</b><span>NIX</span><b>]</b></div><div class="ld-err">⚠ ' + t('err') + '<br><br>Serve the site over HTTP (e.g. <b>python3 -m http.server</b>) — browsers block fetch() on file://.<br><br><span style="color:#6b7690">' + esc(err.message) + '</span></div>';
+    warp.stop(); ld.className = 'err';
+    ld.innerHTML = '<div class="ld-logo"><b>[</b>NIX<b>]</b></div><div class="ld-err">⚠ ' + t('err') + '<br><br>Serve the site over HTTP (e.g. <b>python3 -m http.server</b>) — browsers block fetch() on file://.<br><br><span style="color:#6b7690">' + esc(err.message) + '</span></div>';
   });
 }
 boot();

@@ -22,10 +22,11 @@
 
   <!-- LOADER -->
   <div id="loader" aria-hidden="true">
-    <div class="ld-logo"><b>[</b><span>NIX</span><b>]</b></div>
-    <div class="ld-bar"><i id="ldFill"></i></div>
-    <div class="ld-txt" id="ldTxt">BOOTING PORTFOLIO…</div>
+    <canvas id="ldWarp"></canvas>
+    <div class="ld-c"><div class="ld-logo"><b>[</b>NIX<b>]</b></div><div class="ld-pct" id="ldPct">0%</div></div>
+    <div class="ld-flash"></div>
   </div>
+  <script>try { var n = performance.getEntriesByType('navigation')[0]; if (sessionStorage.getItem('nix-warp') || (n && n.type === 'back_forward')) document.getElementById('loader').classList.add('nav'); } catch (e) {}</script>
 
   <div class="scroll-prog" id="scrollProg"></div>
   <div class="bg-grid" aria-hidden="true"></div>

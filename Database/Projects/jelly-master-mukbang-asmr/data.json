@@ -39,8 +39,8 @@
   "roles": [
     {
       "name": {
-        "en": "Unity Developer",
-        "vi": "Unity Developer"
+        "en": "Programmer",
+        "vi": "Programmer"
       },
       "summary": {
         "en": "Owned gameplay programming from prototype to live ops.",
@@ -50,7 +50,7 @@
         "en": [
         ],
         "vi": [
-          "Thiết kế kiến trúc và Cơ chế kỹ thuật cốt lõi: State machine, event system, data-driven level pipeline, save/load, pool, particle, haptic, sound",
+          "Thiết kế kiến trúc hệ thống Core: State machine, event system, data-driven level pipeline, save/load, pool, particle, haptic, sound",
           "Tích hợp SDK Ads/IAP/analytics",
           "Đóng góp ý tưởng cho game",
           "Đặt ra quy tắc cho asset từ Artist/Animator và quản lý tài nguyên (Asset Management & Pooling)",
@@ -108,8 +108,8 @@
   "learned": [
     {
       "title": {
-        "en": "As a Unity Developer, I learned...",
-        "vi": "Là một Unity Developer, tôi đã học được..."
+        "en": "As a Programmer, I learned...",
+        "vi": "Là một Programmer, tôi đã học được..."
       },
       "text": {
         "en": [

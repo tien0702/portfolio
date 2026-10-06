@@ -33,7 +33,7 @@ File paths are relative to the project folder (e.g. `images/screenshot-1.jpg`); 
 | `studio` | `"Champion Game Studio"` | |
 | `accentColor` | `"#f48fb1"` | placeholder color when there is no image |
 | `downloads` | `"70M+"` | |
-| `store` | `{ "googlePlay": "https://…", "appStore": "" }` | empty = button hidden |
+| `store` | `{ "googlePlay": "https://…", "appStore": "", "apk": "" }` | each button shows only when its link is set; `apk` = external URL or a file in the project folder |
 | `video.youtube` | `"Yd7vDterctQ"` | YouTube id (Shorts ids work too) |
 | `video.file` | `"video.mp4"` | local file; used instead of YouTube when set |
 | `video.orientation` | `"landscape"` / `"portrait"` | `portrait` shows the video in a phone frame |

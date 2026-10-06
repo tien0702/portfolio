@@ -25,15 +25,29 @@ img{display:block}
 [hidden]{display:none!important}
 
 /* ── LOADER ── */
-#loader{position:fixed;inset:0;z-index:1000;background:var(--bg);display:grid;place-content:center;justify-items:center;gap:18px;transition:opacity .5s,visibility .5s}
-#loader.done{opacity:0;visibility:hidden}
-.ld-logo{font-family:var(--mono);font-weight:700;font-size:2.4rem;color:var(--bright);letter-spacing:.04em;position:relative}
-.ld-logo b{color:var(--cyan);display:inline-block;transition:transform .6s var(--ease)}
-.ld-logo span{display:inline-block;animation:glitch 1.6s steps(1) infinite}
-@keyframes glitch{0%,92%,100%{transform:none;text-shadow:none}93%{transform:translateX(2px);text-shadow:-2px 0 var(--pink),2px 0 var(--cyan)}96%{transform:translateX(-2px);text-shadow:2px 0 var(--pink),-2px 0 var(--cyan)}}
-.ld-bar{width:180px;height:2px;background:var(--line);border-radius:2px;overflow:hidden}
-.ld-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--purple),var(--cyan));transition:width .3s var(--ease)}
-.ld-txt{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;color:var(--dim)}
+#loader{position:fixed;inset:0;z-index:1000;background:#000;will-change:opacity;transition:opacity .7s cubic-bezier(.4,0,.2,1),visibility 0s}
+#loader canvas{position:absolute;inset:0;width:100%;height:100%;animation:ldCanvasIn .8s ease-out both}
+#loader.out{opacity:0}
+#loader.done{opacity:0;visibility:hidden;transition:opacity .7s cubic-bezier(.4,0,.2,1),visibility 0s linear .7s}
+#loader.cover-pre{opacity:0;transition:none}
+#loader.cover{transition:opacity .4s ease-in}
+#loader.err{background:var(--bg);display:grid;place-content:center;justify-items:center;gap:18px}
+.ld-c{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:10px;pointer-events:none;transition:transform .6s cubic-bezier(.4,0,.2,1),opacity .5s}
+.ld-logo{font-family:var(--mono);font-weight:700;font-size:2rem;color:#fff;letter-spacing:.08em;text-shadow:0 0 30px rgba(0,229,255,.6);animation:ldLogoIn .9s cubic-bezier(.16,1,.3,1) both}
+.ld-logo b{color:var(--cyan)}
+.ld-pct{font-family:var(--mono);font-size:.7rem;letter-spacing:.3em;color:rgba(255,255,255,.6);font-variant-numeric:tabular-nums;animation:ldPctIn .6s .35s ease-out both}
+.ld-flash{position:absolute;inset:0;pointer-events:none;opacity:0;background:radial-gradient(circle at 50% 50%,rgba(220,252,255,.9),rgba(0,229,255,.35) 30%,transparent 70%);transition:opacity .35s ease-out}
+#loader.boost .ld-c{transform:scale(1.12)}
+#loader.out .ld-c{transform:scale(1.6);opacity:0}
+#loader.out .ld-flash{opacity:.55}
+#loader.nav canvas,#loader.nav .ld-logo,#loader.nav .ld-pct,#loader.cover canvas,#loader.cover .ld-logo{animation:none}
+#loader.cover .ld-pct{visibility:hidden}
+@keyframes ldCanvasIn{from{opacity:0}}
+@keyframes ldLogoIn{from{opacity:0;transform:scale(.8);letter-spacing:.45em;filter:blur(6px)}}
+@keyframes ldPctIn{from{opacity:0;transform:translateY(6px)}}
+/* page content eases in as the loader leaves (transform/opacity only — stays on the GPU) */
+@keyframes pageIn{from{opacity:0;transform:scale(1.035)}}
+body.page-in .hero,body.page-in .marquee,body.page-in main,body.page-in .pj-hero{animation:pageIn 1s cubic-bezier(.16,1,.3,1) backwards}
 .ld-err{max-width:440px;text-align:center;color:#ff8a8a;font-family:var(--mono);font-size:.75rem;line-height:1.7;padding:0 16px}
 
 /* ── BACKGROUND ── */
@@ -475,7 +489,8 @@ footer{padding:50px 0 40px;display:flex;justify-content:space-between;gap:12px;f
 .v-play:hover{transform:translate(-50%,-50%) scale(1.08)}
 .vbox.playing .v-play{opacity:0;pointer-events:none}
 .v-sound{position:absolute;top:12px;right:12px;z-index:6;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:rgba(7,9,15,.65);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.18);color:#fff;opacity:0;transition:opacity .3s,border-color .2s}
-.vbox.started .v-sound{opacity:1}
+.v-sound{pointer-events:none}
+.vbox.started .v-sound{opacity:1;pointer-events:auto}
 .v-sound:hover{border-color:var(--cyan);color:var(--cyan)}
 .v-sound svg{width:17px;height:17px}
 .v-live{position:absolute;top:14px;left:14px;z-index:6;display:none;align-items:center;gap:6px;font-family:var(--mono);font-size:.58rem;letter-spacing:.12em;color:#fff;background:rgba(7,9,15,.6);padding:4px 9px;border-radius:999px}
@@ -491,7 +506,7 @@ footer{padding:50px 0 40px;display:flex;justify-content:space-between;gap:12px;f
 .prj-media.portrait{aspect-ratio:4/5;display:grid;place-items:center;padding:22px 0;background:#05070b}
 .prj-media.portrait .backdrop{position:absolute;inset:-20px;z-index:0}
 .prj-media.portrait .backdrop img,.prj-media.portrait .backdrop .ph{width:100%;height:100%;object-fit:cover;filter:blur(24px) saturate(1.3);opacity:.45}
-.prj-media.portrait .phone{z-index:2}
+/* no z-index here: keeps the play/sound buttons above the full-card link (.prj-hit) */
 .prj.portrait{grid-template-columns:.75fr 1fr}
 .prj.portrait.rev{grid-template-columns:1fr .75fr}
 

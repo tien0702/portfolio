@@ -1,11 +1,11 @@
 {
-  "placeholder": true,
+  "placeholder": false,
   "title": "Sticker Diary: Relaxing Puzzle",
   "studio": "Champion Game Studio",
   "accentColor": "#ce93d8",
   "downloads": "",
   "store": {
-    "googlePlay": "https://play.google.com/store/apps/details?id=com.fc.p.cp.transform.game.tricky.puzzle&hl=vi",
+    "googlePlay": "https://play.google.com/store/apps/details?id=com.fc.p.cp.sticker.asmr.art.puzzle",
     "appStore": ""
   },
   "video": {
@@ -20,10 +20,9 @@
     "vi": "Bóc, dán và trang trí — game xếp sticker nhẹ nhàng để thư giãn."
   },
   "team": 4,
-  "teamDetail": "1Dev - 1Art - 1GD - 1Anim",
   "duration": {
-    "en": "3 months",
-    "vi": "3 tháng"
+    "en": "6 months",
+    "vi": "6 tháng"
   },
   "status": {
     "en": "Live",
@@ -31,7 +30,7 @@
   },
   "platform": "Android · iOS",
   "engine": "Unity · C#",
-  "year": "2025",
+  "year": "2026",
   "overview": {
     "en": "A relaxing puzzle where players peel stickers and place them into the right spot to complete diary pages. The focus was on a calm pace and a satisfying peel-and-stick feel.",
     "vi": "Game puzzle thư giãn, người chơi bóc sticker và dán vào đúng vị trí để hoàn thành các trang nhật ký. Trọng tâm là nhịp chơi nhẹ nhàng và cảm giác bóc–dán đã tay."
@@ -39,8 +38,52 @@
   "roles": [
     {
       "name": {
-        "en": "Dev",
-        "vi": "Dev"
+        "en": "Programmer",
+        "vi": "Programmer"
+      },
+      "summary": {
+        "en": "Built core gameplay and content tools.",
+        "vi": "Xây gameplay chính và tool làm nội dung."
+      },
+      "did": {
+        "en": [
+          "Peel-and-stick interaction with drag, snap and feedback",
+          "Level data format and editor tool for designers",
+          "Save/load progress and diary page unlocks"
+        ],
+        "vi": [
+          "Tương tác bóc–dán sticker với kéo thả, snap và feedback",
+          "Định dạng dữ liệu level và tool editor cho GD",
+          "Lưu/tải tiến trình và mở khoá trang nhật ký"
+        ]
+      }
+    },
+    {
+      "name": {
+        "en": "Project Manager",
+        "vi": "Project Manager"
+      },
+      "summary": {
+        "en": "Built core gameplay and content tools.",
+        "vi": "Xây gameplay chính và tool làm nội dung."
+      },
+      "did": {
+        "en": [
+          "Peel-and-stick interaction with drag, snap and feedback",
+          "Level data format and editor tool for designers",
+          "Save/load progress and diary page unlocks"
+        ],
+        "vi": [
+          "Tương tác bóc–dán sticker với kéo thả, snap và feedback",
+          "Định dạng dữ liệu level và tool editor cho GD",
+          "Lưu/tải tiến trình và mở khoá trang nhật ký"
+        ]
+      }
+    },
+    {
+      "name": {
+        "en": "Product Owner",
+        "vi": "Product Owner"
       },
       "summary": {
         "en": "Built core gameplay and content tools.",

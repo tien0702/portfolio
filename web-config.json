@@ -187,7 +187,7 @@
       "built": "Built with ☕ in {city}",
       "sample": "sample data",
       "err": "Could not load data files.",
-      "booting": "LOADING…"
+      "download_apk": "Download APK"
     },
     "vi": {
       "skip": "Bỏ qua tới nội dung",
@@ -195,7 +195,7 @@
       "nav_experience": "Kinh nghiệm",
       "nav_skills": "Kỹ năng",
       "nav_contact": "Liên hệ",
-      "hire": "Thuê tôi",
+      "hire": "Liên hệ tôi",
       "view_work": "Xem dự án",
       "download_cv": "Tải CV",
       "contact_me": "Liên hệ",
@@ -222,9 +222,9 @@
       "read_more": "Xem chi tiết",
       "google_play": "Google Play",
       "app_store": "App Store",
-      "platform": "Nền tảng",
+      "platform": "Platform",
       "engine": "Engine",
-      "downloads": "Lượt tải",
+      "downloads": "Download",
       "studio": "Studio",
       "team": "Team",
       "duration": "Thời gian",
@@ -236,7 +236,7 @@
       "all_projects": "Tất cả dự án",
       "watch": "Xem có âm thanh",
       "overview": "Tổng quan",
-      "resp": "Trách nhiệm",
+      "resp": "Vai trò",
       "roles_n": "{n} vai trò",
       "what_learned": "Những điều tôi học được",
       "gallery": "Ảnh chụp màn hình",
@@ -263,7 +263,7 @@
       "built": "Làm với ☕ tại {city}",
       "sample": "dữ liệu mẫu",
       "err": "Không tải được dữ liệu.",
-      "booting": "ĐANG TẢI…"
+      "download_apk": "Tải APK"
     }
   }
 }
