@@ -1,9 +1,10 @@
 {
   "profile": {
     "name": "Trần Tiến - [NIX]",
+    "brand": "TRAN VAN TIEN - [NIX]",
     "title": {
       "en": "Game Developer, Unity Trainer, Team Leader",
-      "vi": "Game Developer, Team Leader, Team Leader"
+      "vi": "Game Developer, Unity Trainer, Team Leader"
     },
     "location": "Ha Noi City, VN",
     "status": "available",
@@ -13,7 +14,7 @@
     },
     "bio": {
       "en": "2D mobile game developer, focusing on quality and player feeling.",
-      "vi": "Phát triển game 2D trên mobile, tập trung vào chất lượng và feeling của người chơi."
+      "vi": "Mobile game | Feeling | Chất lượng."
     },
     "avatar": "assets/images/avt.jpg",
     "stats": [
@@ -45,11 +46,10 @@
       "blog": "https://tien0702.github.io/nix-blog/",
       "itchio": "https://tiennix.itch.io/"
     },
-    "cv": ""
+    "cv": "https://drive.google.com/drive/folders/1DzDeKy8Mhjfpp6RXvTxVrB44fruPhYPI?usp=sharing"
   },
   "experience": [
     {
-      "placeholder": true,
       "current": true,
       "period": {
         "en": "2025 — 2026",
@@ -71,7 +71,6 @@
       ]
     },
     {
-      "placeholder": true,
       "period": {
         "en": "2022 — Now",
         "vi": "2022 — Nay"
@@ -91,7 +90,6 @@
       ]
     },
     {
-      "placeholder": true,
       "period": {
         "en": "2024 — 2026",
         "vi": "2024 — 2026"
@@ -102,8 +100,8 @@
       },
       "org": "Champion Game Studio",
       "desc": {
-        "en": "Main developer on hit titles with 70M+ and 10M+ downloads.",
-        "vi": "Main dev cho các game hit 70M+ và 10M+ lượt tải."
+        "en": "Developed mobile products reaching 70M+ and 10M+ downloads.",
+        "vi": "Phát triển các sản phẩm mobile đạt 70M+ và 10M+ lượt tải."
       },
       "tags": [
         "Gameplay",
@@ -199,13 +197,13 @@
       "view_work": "Xem dự án",
       "download_cv": "Tải CV",
       "contact_me": "Liên hệ",
-      "h1": "Tôi làm game<br>cho <span class=\"grad\">{n}</span> người chơi.",
+      "h1": "TRAN VAN TIEN [NIX] - Portfolio",
       "installs": "lượt tải",
       "shipped": "{n} game đã ra mắt",
       "available": "Sẵn sàng nhận việc",
       "skills_k": "CÂY KỸ NĂNG",
-      "skills_t": "Những gì tôi mang đến cho team",
-      "skills_p": "Xếp hạng như nhân vật game — bấm vào kỹ năng để xem chi tiết.",
+      "skills_t": "Kỹ năng của tôi",
+      "skills_p": "Bấm vào kỹ năng để xem chi tiết.",
       "also": "Từng làm việc với",
       "also_p": "Nền tảng low-level giúp tôi hiểu sâu về bộ nhớ và rendering.",
       "lead_t": "Dẫn dắt & Đào tạo",
@@ -214,11 +212,11 @@
       "skill": "Kỹ năng",
       "exp_k": "KINH NGHIỆM",
       "exp_t": "Nhật ký hành trình",
-      "exp_p": "Những vai trò tôi đã đảm nhận — và những gì tôi mang lại cho team.",
+      "exp_p": "Những vai trò tôi đã đảm nhận — và những gì tôi mang đến.",
       "now": "HIỆN TẠI",
       "work_k": "DỰ ÁN",
       "work_t": "Game trong tay người chơi",
-      "work_p": "Những game tôi đã làm và vai trò của tôi — mở từng dự án để xem trách nhiệm và những điều tôi học được.",
+      "work_p": "Sản phẩm và vai trò — mở từng dự án để xem chi tiết.",
       "read_more": "Xem chi tiết",
       "google_play": "Google Play",
       "app_store": "App Store",
@@ -255,7 +253,7 @@
       "mute": "Tắt tiếng",
       "live": "ĐANG PHÁT",
       "contact_t": "Cùng làm một game<br>người chơi yêu thích.",
-      "contact_p": "Sẵn sàng cho vị trí mới, hợp tác và đào tạo Unity.",
+      "contact_p": "Sẵn sàng cho vị trí mới, hợp tác và giảng dạy Unity.",
       "copy": "Sao chép",
       "copied": "Đã sao chép email",
       "send": "Gửi",

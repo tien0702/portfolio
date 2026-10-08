@@ -2,33 +2,96 @@
   "title": "Fashion Star: Idol Dress up",
   "studio": "Champion Game Studio",
   "accentColor": "#ce93d8",
-  "downloads": "",
   "store": {
-    "googlePlay": "",
-    "appStore": "",
     "apk": "https://drive.google.com/file/d/1jp0D9TV7SO95etmrDcHBopUwnAKd_zE4/view?usp=drive_link"
   },
   "video": {
     "youtube": "FMr91afriiI",
-    "file": "",
     "orientation": "portrait"
   },
   "poster": "images/poster.png",
   "icon": "images/icon.png",
+  "team": 4,
+  "teamDetail": {
+    "en": "",
+    "vi": "1 Dev, 1 Anim, 1 Art, 1 GD"
+  },
+  "duration": {
+    "en": "",
+    "vi": "3 Tháng"
+  },
+  "status": {
+    "en": "",
+    "vi": "Dừng phát hành"
+  },
+  "engine": "Unity C#",
+  "year": "2024",
   "overview": {
     "en": "",
-    "vi": ""
+    "vi": "Game thời trang, tham gia battle/livestream để kiếm Ruby mua sắm đồ và leo rank."
   },
   "roles": [
     {
       "name": {
-        "en": "Dev",
-        "vi": "Dev"
+        "en": "Programmer",
+        "vi": "Programmer"
+      },
+      "summary": {
+        "en": "",
+        "vi": "Triển khai dự án theo GDD, làm quen với quy trình phát triển dự án, nắm bắt trách nhiệm chính từ vai trò của một Programmer."
+      },
+      "did": {
+        "en": [],
+        "vi": [
+          "Triển khai hệ thống hoạt động được như yêu cầu của GD",
+          "Nghiên cứu và áp dụng các khái niệm feeling vào sản phẩm"
+        ]
       }
     }
   ],
-  "learned": [],
-  "challenges": [],
-  "results": [],
-  "screenshots": []
+  "learned": [
+    {
+      "title": {
+        "en": "",
+        "vi": "Là một Programmer, tôi đã học được..."
+      },
+      "text": {
+        "en": [],
+        "vi": [
+          "Quy trình làm game thực tế, giao tiếp và trao đổi với GD để nắm bắt được ý tưởng của GD trong GDD",
+          "Quản lý dự án bằng Scrum. Hiểu ý nghĩa của việc Daily, Sprint",
+          "Cách quản lý UI, nhận ra sự hạn chế của hệ thống khi bị phụ thuộc vào Singleton",
+          "Hiểu feeling quan trọng với game như thế nào thông qua việc nhận và sửa feedback từ team",
+          "Cách chọn ease phù hợp, vibration, spring effect,..."
+        ]
+      }
+    }
+  ],
+  "results": [
+    {
+      "value": "",
+      "label": {
+        "en": "",
+        "vi": "Sản phầm đầu tiên làm ở doanh nghiệp, tuy không mang lại kết quả về doanh thu nhưng lại mang đến cho công ty một đối tác publisher tiềm năng và là nền tảng cho những sản phẩm sau này."
+      }
+    }
+  ],
+  "screenshots": [
+    "images/screenshot-4.jpg",
+    "images/screenshot-2.jpg",
+    "images/screenshot-5.jpg",
+    "images/screenshot-6.jpg",
+    "images/screenshot-7.jpg",
+    "images/screenshot-8.jpg",
+    "images/screenshot-9.jpg",
+    "images/screenshot-10.jpg",
+    "images/screenshot-11.jpg",
+    "images/screenshot-12.jpg",
+    "images/screenshot-13.jpg",
+    "images/screenshot-14.jpg",
+    "images/screenshot-15.jpg",
+    "images/screenshot-16.jpg",
+    "images/screenshot-17.jpg",
+    "images/screenshot-18.jpg"
+  ]
 }

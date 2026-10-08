@@ -279,6 +279,7 @@ function renderShell() {
   document.querySelectorAll('[data-i18n]').forEach(function (el) { el.textContent = t(el.dataset.i18n); });
   document.querySelectorAll('[data-i18n-html]').forEach(function (el) { el.innerHTML = t(el.dataset.i18nHtml); });
   $('navAva').src = p.avatar;
+  if (p.brand) $('navBrand').innerHTML = brandHTML(p.brand);
   $('drawerSoc').innerHTML = '<div class="socials" style="margin:0">' + socialHTML() + '</div>';
   var email = (p.contact || {}).email || '';
   $('mailTxt').textContent = email;
@@ -287,6 +288,13 @@ function renderShell() {
   $('contactSoc').innerHTML = socialHTML();
   $('footL').textContent = '© ' + new Date().getFullYear() + ' ' + p.name;
   $('footR').textContent = t('built', { city: (p.location || '').split(',')[0].trim() });
+}
+
+// "TRAN VAN TIEN - [NIX]" → name + separator + bracketed tag (the name hides on small screens)
+function brandHTML(s) {
+  var m = String(s).match(/^(.*?)\s*(?:[-–—|]\s*)?\[([^\]]+)\]\s*$/);
+  if (!m) return '<span class="brand-name">' + esc(s) + '</span>';
+  return (m[1] ? '<span class="brand-name">' + esc(m[1]) + '</span><span class="brand-sep"> - </span>' : '') + '<b>[</b>' + esc(m[2]) + '<b>]</b>';
 }
 
 function renderAll() {
@@ -308,7 +316,8 @@ function renderHero() {
   var roles = loc(p.title).split(',').map(function (s) { return s.trim(); }).filter(Boolean);
   var years = stat(/year|năm/i), shipped = stat(/project|shipped|dự án/i);
   $('heroStatus').textContent = (p.status === 'available' ? t('available') : loc(p.statusLabel)) + ' · ' + (p.location || '');
-  $('heroH1').innerHTML = t('h1', { n: esc(dl.value) });
+  var h1 = t('h1', { n: esc(dl.value) });
+  $('heroH1').innerHTML = /<[a-z]/i.test(h1) ? h1 : headline(h1);
   $('heroBio').textContent = loc(p.bio);
   startTyping(roles);
   $('cvBtn').hidden = !p.cv; if (p.cv) $('cvBtn').href = p.cv;
@@ -328,6 +337,15 @@ function renderHero() {
     var val = m ? '<span data-to="' + m[1] + '">' + m[1] + '</span><em>' + esc(m[2]) + '</em>' : esc(s.value);
     return '<div><b>' + val + '</b><span>' + esc(loc(s.label)) + '</span></div>';
   }).join('');
+}
+
+// Plain-text headline "Name [TAG] - Subtitle" → name lockup (tag pill + small subtitle).
+function headline(s) {
+  var m = String(s).match(/^(.*?)\s*(\[[^\]]+\])?\s*(?:[-–—|]\s*(.+))?$/) || [s, s];
+  var name = (m[1] || s).trim(), tag = m[2], sub = m[3];
+  return '<span class="h1-name">' + esc(name) + '</span>' +
+    (tag || sub ? '<span class="h1-meta">' + (tag ? '<span class="h1-tag">' + esc(tag) + '</span>' : '') +
+      (tag && sub ? '<i class="h1-sep" aria-hidden="true"></i>' : '') + (sub ? '<span class="h1-sub">' + esc(sub) + '</span>' : '') + '</span>' : '');
 }
 
 function renderMarquee() {
@@ -740,16 +758,13 @@ function bindStatic() {
     }
   }
 
-  var ticking = false, lastY = window.scrollY;
+  var ticking = false;
   window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
   function onScroll() {
     ticking = false;
     var y = window.scrollY, h = document.documentElement.scrollHeight - innerHeight, p = h > 0 ? y / h : 0;
     var nav = $('nav');
     nav.classList.toggle('scrolled', y > 20);
-    nav.classList.toggle('hidden', y > 400 && y > lastY + 4 && !$('drawer').classList.contains('open'));
-    if (y < lastY - 4) nav.classList.remove('hidden');
-    lastY = y;
     $('scrollProg').style.width = (p * 100) + '%';
     $('totop').classList.toggle('show', y > 600);
     $('totopRing').style.strokeDashoffset = 125.7 * (1 - p);

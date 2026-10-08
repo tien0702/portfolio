@@ -1,20 +1,16 @@
 {
-  "placeholder": false,
   "title": "Sticker Diary: Relaxing Puzzle",
   "studio": "Champion Game Studio",
   "accentColor": "#ce93d8",
-  "downloads": "",
   "store": {
-    "googlePlay": "https://play.google.com/store/apps/details?id=com.fc.p.cp.sticker.asmr.art.puzzle",
-    "appStore": ""
+    "googlePlay": "https://play.google.com/store/apps/details?id=com.fc.p.cp.sticker.asmr.art.puzzle"
   },
   "video": {
-    "youtube": "Yd7vDterctQ",
-    "file": "",
-    "orientation": "landscape"
+    "youtube": "0bnUym95XvI",
+    "orientation": "portrait"
   },
-  "poster": "",
-  "icon": "",
+  "poster": "images/cover.jpg",
+  "icon": "images/icon.png",
   "tagline": {
     "en": "Peel, place and decorate — a cozy sticker puzzle to relax with.",
     "vi": "Bóc, dán và trang trí — game xếp sticker nhẹ nhàng để thư giãn."
@@ -120,7 +116,5 @@
         ]
       }
     }
-  ],
-  "results": [],
-  "screenshots": []
+  ]
 }

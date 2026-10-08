@@ -1,5 +1,4 @@
 {
-  "placeholder": false,
   "title": "Jelly Master: Mukbang Asmr",
   "studio": "Champion Game Studio",
   "accentColor": "#f48fb1",
@@ -10,7 +9,6 @@
   },
   "video": {
     "youtube": "bd1-CtXfTS0",
-    "file": "",
     "orientation": "portrait"
   },
   "poster": "images/poster.png",
@@ -47,8 +45,7 @@
         "vi": "Phụ trách lập trình gameplay từ prototype đến live ops."
       },
       "did": {
-        "en": [
-        ],
+        "en": [],
         "vi": [
           "Thiết kế kiến trúc hệ thống Core: State machine, event system, data-driven level pipeline, save/load, pool, particle, haptic, sound",
           "Tích hợp SDK Ads/IAP/analytics",
@@ -94,7 +91,8 @@
         "en": [
           "Profiled and cut memory usage on low-end Android devices",
           "Integrated Ads, IAP and analytics SDKs through the in-house Monetization Kit",
-          "Set up event tracking to support A/B testing of levels"
+          "Set up event tracking to support A/B testing of levels",
+          ""
         ],
         "vi": [
           "Quản lý Playstore: Build Production/Internal Test, gói purchase",
@@ -173,6 +171,13 @@
     "images/screenshots/halloween_4.png",
     "images/screenshots/halloween_6.png",
     "images/screenshots/halloween-live.png",
-    "images/screenshots/halloween-popup.png"
+    "images/screenshots/halloween-popup.png",
+    "images/screenshot-1.jpg",
+    "images/screenshot-2.jpg",
+    "images/screenshot-4.jpg",
+    "images/screenshot-5.jpg",
+    "images/screenshot-6.jpg",
+    "images/screenshot-7.jpg",
+    "images/screenshot-8.jpg"
   ]
 }
