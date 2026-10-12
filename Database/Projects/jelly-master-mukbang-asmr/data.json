@@ -1,4 +1,5 @@
 {
+  "publish": true,
   "title": "Jelly Master: Mukbang Asmr",
   "studio": "Champion Game Studio",
   "accentColor": "#f48fb1",
@@ -42,7 +43,7 @@
       },
       "summary": {
         "en": "Owned gameplay programming from prototype to live ops.",
-        "vi": "Phụ trách lập trình gameplay từ prototype đến live ops."
+        "vi": "Phụ trách lập trình gameplay từ prototype đến liveops."
       },
       "did": {
         "en": [],

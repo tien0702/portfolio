@@ -1,4 +1,5 @@
 {
+  "publish": true,
   "title": "Fashion Star: Idol Dress up",
   "studio": "Champion Game Studio",
   "accentColor": "#ce93d8",
@@ -11,6 +12,10 @@
   },
   "poster": "images/poster.png",
   "icon": "images/icon.png",
+  "tagline": {
+    "en": "",
+    "vi": "Dự án đầu tiên khi tham gia vào môi trường doanh nghiệp, solo programmer và học quy trình phát triển sản phẩm, trao đổi với GD để hiểu rõ ý tưởng, làm việc với Artist và Animator để thực hiện."
+  },
   "team": 4,
   "teamDetail": {
     "en": "",
@@ -62,7 +67,8 @@
           "Quản lý dự án bằng Scrum. Hiểu ý nghĩa của việc Daily, Sprint",
           "Cách quản lý UI, nhận ra sự hạn chế của hệ thống khi bị phụ thuộc vào Singleton",
           "Hiểu feeling quan trọng với game như thế nào thông qua việc nhận và sửa feedback từ team",
-          "Cách chọn ease phù hợp, vibration, spring effect,..."
+          "Cách chọn ease phù hợp, vibration, spring effect,...",
+          "Đa màn hình và các package cho game 2D như Spine."
         ]
       }
     }

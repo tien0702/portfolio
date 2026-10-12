@@ -1,23 +1,17 @@
 {
+  "publish": false,
   "title": "Grow a Garden",
   "studio": "Champion Game Studio",
   "accentColor": "#ce93d8",
-  "downloads": "",
   "store": {
-    "googlePlay": "https://play.google.com/store/apps/details?id=com.fc.p.cp.transform.game.tricky.puzzle&hl=vi",
-    "appStore": ""
+    "googlePlay": "https://play.google.com/store/apps/details?id=com.fc.p.cp.transform.game.tricky.puzzle&hl=vi"
   },
   "video": {
     "youtube": "Yd7vDterctQ",
-    "file": "",
-    "orientation": "landscape"
+    "orientation": "portrait"
   },
-  "poster": "",
-  "icon": "",
-  "overview": {
-    "en": "",
-    "vi": ""
-  },
+  "poster": "images/cover.jpg",
+  "icon": "images/icon.png",
   "roles": [
     {
       "name": {
@@ -25,9 +19,5 @@
         "vi": "Dev"
       }
     }
-  ],
-  "learned": [],
-  "challenges": [],
-  "results": [],
-  "screenshots": []
+  ]
 }

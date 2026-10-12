@@ -29,6 +29,7 @@ File paths are relative to the project folder (e.g. `images/screenshot-1.jpg`); 
 
 | Field | Example | Notes |
 |---|---|---|
+| `publish` | `true` / `false` | `false` hides the project from the site (Studio's delete button just sets this) |
 | `title` | `"Jelly Master: Mukbang Asmr"` | |
 | `studio` | `"Champion Game Studio"` | |
 | `accentColor` | `"#f48fb1"` | placeholder color when there is no image |
