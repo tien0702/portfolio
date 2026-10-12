@@ -14,9 +14,13 @@
   "icon": "images/icon.png",
   "tagline": {
     "en": "Peel, place and decorate — a cozy sticker puzzle to relax with.",
-    "vi": "Bóc, dán và trang trí — game xếp sticker nhẹ nhàng để thư giãn."
+    "vi": "Bóc sticker từ bảng rồi dán thành một căn phòng hoàn chỉnh."
   },
-  "team": 4,
+  "team": 15,
+  "teamDetail": {
+    "en": "",
+    "vi": "1Dev, 1GD, 10Art, 2Anim, 1Tester (1 LeadArt, 1 LeadAnim)"
+  },
   "duration": {
     "en": "6 months",
     "vi": "6 tháng"
@@ -30,7 +34,7 @@
   "year": "2026",
   "overview": {
     "en": "A relaxing puzzle where players peel stickers and place them into the right spot to complete diary pages. The focus was on a calm pace and a satisfying peel-and-stick feel.",
-    "vi": "Game puzzle thư giãn, người chơi bóc sticker và dán vào đúng vị trí để hoàn thành các trang nhật ký. Trọng tâm là nhịp chơi nhẹ nhàng và cảm giác bóc–dán đã tay."
+    "vi": "Game puzzle thư giãn, người chơi bóc sticker và dán vào đúng vị trí, xây dựng thành phố, sưu tầm sticker để lấp vào phòng của mình."
   },
   "roles": [
     {
@@ -38,20 +42,18 @@
         "en": "Programmer",
         "vi": "Programmer"
       },
-      "summary": {
-        "en": "Built core gameplay and content tools.",
-        "vi": "Xây gameplay chính và tool làm nội dung."
-      },
       "did": {
-        "en": [
-          "Peel-and-stick interaction with drag, snap and feedback",
-          "Level data format and editor tool for designers",
-          "Save/load progress and diary page unlocks"
-        ],
+        "en": [],
         "vi": [
-          "Tương tác bóc–dán sticker với kéo thả, snap và feedback",
-          "Định dạng dữ liệu level và tool editor cho GD",
-          "Lưu/tải tiến trình và mở khoá trang nhật ký"
+          "Chủ động phối hợp với Artist và Animator, đề xuất asset và hiệu ứng (VFX, animation, feedback) để nâng cao game feel.",
+          "Trao đổi với Game Designer để tìm giải pháp khi phát sinh vấn đề thiết kế trong quá trình triển khai, đảm bảo tính khả thi kỹ thuật mà vẫn giữ đúng ý tưởng gameplay.",
+          "Tương tác bóc–dán sticker với kéo thả, snap , camera và feedback.",
+          "Xây tool tự động sinh resource từ asset và data của GD.",
+          "Xây tool LevelEditor hỗ trợ GD xếp data.",
+          "Tích hợp SDK Ads, Purchase, Firebase",
+          "Xây dựng kiến trúc cho các hệ thống core (Gameplay, City, CityRoom, UI) theo hướng module hóa, dễ mở rộng và tái sử dụng.",
+          "Tối ưu build hiệu năng, giảm buildsize (Addressable + Cloudflare R2), tối ưu thời gian download content.",
+          "Thiết kế hệ thống UI tách biệt logic và hiển thị, quản lý màn hình qua UI Manager giúp thêm tính năng mới nhanh chóng."
         ]
       }
     },
@@ -60,42 +62,18 @@
         "en": "Project Manager",
         "vi": "Project Manager"
       },
-      "summary": {
-        "en": "Built core gameplay and content tools.",
-        "vi": "Xây gameplay chính và tool làm nội dung."
-      },
       "did": {
-        "en": [
-          "Peel-and-stick interaction with drag, snap and feedback",
-          "Level data format and editor tool for designers",
-          "Save/load progress and diary page unlocks"
-        ],
+        "en": [],
         "vi": [
-          "Tương tác bóc–dán sticker với kéo thả, snap và feedback",
-          "Định dạng dữ liệu level và tool editor cho GD",
-          "Lưu/tải tiến trình và mở khoá trang nhật ký"
-        ]
-      }
-    },
-    {
-      "name": {
-        "en": "Product Owner",
-        "vi": "Product Owner"
-      },
-      "summary": {
-        "en": "Built core gameplay and content tools.",
-        "vi": "Xây gameplay chính và tool làm nội dung."
-      },
-      "did": {
-        "en": [
-          "Peel-and-stick interaction with drag, snap and feedback",
-          "Level data format and editor tool for designers",
-          "Save/load progress and diary page unlocks"
-        ],
-        "vi": [
-          "Tương tác bóc–dán sticker với kéo thả, snap và feedback",
-          "Định dạng dữ liệu level và tool editor cho GD",
-          "Lưu/tải tiến trình và mở khoá trang nhật ký"
+          "Thiết kế và chuẩn hóa production pipeline cho team Art và Animation: quy tắc đặt tên, định dạng xuất file và cấu trúc thư mục cho asset; quy tắc đặt tên và cấu trúc bone trên Spine cho animation.",
+          "Quản lý dự án game casual theo mô hình Scrum với team 15 người (dev, art, design, tester), vận hành ~20 sprint từ giai đoạn prototype đến soft launch.",
+          "Xây dựng roadmap theo milestone, phân rã thành backlog và lên kế hoạch sprint cho từng bộ phận.",
+          "Tổ chức và điều phối các cuộc họp định kỳ: Sprint Planning, Sprint Review, Retrospective và tổ chức họp với các lead để đánh giá rủi ro, điều chỉnh phạm vi và đưa ra quyết định kịp thời khi dự án gặp vướng mắc.",
+          "Quản lý quy trình phát hành trên Google Play Console: upload bản build, quản lý các track (internal, closed, production) và thiết lập các gói In-app Purchase.",
+          "Thiết lập tracking event trên Firebase Analytics, sử dụng Remote Config và A/B Testing để tối ưu gameplay và doanh thu dựa trên dữ liệu.",
+          "Làm việc trực tiếp với Publisher để thảo luận về tính năng, mechanic và game feel, tiếp nhận feedback và chuyển hóa thành kế hoạch cải thiện game.",
+          "Phối hợp với đối tác UA tích hợp MMP (AppsFlyer) và Ad Mediation, kiểm tra tracking và attribution trước khi chạy campaign.",
+          "Xây dựng bộ tài liệu testing trên Google Sheets gồm Changelog, Bug Report và Feedback, chuẩn hóa định dạng để team dễ theo dõi và cập nhật."
         ]
       }
     }
@@ -117,5 +95,19 @@
         ]
       }
     }
+  ],
+  "screenshots": [
+    "images/screenshots/Screenshot_2026-10-17-01-56-23-807_com.fc.p.cp.sticker.asmr.art.puzzle.jpg",
+    "images/screenshots/Screenshot_2026-10-17-01-49-20-263_com.fc.p.cp.sticker.asmr.art.puzzle.jpg",
+    "images/screenshots/Screenshot_2026-10-17-01-50-27-107_com.fc.p.cp.sticker.asmr.art.puzzle.jpg",
+    "images/screenshots/Screenshot_2026-10-17-01-51-06-823_com.fc.p.cp.sticker.asmr.art.puzzle.jpg",
+    "images/screenshots/Screenshot_2026-10-17-01-56-33-290_com.fc.p.cp.sticker.asmr.art.puzzle.jpg",
+    "images/screenshots/Screenshot_2026-10-17-01-56-42-489_com.fc.p.cp.sticker.asmr.art.puzzle.jpg",
+    "images/screenshots/Screenshot_2026-10-17-01-57-32-782_com.fc.p.cp.sticker.asmr.art.puzzle.jpg",
+    "images/screenshots/Screenshot_2026-10-17-01-48-38-077_com.fc.p.cp.sticker.asmr.art.puzzle.jpg",
+    "images/screenshots/Screenshot_2026-10-17-01-48-45-541_com.fc.p.cp.sticker.asmr.art.puzzle.jpg",
+    "images/screenshots/Screenshot_2026-10-17-01-48-49-496_com.fc.p.cp.sticker.asmr.art.puzzle.jpg",
+    "images/screenshots/Screenshot_2026-10-17-01-51-22-513_com.fc.p.cp.sticker.asmr.art.puzzle.jpg",
+    "images/screenshots/Screenshot_2026-10-17-01-58-09-844_com.fc.p.cp.sticker.asmr.art.puzzle.jpg"
   ]
 }

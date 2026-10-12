@@ -33,7 +33,7 @@
   "year": "2024",
   "overview": {
     "en": "Casual ASMR simulation game where players make jelly desserts step by step and enjoy them in a mukbang scene. The main challenge is to make every tap, pour, and bite feel satisfying for the player.",
-    "vi": "Game mô phỏng ASMR casual, người chơi làm món thạch theo từng bước rồi thưởng thức trong cảnh mukbang. Thử thách chính là làm cho mỗi lần chạm, rót, cắn đều mang lại một feeling cho player."
+    "vi": "Game mô phỏng ASMR casual, người chơi làm món thạch theo từng bước rồi livestream cảnh mukbang."
   },
   "roles": [
     {
@@ -157,19 +157,32 @@
       }
     }
   ],
+  "challenges": [
+    {
+      "title": {
+        "en": "",
+        "vi": "Đa ngôn ngữ cho 12 nước."
+      },
+      "problem": {
+        "en": "",
+        "vi": "Localization trong Unity có nhiều hạn chế khi sử dụng với TextMeshPro như các font CJK có chục nghìn ký tự nên build sẽ nặng, tốn Ram/VRam."
+      },
+      "solution": {
+        "en": "",
+        "vi": "Dùng dynamic atlas để glyph thêm vào lúc runtime (Có tính năng chat nên không dùng cách tạo Statick Atlas chỉ chứa các ký tự dùng đến).\nTạo các font fallback để localization được nhiều ngôn ngữ."
+      }
+    }
+  ],
   "results": [
     {
       "value": "70M+",
       "label": {
         "en": "downloads on Google Play",
-        "vi": "lượt tải trên Google Play"
+        "vi": "Lượt tải trên Google Play"
       }
     }
   ],
   "screenshots": [
-    "images/screenshots/halloween_2.png",
-    "images/screenshots/halloween_3.png",
-    "images/screenshots/halloween_4.png",
     "images/screenshots/halloween_6.png",
     "images/screenshots/halloween-live.png",
     "images/screenshots/halloween-popup.png",
