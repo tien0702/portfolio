@@ -10,7 +10,6 @@
   },
   "video": {
     "youtube": "gXwlFMIPnlc",
-    "file": "",
     "orientation": "portrait"
   },
   "poster": "images/poster.png",
@@ -89,5 +88,31 @@
       }
     }
   ],
-  "screenshots": []
+  "screenshots": [
+    "images/screenshots/achievement.png",
+    "images/screenshots/Album.png",
+    "images/screenshots/buy more slot.png",
+    "images/screenshots/demo live dance room.png",
+    "images/screenshots/Dressup.png",
+    "images/screenshots/dressup&pk.png",
+    "images/screenshots/Endingscene.png",
+    "images/screenshots/home.png",
+    "images/screenshots/livedance.png",
+    "images/screenshots/Newrecord.png",
+    "images/screenshots/Npc shop.png",
+    "images/screenshots/Pk.png",
+    "images/screenshots/Rate Us.png",
+    "images/screenshots/REWARD.png",
+    "images/screenshots/Setting.png",
+    "images/screenshots/Skins.png",
+    "images/screenshots/specialoffer.png",
+    "images/screenshots/STAGE.png",
+    "images/screenshots/STAGE1.png",
+    "images/screenshots/Topic-select.png",
+    "images/screenshots/topic.png",
+    "images/screenshots/VS.png",
+    "images/screenshots/Winner.png",
+    "images/screenshots/Youlose.png",
+    "images/screenshots/Youwin.png"
+  ]
 }
