@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hero Card — 10 Options</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@600;700&display=swap" rel="stylesheet" />
+<style>
+:root{--bg:#07090f;--card:#0e131d;--card2:#121927;--line:#1e2636;--line2:#2c3750;--text:#b3bccf;--dim:#6b7690;--bright:#eef2f8;--cyan:#00e5ff;--pink:#ff2d75;--purple:#7c4dff;--gold:#ffd54f;--green:#69ff47;--font:'Be Vietnam Pro',sans-serif;--mono:'JetBrains Mono',monospace;--ease:cubic-bezier(.16,1,.3,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;min-height:100vh;overflow-x:hidden}
+.bg{position:fixed;inset:0;z-index:-1;background-image:linear-gradient(rgba(0,229,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.035) 1px,transparent 1px);background-size:56px 56px}
+.hero{max-width:1160px;margin:0 auto;padding:90px clamp(16px,4vw,40px) 170px;display:grid;grid-template-columns:1.2fr .8fr;gap:56px;align-items:center}
+.eb{font-family:var(--mono);font-size:.72rem;letter-spacing:.2em;color:var(--cyan);display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.eb i{width:8px;height:8px;border-radius:50%;background:var(--green)}
+h1 .nm{display:block;font-size:clamp(2.6rem,6vw,5rem);font-weight:900;line-height:.98;letter-spacing:-.02em;background:linear-gradient(180deg,#fff 35%,#aeb9cf);-webkit-background-clip:text;background-clip:text;color:transparent}
+h1 .meta{display:flex;align-items:center;gap:14px;margin-top:18px}
+h1 .tag{font-family:var(--mono);font-size:1rem;color:var(--cyan);padding:5px 12px;border:1px solid rgba(0,229,255,.45);border-radius:8px;background:rgba(0,229,255,.07)}
+h1 .sub{font-family:var(--mono);font-size:.8rem;letter-spacing:.32em;color:var(--dim);font-weight:500}
+.typed{font-family:var(--mono);color:var(--cyan);font-size:1.6rem;margin:16px 0}
+.lead{max-width:520px}
+.slot{position:relative;display:flex;justify-content:center}
+.v{display:none;width:min(380px,100%)}
+.v.on{display:block;animation:in .5s var(--ease)}
+@keyframes in{from{opacity:0;transform:translateY(14px)}}
+.card{position:relative;background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line2);border-radius:20px;padding:18px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.mono{font-family:var(--mono)}
+.k{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;color:var(--dim);text-transform:uppercase}
+.av{border-radius:14px;object-fit:cover;background:#fff;display:block}
+.who{display:flex;gap:12px;align-items:center}
+.who b{display:block;color:var(--bright);font-size:1.05rem;font-weight:800;line-height:1.2}
+.who span{font-size:.8rem;color:var(--dim)}
+.chip{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.66rem;padding:4px 9px;border-radius:7px;background:var(--card2);border:1px solid var(--line2);color:var(--text)}
+.chip.c{color:var(--cyan);border-color:rgba(0,229,255,.35);background:rgba(0,229,255,.06)}
+.ok{color:var(--green)}
+.sample{font-family:var(--mono);font-size:.56rem;color:var(--gold);border:1px dashed rgba(255,213,79,.5);border-radius:4px;padding:0 5px;margin-left:6px}
+
+/* 1 · ID badge */
+.v1 .card{padding:0;overflow:hidden;text-align:center}
+.v1 .strap{height:44px;background:repeating-linear-gradient(45deg,#0b2f3a 0 10px,#0a2630 10px 20px);position:relative}
+.v1 .strap::after{content:'';position:absolute;left:50%;bottom:10px;width:56px;height:10px;margin-left:-28px;border-radius:6px;background:var(--bg);box-shadow:inset 0 0 0 1px var(--line2)}
+.v1 .av{width:132px;height:132px;margin:-6px auto 14px;border-radius:50%;border:4px solid var(--card2);box-shadow:0 0 0 2px var(--cyan)}
+.v1 h3{color:var(--bright);font-size:1.3rem;font-weight:900;letter-spacing:.04em}
+.v1 .role{font-family:var(--mono);font-size:.7rem;color:var(--cyan);letter-spacing:.12em;margin:4px 0 16px}
+.v1 dl{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);text-align:left}
+.v1 dl div{padding:12px 16px;border-bottom:1px solid var(--line)}
+.v1 dl div:nth-child(odd){border-right:1px solid var(--line)}
+.v1 dd{color:var(--bright);font-weight:700;font-size:.9rem}
+.v1 .bar{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;font-family:var(--mono);font-size:.62rem;color:var(--dim)}
+.v1 .code{height:22px;width:120px;background:repeating-linear-gradient(90deg,var(--bright) 0 2px,transparent 2px 4px,var(--bright) 4px 5px,transparent 5px 8px);opacity:.5}
+
+/* 2 · big numbers */
+.v2 .card{padding:0;overflow:hidden}
+.v2 .ph{position:relative;height:200px}
+.v2 .ph img{width:100%;height:100%;object-fit:cover;object-position:center 30%}
+.v2 .ph::after{content:'';position:absolute;inset:0;background:linear-gradient(transparent 40%,var(--card))}
+.v2 .ph .who{position:absolute;left:18px;bottom:12px;z-index:1}
+.v2 .nums{padding:6px 18px 18px;display:grid;gap:4px}
+.v2 .n{display:flex;align-items:baseline;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+.v2 .n:last-child{border-bottom:0}
+.v2 .n b{font-size:2.6rem;font-weight:900;letter-spacing:-.04em;line-height:1;min-width:110px}
+.v2 .n:nth-child(1) b{color:var(--green)}.v2 .n:nth-child(2) b{color:var(--cyan)}.v2 .n:nth-child(3) b{color:var(--gold)}
+.v2 .n span{font-size:.85rem;color:var(--text);line-height:1.3}
+.v2 .n small{display:block;font-family:var(--mono);font-size:.6rem;color:var(--dim)}
+
+/* 3 · stack tiers */
+.v3 .tier{margin-top:16px}
+.v3 .tier .k{display:flex;justify-content:space-between;margin-bottom:8px}
+.v3 .tier .k em{font-style:normal;text-transform:none;letter-spacing:0;color:var(--dim)}
+.v3 .chips{display:flex;flex-wrap:wrap;gap:6px}
+.v3 .t1 .chip{color:var(--bright);border-color:rgba(0,229,255,.45);background:rgba(0,229,255,.09);font-size:.72rem;padding:6px 11px}
+.v3 .t3 .chip{opacity:.75}
+
+/* 4 · evidence ladder */
+.v4 .row{display:grid;grid-template-columns:96px 1fr 70px;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:.8rem}
+.v4 .row b{color:var(--bright);font-weight:600}
+.v4 .steps{display:flex;gap:4px}
+.v4 .steps i{flex:1;height:8px;border-radius:2px;background:var(--line)}
+.v4 .steps i.f{background:linear-gradient(90deg,var(--purple),var(--cyan))}
+.v4 .row span{font-family:var(--mono);font-size:.62rem;color:var(--cyan);text-align:right}
+.v4 .legend{margin-top:12px;display:grid;grid-template-columns:repeat(5,1fr);gap:4px;text-align:center}
+.v4 .legend div{font-family:var(--mono);font-size:.55rem;color:var(--dim);line-height:1.3}
+.v4 .legend b{display:block;color:var(--bright);font-size:.7rem}
+
+/* 5 · featured game */
+.v5 .card{padding:0;overflow:hidden}
+.v5 .top{display:flex;justify-content:space-between;align-items:center;padding:14px 16px}
+.v5 .top .who img{width:40px;height:40px;border-radius:50%}
+.v5 .poster{position:relative;aspect-ratio:4/3;overflow:hidden}
+.v5 .poster img{width:100%;height:100%;object-fit:cover}
+.v5 .poster::after{content:'';position:absolute;inset:0;background:linear-gradient(transparent 45%,rgba(7,9,15,.95))}
+.v5 .poster .lbl{position:absolute;top:12px;left:12px;z-index:1;font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;background:var(--gold);color:#1a1300;font-weight:700;padding:4px 8px;border-radius:6px}
+.v5 .info{position:absolute;left:16px;right:16px;bottom:14px;z-index:1;display:flex;gap:12px;align-items:flex-end}
+.v5 .info img{width:56px;height:56px;border-radius:14px;border:2px solid var(--bg)}
+.v5 .info b{display:block;color:var(--bright);font-size:1.05rem;font-weight:800;line-height:1.15}
+.v5 .info .dl{font-size:1.4rem;font-weight:900;color:var(--green);margin-left:auto;text-align:right;line-height:1}
+.v5 .info .dl small{display:block;font-family:var(--mono);font-size:.55rem;color:var(--dim);font-weight:400}
+.v5 .roles{display:flex;gap:6px;flex-wrap:wrap;padding:14px 16px}
+
+/* 6 · achievements */
+.v6 .list{margin-top:14px;display:grid;gap:8px}
+.v6 .a{display:flex;gap:12px;align-items:center;padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.02);border:1px solid var(--line)}
+.v6 .a .ic{width:38px;height:38px;flex-shrink:0;border-radius:10px;display:grid;place-items:center;font-size:1.1rem;background:rgba(255,213,79,.1);border:1px solid rgba(255,213,79,.35)}
+.v6 .a b{display:block;color:var(--bright);font-size:.86rem;line-height:1.25}
+.v6 .a span{font-size:.72rem;color:var(--dim)}
+.v6 .a .y{margin-left:auto;font-family:var(--mono);font-size:.62rem;color:var(--gold)}
+
+/* 7 · code profile */
+.v7 .card{padding:0;overflow:hidden;font-family:var(--mono);font-size:.7rem;line-height:1.8}
+.v7 .bar{display:flex;align-items:center;gap:6px;padding:10px 14px;border-bottom:1px solid var(--line);background:#0a0e16}
+.v7 .bar i{width:10px;height:10px;border-radius:50%;background:#3a4256}
+.v7 .bar i:nth-child(1){background:#ff5f57}.v7 .bar i:nth-child(2){background:#febc2e}.v7 .bar i:nth-child(3){background:#28c840}
+.v7 .bar span{margin-left:10px;color:var(--dim);font-size:.68rem}
+.v7 .body{display:grid;grid-template-columns:auto 1fr;gap:0 14px;padding:14px 16px}
+.v7 .body img{grid-row:span 3;width:58px;height:58px;border-radius:12px}
+.v7 pre{padding:0 16px 16px;white-space:pre-wrap;color:var(--text);font:inherit}
+.v7 .kw{color:#c792ea}.v7 .p{color:#82aaff}.v7 .s{color:#c3e88d}.v7 .n{color:#f78c6c}.v7 .c{color:var(--dim)}.v7 .b{color:var(--green)}
+.v7 .cur::after{content:'▍';color:var(--cyan);animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* 8 · mini timeline */
+.v8 .tl{margin-top:16px;position:relative;padding-left:22px}
+.v8 .tl::before{content:'';position:absolute;left:5px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--cyan),var(--purple),var(--pink))}
+.v8 .e{position:relative;padding:0 0 14px}
+.v8 .e::before{content:'';position:absolute;left:-22px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--bg);border:2px solid var(--cyan)}
+.v8 .e.hl::before{background:var(--gold);border-color:var(--gold);box-shadow:0 0 10px var(--gold)}
+.v8 .e .y{font-family:var(--mono);font-size:.62rem;color:var(--cyan);letter-spacing:.1em}
+.v8 .e b{display:block;color:var(--bright);font-size:.88rem;line-height:1.3}
+.v8 .e span{font-size:.74rem;color:var(--dim)}
+
+/* 9 · now / status */
+.v9 .clock{display:flex;justify-content:space-between;align-items:flex-end;margin:14px 0;padding:14px;border-radius:14px;background:#05070b;border:1px solid var(--line)}
+.v9 .clock b{font-family:var(--mono);font-size:2.2rem;color:var(--bright);letter-spacing:.04em;line-height:1}
+.v9 .clock span{font-family:var(--mono);font-size:.62rem;color:var(--dim);text-align:right;line-height:1.5}
+.v9 .st{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--green);font-weight:600}
+.v9 .st i{width:8px;height:8px;border-radius:50%;background:var(--green);animation:ping 2s infinite}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(105,255,71,.6)}70%{box-shadow:0 0 0 8px rgba(105,255,71,0)}100%{box-shadow:0 0 0 0 rgba(105,255,71,0)}}
+.v9 .rows{display:grid;gap:0}
+.v9 .rows div{display:grid;grid-template-columns:84px 1fr;gap:10px;padding:10px 0;border-top:1px solid var(--line);font-size:.84rem}
+.v9 .rows b{color:var(--bright);font-weight:600}
+
+/* 10 · polaroid */
+.v10{position:relative;height:470px}
+.v10 .pol{position:absolute;left:30px;top:10px;width:270px;padding:14px 14px 56px;background:#f5f2ea;border-radius:4px;transform:rotate(-4deg);box-shadow:0 30px 60px rgba(0,0,0,.55)}
+.v10 .pol img{width:100%;aspect-ratio:1;object-fit:cover;filter:saturate(1.05) contrast(1.02)}
+.v10 .pol p{position:absolute;left:0;right:0;bottom:12px;text-align:center;font-family:'Caveat',cursive;font-size:1.7rem;color:#2a2a2a}
+.v10 .tape{position:absolute;top:-12px;left:50%;width:90px;height:26px;margin-left:-45px;background:rgba(255,213,79,.55);transform:rotate(3deg)}
+.v10 .note{position:absolute;width:150px;padding:12px 12px 14px;font-family:'Caveat',cursive;font-size:1.25rem;line-height:1.1;color:#1d1d1d;box-shadow:0 14px 30px rgba(0,0,0,.45)}
+.v10 .note b{display:block;font-family:var(--font);font-size:1.5rem;font-weight:900;letter-spacing:-.02em}
+.v10 .n1{right:0;top:30px;background:#7cf0ff;transform:rotate(6deg)}
+.v10 .n2{right:24px;top:200px;background:#ffd54f;transform:rotate(-5deg)}
+.v10 .n3{left:0;bottom:6px;background:#ff8fb5;transform:rotate(4deg)}
+
+/* picker */
+.picker{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:50;display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:center;padding:8px;border-radius:14px;background:rgba(14,19,29,.95);border:1px solid var(--line2);box-shadow:0 20px 60px rgba(0,0,0,.5);max-width:calc(100vw - 24px)}
+.picker b{font-family:var(--mono);font-size:.7rem;color:var(--gold);padding:0 8px}
+.picker button{font:inherit;font-size:.78rem;font-weight:600;padding:7px 10px;border-radius:8px;border:0;background:none;color:var(--dim);cursor:pointer}
+.picker button.on{background:var(--cyan);color:#001318}
+.desc{position:fixed;left:50%;top:16px;transform:translateX(-50%);z-index:50;font-size:.82rem;background:rgba(7,9,15,.92);border:1px solid var(--line);padding:8px 14px;border-radius:10px;max-width:min(820px,92vw);text-align:center}
+@media (max-width:900px){.hero{grid-template-columns:1fr;padding-top:110px}}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="desc" id="desc"></div>
+
+<div class="hero">
+  <div>
+    <div class="eb"><i></i>AVAILABLE · HA NOI CITY, VN</div>
+    <h1><span class="nm">TRAN VAN TIEN</span><span class="meta"><span class="tag">[NIX]</span><span class="sub">PORTFOLIO</span></span></h1>
+    <div class="typed">&gt; Game Developer_</div>
+    <p class="lead">2D mobile game developer, focusing on quality and player feeling.</p>
+  </div>
+
+  <div class="slot">
+    <!-- 1 -->
+    <div class="v v1" data-i="1"><div class="card">
+      <div class="strap"></div>
+      <img class="av" src="../assets/images/avt.jpg" alt="">
+      <h3>TRẦN TIẾN</h3>
+      <div class="role">GAME DEVELOPER · TEAM LEADER</div>
+      <dl>
+        <div><dt class="k">Studio</dt><dd>Champion Game Studio</dd></div>
+        <div><dt class="k">Location</dt><dd>Ha Noi, VN</dd></div>
+        <div><dt class="k">Unity since</dt><dd>2022</dd></div>
+        <div><dt class="k">Status</dt><dd class="ok">● Available</dd></div>
+      </dl>
+      <div class="bar"><span>ID // NIX-0702</span><i class="code"></i></div>
+    </div></div>
+
+    <!-- 2 -->
+    <div class="v v2" data-i="2"><div class="card">
+      <div class="ph"><img src="../assets/images/avt.jpg" alt=""><div class="who"><div><b>Trần Tiến</b><span>Game Developer · Ha Noi</span></div></div></div>
+      <div class="nums">
+        <div class="n"><b>80M+</b><span>total downloads<small>across shipped titles on Google Play</small></span></div>
+        <div class="n"><b>12</b><span>games shipped<small>mobile · casual · puzzle</small></span></div>
+        <div class="n"><b>3+</b><span>years making games<small>Unity Trainer since 2022</small></span></div>
+      </div>
+    </div></div>
+
+    <!-- 3 -->
+    <div class="v v3" data-i="3"><div class="card">
+      <div class="who"><img class="av" src="../assets/images/avt.jpg" alt="" style="width:52px;height:52px"><div><b>Trần Tiến</b><span>My stack, by how often I use it</span></div></div>
+      <div class="tier t1"><div class="k">Every project <em>dùng hằng ngày</em></div><div class="chips"><span class="chip">Unity</span><span class="chip">C#</span><span class="chip">uGUI</span><span class="chip">Addressables</span><span class="chip">Profiler</span></div></div>
+      <div class="tier t2"><div class="k">Shipped with <em>đã ra mắt sản phẩm</em></div><div class="chips"><span class="chip">Spine</span><span class="chip">Firebase</span><span class="chip">Ads / IAP</span><span class="chip">Remote Config</span><span class="chip">Localization</span></div></div>
+      <div class="tier t3"><div class="k">Background <em>nền tảng</em></div><div class="chips"><span class="chip">C / C++</span><span class="chip">Cocos2d-x</span><span class="chip">SDL</span></div></div>
+    </div></div>
+
+    <!-- 4 -->
+    <div class="v v4" data-i="4"><div class="card">
+      <div class="who" style="margin-bottom:10px"><img class="av" src="../assets/images/avt.jpg" alt="" style="width:46px;height:46px"><div><b>Skill levels</b><span>measured by what I've done with it <span class="sample">mức mẫu</span></span></div></div>
+      <div class="row"><b>Unity</b><div class="steps"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></div><span>TAUGHT</span></div>
+      <div class="row"><b>C#</b><div class="steps"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i></div><span>TAUGHT</span></div>
+      <div class="row"><b>Optimization</b><div class="steps"><i class="f"></i><i class="f"></i><i class="f"></i><i class="f"></i><i></i></div><span>LED</span></div>
+      <div class="row"><b>UI/UX</b><div class="steps"><i class="f"></i><i class="f"></i><i class="f"></i><i></i><i></i></div><span>SHIPPED</span></div>
+      <div class="row"><b>C++</b><div class="steps"><i class="f"></i><i class="f"></i><i></i><i></i><i></i></div><span>USED</span></div>
+      <div class="legend"><div><b>1</b>Learned</div><div><b>2</b>Used in a project</div><div><b>3</b>Shipped a game</div><div><b>4</b>Led / architected</div><div><b>5</b>Taught others</div></div>
+    </div></div>
+
+    <!-- 5 -->
+    <div class="v v5" data-i="5"><div class="card">
+      <div class="top"><div class="who"><img class="av" src="../assets/images/avt.jpg" alt=""><div><b>Trần Tiến</b><span>Game Developer</span></div></div><span class="k">Best known for</span></div>
+      <div class="poster"><img src="../Database/Projects/jelly-master-mukbang-asmr/images/poster.png" alt=""><span class="lbl">★ FEATURED</span>
+        <div class="info"><img src="../Database/Projects/jelly-master-mukbang-asmr/images/icon.png" alt=""><div><b>Jelly Master:<br>Mukbang ASMR</b><span class="k">Champion Game Studio · 2024</span></div><div class="dl">70M+<small>DOWNLOADS</small></div></div></div>
+      <div class="roles"><span class="chip c">Programmer</span><span class="chip c">LiveOps PM</span><span class="chip c">LiveOps PO</span><span class="chip">+ 11 more games →</span></div>
+    </div></div>
+
+    <!-- 6 -->
+    <div class="v v6" data-i="6"><div class="card">
+      <div class="who"><img class="av" src="../assets/images/avt.jpg" alt="" style="width:52px;height:52px"><div><b>Trần Tiến</b><span>Achievements unlocked · 5</span></div></div>
+      <div class="list">
+        <div class="a"><span class="ic">🏆</span><div><b>70M+ downloads</b><span>Jelly Master: Mukbang ASMR</span></div><span class="y">2024</span></div>
+        <div class="a"><span class="ic">🚀</span><div><b>10M+ downloads</b><span>Style Star: Left Right Fashion</span></div><span class="y">2025</span></div>
+        <div class="a"><span class="ic">🎮</span><div><b>12 games shipped</b><span>Mobile · casual · puzzle</span></div><span class="y">2024–26</span></div>
+        <div class="a"><span class="ic">👑</span><div><b>Team Leader</b><span>Champion Game Studio</span></div><span class="y">2025</span></div>
+        <div class="a"><span class="ic">📚</span><div><b>Unity Trainer</b><span>VTC Academy</span></div><span class="y">2022–now</span></div>
+      </div>
+    </div></div>
+
+    <!-- 7 -->
+    <div class="v v7" data-i="7"><div class="card">
+      <div class="bar"><i></i><i></i><i></i><span>nix.profile.cs</span></div>
+      <pre><span class="kw">public class</span> <span class="p">TranTien</span> : <span class="p">GameDeveloper</span>
+{
+  <span class="kw">string</span>   Role      = <span class="s">"Team Leader"</span>;
+  <span class="kw">string</span>   Studio    = <span class="s">"Champion Game Studio"</span>;
+  <span class="kw">string</span>   Teaching  = <span class="s">"Unity @ VTC Academy"</span>;
+  <span class="kw">string</span>[] Stack     = { <span class="s">"Unity"</span>, <span class="s">"C#"</span>, <span class="s">"Spine"</span> };
+  <span class="kw">int</span>      Shipped   = <span class="n">12</span>;
+  <span class="kw">string</span>   Downloads = <span class="s">"80M+"</span>;
+  <span class="kw">bool</span>     Available = <span class="b">true</span>; <span class="c">// 👋 say hi</span>
+}<span class="cur"></span></pre>
+    </div></div>
+
+    <!-- 8 -->
+    <div class="v v8" data-i="8"><div class="card">
+      <div class="who"><img class="av" src="../assets/images/avt.jpg" alt="" style="width:52px;height:52px"><div><b>Trần Tiến</b><span>The journey so far</span></div></div>
+      <div class="tl">
+        <div class="e"><span class="y">2022</span><b>Unity Trainer</b><span>VTC Academy — still teaching</span></div>
+        <div class="e"><span class="y">2024</span><b>Game Developer</b><span>Champion Game Studio</span></div>
+        <div class="e hl"><span class="y">2024</span><b>Jelly Master hits 70M+</b><span>Programmer · LiveOps PM/PO</span></div>
+        <div class="e"><span class="y">2025</span><b>Team Leader</b><span>Champion Game Studio</span></div>
+        <div class="e"><span class="y">2026</span><b>Sticker Diary</b><span>Programmer · PM · PO</span></div>
+      </div>
+    </div></div>
+
+    <!-- 9 -->
+    <div class="v v9" data-i="9"><div class="card">
+      <div class="who"><img class="av" src="../assets/images/avt.jpg" alt="" style="width:52px;height:52px"><div><b>Trần Tiến</b><span>Right now</span></div></div>
+      <div class="clock"><b id="clk">--:--</b><span>HA NOI, VIETNAM<br>GMT+7</span></div>
+      <div class="st"><i></i>Open to new opportunities</div>
+      <div class="rows" style="margin-top:12px">
+        <div><span class="k">Working</span><b>Team Leader @ Champion Game Studio</b></div>
+        <div><span class="k">Teaching</span><b>Unity @ VTC Academy</b></div>
+        <div><span class="k">Open to</span><b>Unity roles · Freelance · Training <span class="sample">mẫu</span></b></div>
+      </div>
+    </div></div>
+
+    <!-- 10 -->
+    <div class="v v10" data-i="10">
+      <div class="pol"><span class="tape"></span><img src="../assets/images/avt.jpg" alt=""><p>Tiến · Hà Nội ✦</p></div>
+      <div class="note n1"><b>80M+</b>người đã tải game của mình</div>
+      <div class="note n2"><b>12</b>game đã ra mắt</div>
+      <div class="note n3"><b>Unity</b>dạy tại VTC Academy từ 2022</div>
+    </div>
+  </div>
+</div>
+
+<div class="picker" id="picker"><b>CARD</b></div>
+
+<script>
+var NAMES = ['ID Badge', 'Big Numbers', 'Stack Tiers', 'Evidence Ladder', 'Featured Game', 'Achievements', 'Code Profile', 'Mini Timeline', 'Now / Status', 'Polaroid'];
+var DESC = [
+  '1 · ID Badge — thẻ nhân viên: ảnh tròn, tên, vai trò, studio, nơi ở, năm bắt đầu Unity, trạng thái. Chỉ thông tin thật, không tự chấm điểm.',
+  '2 · Big Numbers — ảnh lớn + 3 con số lớn (80M+ lượt tải, 12 game, 3+ năm) kèm giải thích ngắn. Người xem hiểu ngay trong 2 giây.',
+  '3 · Stack Tiers — công nghệ chia theo tần suất dùng: "mọi dự án" / "đã ra mắt sản phẩm" / "nền tảng". Có định nghĩa rõ, không dùng %.',
+  '4 · Evidence Ladder — vẫn có mức độ, nhưng mỗi mức = một việc cụ thể (1 Học → 2 Dùng → 3 Ra mắt → 4 Dẫn dắt → 5 Dạy lại). Chú thích luôn hiển thị. (Mức của từng skill là mẫu, bạn chỉnh lại)',
+  '5 · Featured Game — đưa thành tích nổi bật nhất lên: poster Jelly Master, 70M+ lượt tải, các vai trò. Gây ấn tượng bằng sản phẩm thật.',
+  '6 · Achievements — giữ chất game nhưng là thành tựu có thật: 70M+, 10M+, 12 game, Team Leader, Unity Trainer — kèm năm.',
+  '7 · Code Profile — hồ sơ viết như một class C#. Hợp gu dev/lead kỹ thuật, có con trỏ nhấp nháy.',
+  '8 · Mini Timeline — hành trình theo năm: 2022 Trainer → 2024 Developer → 70M+ → 2025 Team Leader → 2026. Thể hiện sự phát triển.',
+  '9 · Now / Status — "ngay lúc này": đồng hồ Hà Nội chạy thật, trạng thái sẵn sàng, đang làm gì / dạy gì / nhận gì. Gần gũi, rõ ràng cho nhà tuyển dụng.',
+  '10 · Polaroid — ảnh polaroid nghiêng + giấy note dán 3 con số. Cá tính, thân thiện, dễ nhớ.'
+];
+var picker = document.getElementById('picker');
+NAMES.forEach(function (n, i) { var b = document.createElement('button'); b.type = 'button'; b.textContent = (i + 1) + ' · ' + n; b.onclick = function () { show(i + 1); }; picker.appendChild(b); });
+function show(i) {
+  document.querySelectorAll('.v').forEach(function (v) { v.classList.toggle('on', +v.dataset.i === i); });
+  picker.querySelectorAll('button').forEach(function (b, j) { b.classList.toggle('on', j + 1 === i); });
+  document.getElementById('desc').textContent = DESC[i - 1];
+}
+(function c() { document.getElementById('clk').textContent = new Date().toLocaleTimeString('en-GB', { timeZone: 'Asia/Ho_Chi_Minh', hour: '2-digit', minute: '2-digit' }); setTimeout(c, 10000); })();
+show(1);
+</script>
+</body>
+</html>

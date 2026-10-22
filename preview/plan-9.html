@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>[NIX] — Plan 9 · Mobile Showcase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{--ink:#fff;--f:'Be Vietnam Pro',sans-serif;--m:'JetBrains Mono',monospace;--ease:cubic-bezier(.16,1,.3,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#101014;color:var(--ink);font-family:var(--f);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background-color .8s var(--ease)}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1160px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
+.m{font-family:var(--m);font-size:12px;letter-spacing:.06em;text-transform:uppercase;opacity:.7}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:16px 0}
+nav .wrap{display:flex;justify-content:space-between;align-items:center}
+.logo{font-weight:900;font-size:20px;letter-spacing:-.02em;display:flex;align-items:center;gap:10px}
+.logo i{width:34px;height:34px;border-radius:10px;background:linear-gradient(140deg,#ff5c9a,#8f5bff 55%,#13b5a5);display:grid;place-items:center;font-style:normal;font-size:12px;font-family:var(--m)}
+nav .links{display:flex;gap:4px;background:rgba(255,255,255,.1);backdrop-filter:blur(12px);padding:5px;border-radius:999px}
+nav .links a{padding:7px 14px;border-radius:999px;font-size:14px;font-weight:600;transition:.2s}
+nav .links a:hover{background:rgba(255,255,255,.15)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:999px;font-weight:700;font-size:15px;transition:transform .3s var(--ease),box-shadow .3s}
+.btn:hover{transform:translateY(-3px)}
+.btn.w{background:#fff;color:#111;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.btn.o{border:2px solid rgba(255,255,255,.5)}
+.btn.sm{padding:9px 16px;font-size:14px}
+
+/* phone */
+.phone{width:250px;aspect-ratio:9/19.5;border-radius:42px;background:#0b0b0d;padding:9px;position:relative;
+  box-shadow:inset 0 0 0 2px #2a2a2e,0 0 0 1px #000,0 40px 80px -20px rgba(0,0,0,.55);transition:transform .6s var(--ease)}
+.phone::after{content:'';position:absolute;right:-3px;top:110px;width:3px;height:60px;border-radius:0 2px 2px 0;background:#2a2a2e}
+.screen{position:relative;height:100%;border-radius:34px;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between}
+.screen::before{content:'';position:absolute;top:9px;left:50%;transform:translateX(-50%);width:76px;height:22px;border-radius:12px;background:#000;z-index:3}
+.screen .art{position:absolute;inset:0;display:grid;place-items:center;font-size:110px;font-weight:900;color:rgba(255,255,255,.95)}
+.screen .art img{width:100%;height:100%;object-fit:cover}
+.hud{position:relative;z-index:2;display:flex;justify-content:space-between;padding:42px 14px 0;font-weight:800;font-size:12px}
+.hud span{background:rgba(0,0,0,.35);backdrop-filter:blur(6px);padding:4px 9px;border-radius:999px}
+.play{position:relative;z-index:2;margin:0 18px 26px;padding:12px;border-radius:16px;text-align:center;font-weight:900;font-size:17px;letter-spacing:.04em;background:#ffd23f;color:#3a2600;box-shadow:0 5px 0 #c99a00}
+
+/* hero */
+.hero{min-height:100vh;display:grid;grid-template-columns:1.05fr 1fr;align-items:center;gap:40px;padding-top:100px;padding-bottom:60px}
+.hero h1{font-size:clamp(44px,6.6vw,86px);font-weight:900;letter-spacing:-.045em;line-height:.98}
+.hero h1 .c1{color:#ff5c9a}.hero h1 .c2{color:#a98bff}.hero h1 .c3{color:#2fe0cd}
+.hero p{font-size:clamp(17px,1.8vw,20px);opacity:.8;margin:24px 0 30px;max-width:480px}
+.hero .cta{display:flex;gap:10px;flex-wrap:wrap}
+.hero .who{display:flex;align-items:center;gap:12px;margin-bottom:26px}
+.hero .who img{width:48px;height:48px;border-radius:50%;object-fit:cover;background:#fff}
+.hero .who b{display:block;font-size:16px}
+.hero .who span{font-size:13px;opacity:.7}
+.fan{position:relative;height:560px;display:grid;place-items:center}
+.fan .phone{position:absolute}
+.fan .p1{transform:translateX(-150px) rotate(-12deg) scale(.86);z-index:1}
+.fan .p2{z-index:2}
+.fan .p3{transform:translateX(150px) rotate(12deg) scale(.86);z-index:1}
+.fan:hover .p1{transform:translateX(-190px) rotate(-16deg) scale(.86)}
+.fan:hover .p3{transform:translateX(190px) rotate(16deg) scale(.86)}
+.fan:hover .p2{transform:translateY(-14px)}
+.badge{position:absolute;z-index:3;background:#fff;color:#111;border-radius:18px;padding:12px 16px;box-shadow:0 20px 40px rgba(0,0,0,.3);font-weight:800;animation:bob 4s ease-in-out infinite}
+.badge small{display:block;font-weight:600;font-size:11px;color:#777;font-family:var(--m);letter-spacing:.04em}
+.badge.b1{top:40px;right:2%}.badge.b2{bottom:50px;left:0;animation-delay:-2s}
+@keyframes bob{50%{transform:translateY(-10px)}}
+
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding-bottom:100px}
+.stats div{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:22px}
+.stats b{display:block;font-size:clamp(34px,4.4vw,54px);font-weight:900;letter-spacing:-.04em;line-height:1}
+
+/* game sections */
+.game{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:60px;padding:100px 0}
+.game.rev .gtext{order:2}
+.game .gphone{display:grid;place-items:center;position:relative}
+.game .gphone::before{content:'';position:absolute;width:420px;height:420px;border-radius:50%;background:rgba(255,255,255,.14)}
+.game .gphone .phone{width:280px;transform:rotate(-4deg)}
+.game.rev .gphone .phone{transform:rotate(4deg)}
+.gtext .no{font-family:var(--m);font-size:13px;font-weight:500;background:rgba(0,0,0,.18);padding:5px 12px;border-radius:999px;display:inline-block}
+.gtext h2{font-size:clamp(38px,5.4vw,70px);font-weight:900;letter-spacing:-.045em;line-height:.98;margin:18px 0 16px}
+.gtext .dl{display:flex;align-items:baseline;gap:12px;margin-bottom:18px}
+.gtext .dl b{font-size:clamp(56px,8vw,104px);font-weight:900;letter-spacing:-.06em;line-height:.9}
+.gtext .dl span{font-family:var(--m);font-size:13px;opacity:.85}
+.gtext ul{list-style:none;display:grid;gap:10px;margin:22px 0 28px;font-size:17px}
+.gtext li{display:flex;gap:12px;align-items:flex-start}
+.gtext li::before{content:'✓';width:24px;height:24px;flex-shrink:0;border-radius:50%;background:rgba(255,255,255,.22);display:grid;place-items:center;font-size:12px;font-weight:900}
+.tags{display:flex;gap:8px;flex-wrap:wrap}
+.tags span{background:rgba(0,0,0,.18);padding:6px 12px;border-radius:999px;font-size:13px;font-weight:600}
+.gp{display:inline-flex;align-items:center;gap:10px;background:#000;color:#fff;padding:10px 18px;border-radius:12px;margin-top:22px;transition:transform .3s var(--ease)}
+.gp:hover{transform:translateY(-3px)}
+.gp small{display:block;font-size:10px;opacity:.7;line-height:1}
+.gp b{font-size:17px;line-height:1.1}
+.todo{font-family:var(--m);font-size:10px;color:#fff;background:rgba(0,0,0,.35);border:1px dashed rgba(255,255,255,.7);border-radius:4px;padding:1px 5px;white-space:nowrap}
+
+/* home screen toolkit */
+.toolkit{padding:120px 0 40px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.toolkit h2,.xp h2{font-size:clamp(36px,5vw,62px);font-weight:900;letter-spacing:-.045em;line-height:1}
+.toolkit p.lead{opacity:.75;margin:18px 0 22px;font-size:18px;max-width:440px}
+.home .phone{width:300px;margin:0 auto}
+.home .screen{background:linear-gradient(160deg,#2b1d5c,#0f3b4a 60%,#3a1030);justify-content:flex-start;padding:54px 18px 18px}
+.apps{display:grid;grid-template-columns:repeat(4,1fr);gap:16px 10px}
+.app{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer}
+.app i{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-style:normal;font-size:24px;box-shadow:0 6px 14px rgba(0,0,0,.3);transition:transform .25s var(--ease)}
+.app:hover i,.app.on i{transform:scale(1.12)}
+.app.on i{box-shadow:0 0 0 3px #fff,0 6px 14px rgba(0,0,0,.3)}
+.app span{font-size:10px;font-weight:600;text-align:center;line-height:1.15}
+.dock{margin-top:auto;background:rgba(255,255,255,.18);backdrop-filter:blur(10px);border-radius:24px;padding:12px;display:flex;justify-content:space-around}
+.dock i{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-style:normal;font-size:20px;background:rgba(255,255,255,.9)}
+.detail{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:22px;min-height:140px}
+.detail b{font-size:22px;letter-spacing:-.02em}
+.detail p{opacity:.75;margin-top:6px}
+.detail .v{font-family:var(--m);font-size:12px;opacity:.6;margin-top:10px;display:block}
+
+/* xp + skills */
+.xp{padding:100px 0 0;display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:22px;margin-top:20px}
+.row{display:grid;grid-template-columns:120px 1fr;gap:14px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.row:last-child{border-bottom:0}
+.row b{display:block}.row span.s{opacity:.65;font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips span{padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.08);font-weight:600;font-size:14px}
+.chips span.k{background:#fff;color:#111}
+
+/* notification contact */
+.contact{padding:140px 0 120px;text-align:center}
+.notif{max-width:440px;margin:0 auto;text-align:left;background:rgba(255,255,255,.92);color:#111;border-radius:26px;padding:16px 18px;box-shadow:0 30px 70px rgba(0,0,0,.4);backdrop-filter:blur(20px);animation:drop 1s var(--ease) both}
+@keyframes drop{from{opacity:0;transform:translateY(-30px) scale(.96)}}
+.notif .h{display:flex;align-items:center;gap:8px;font-size:13px;color:#666}
+.notif .h i{width:22px;height:22px;border-radius:6px;background:linear-gradient(140deg,#ff5c9a,#8f5bff);font-style:normal;color:#fff;display:grid;place-items:center;font-size:9px;font-weight:900}
+.notif .h span:last-child{margin-left:auto}
+.notif b{display:block;font-size:17px;margin-top:8px}
+.notif p{font-size:15px;color:#333}
+.notif .acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.notif .acts a{text-align:center;padding:10px;border-radius:12px;background:#eee;font-weight:700;font-size:14px}
+.notif .acts a:first-child{background:#111;color:#fff}
+.contact h2{font-size:clamp(40px,6vw,76px);font-weight:900;letter-spacing:-.045em;line-height:1;margin-bottom:40px}
+.soc{display:flex;gap:22px;justify-content:center;margin-top:40px;font-weight:600;flex-wrap:wrap}
+.soc a{opacity:.7}.soc a:hover{opacity:1}
+footer{text-align:center;padding:0 0 90px;opacity:.5;font-size:13px}
+
+.rv{opacity:0;transform:translateY(40px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.rv.in{opacity:1;transform:none}
+
+.pv{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:999;display:flex;gap:2px;align-items:center;font:700 11px 'JetBrains Mono',monospace;padding:5px 5px 5px 12px;border-radius:10px;background:#ffd54f;color:#1a1300;box-shadow:0 10px 30px rgba(0,0,0,.4);white-space:nowrap}
+.pv a{padding:4px 8px;border-radius:6px;color:#1a1300}
+.pv a.on{background:#1a1300;color:#ffd54f}
+
+@media (max-width:900px){
+  nav .links{display:none}
+  .hero,.game,.toolkit,.xp{grid-template-columns:1fr}
+  .hero{padding-top:110px;min-height:0}
+  .hero{overflow:hidden}
+  .fan{height:470px;transform:scale(.82)}
+  .badge.b1{right:-4%}.badge.b2{left:-4%}
+  .stats{grid-template-columns:1fr 1fr}
+  .game{min-height:0;gap:30px;padding:80px 0}
+  .game.rev .gtext{order:0}
+  .game .gphone::before{width:300px;height:300px}
+  .game .gphone .phone{width:230px}
+}
+@media (max-width:480px){
+  .hero{overflow:hidden}
+  .fan{height:420px;transform:scale(.68);margin:-40px 0}
+  .row{grid-template-columns:1fr;gap:2px}
+  .home .phone{width:270px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <span class="logo"><i>NIX</i>Trần Tiến</span>
+  <div class="links"><a href="#games">Games</a><a href="#toolkit">Toolkit</a><a href="#xp">Experience</a></div>
+  <a class="btn w sm" href="#contact">Contact</a>
+</div></nav>
+
+<header class="wrap hero" data-bg="#101014">
+  <div>
+    <div class="who rv"><img src="../assets/images/avt.jpg" alt="Trần Tiến"><div><b>Trần Tiến [NIX]</b><span>Game Developer · Team Leader · Unity Trainer</span></div></div>
+    <h1 class="rv">Mobile games<br>made to feel<br><span class="c1">g</span><span class="c2">o</span><span class="c3">o</span>d.</h1>
+    <p class="rv">I build casual games in Unity that have been downloaded <b>80 million+</b> times — from the first prototype to live ops.</p>
+    <div class="cta rv"><a class="btn w" href="#games">Play through my games ↓</a><a class="btn o" href="#">Download CV</a></div>
+  </div>
+  <div class="fan rv">
+    <div class="phone p1"><div class="screen" style="background:linear-gradient(160deg,#c48cf0,#6b3dd6)"><div class="art">S</div><div class="hud"><span>👗 Lv 24</span><span>💎 980</span></div><div class="play">PLAY</div></div></div>
+    <div class="phone p2"><div class="screen" style="background:#ff5c9a"><div class="art"><img src="https://img.youtube.com/vi/Yd7vDterctQ/hqdefault.jpg" alt=""></div><div class="hud"><span>🍮 Lv 87</span><span>🪙 12.4K</span></div><div class="play">PLAY</div></div></div>
+    <div class="phone p3"><div class="screen" style="background:linear-gradient(160deg,#4de0d0,#0b7a6e)"><div class="art">T</div><div class="hud"><span>🧩 Lv 51</span><span>⭐ 312</span></div><div class="play">PLAY</div></div></div>
+    <div class="badge b1"><small>TOTAL DOWNLOADS</small>80M+ 🚀</div>
+    <div class="badge b2"><small>GAMES SHIPPED</small>12 🎮</div>
+  </div>
+</header>
+
+<div class="wrap stats rv" data-bg="#101014">
+  <div><b><span class="count" data-to="80">0</span>M+</b><span class="m">Downloads</span></div>
+  <div><b><span class="count" data-to="12">0</span></b><span class="m">Games shipped</span></div>
+  <div><b><span class="count" data-to="3">0</span>+</b><span class="m">Years in Unity</span></div>
+  <div><b><span class="count" data-to="8">0</span></b><span class="m">Packages</span></div>
+</div>
+
+<main id="games">
+  <section class="wrap game" data-bg="#e8437f">
+    <div class="gtext rv">
+      <span class="no">01 · FEATURED</span>
+      <h2>Jelly Master:<br>Mukbang ASMR</h2>
+      <div class="dl"><b>70M+</b><span>DOWNLOADS ON<br>GOOGLE PLAY</span></div>
+      <div class="tags"><span>Main Dev</span><span>Champion Game Studio</span><span>ASMR · Casual</span></div>
+      <ul><li>Core eating loop &amp; DIY jelly crafting <span class="todo">điền thật</span></li><li>Haptics, particles &amp; sound sync for satisfying feel <span class="todo">điền thật</span></li><li>Optimized for low-end Android <span class="todo">điền thật</span></li></ul>
+      <a class="gp" href="https://play.google.com/store/apps/details?id=com.fc.p.cp.jelly.mukbang.asmr.live.diy">▶ <div><small>GET IT ON</small><b>Google Play</b></div></a>
+    </div>
+    <div class="gphone rv"><div class="phone"><div class="screen" style="background:#ff5c9a"><div class="art"><img src="https://img.youtube.com/vi/Yd7vDterctQ/hqdefault.jpg" alt=""></div><div class="hud"><span>🍮 Lv 87</span><span>🪙 12.4K</span></div><div class="play">PLAY</div></div></div></div>
+  </section>
+
+  <section class="wrap game rev" data-bg="#7446e0">
+    <div class="gtext rv">
+      <span class="no">02</span>
+      <h2>Style Star:<br>Left Right Fashion</h2>
+      <div class="dl"><b>10M+</b><span>DOWNLOADS ON<br>GOOGLE PLAY</span></div>
+      <div class="tags"><span>Main Dev</span><span>Champion Game Studio</span><span>Dress-up</span></div>
+      <ul><li>Swipe left/right choice mechanic <span class="todo">điền thật</span></li><li>Outfit &amp; character customization system <span class="todo">điền thật</span></li></ul>
+      <a class="gp" href="https://play.google.com/store/apps/details?id=com.left.right.girl.dressup.game">▶ <div><small>GET IT ON</small><b>Google Play</b></div></a>
+    </div>
+    <div class="gphone rv"><div class="phone"><div class="screen" style="background:linear-gradient(160deg,#c48cf0,#6b3dd6)"><div class="art">S</div><div class="hud"><span>👗 Lv 24</span><span>💎 980</span></div><div class="play">PLAY</div></div></div></div>
+  </section>
+
+  <section class="wrap game" data-bg="#0e9d8f">
+    <div class="gtext rv">
+      <span class="no">03</span>
+      <h2>Tictac Transform:<br>Mini Games</h2>
+      <div class="dl"><b>??</b><span>DOWNLOADS <span class="todo">điền</span></span></div>
+      <div class="tags"><span>Team Leader</span><span>Dev</span><span>Puzzle</span></div>
+      <ul><li>Led the team from prototype to launch <span class="todo">điền thật</span></li><li>Modular mini-game framework <span class="todo">điền thật</span></li></ul>
+      <a class="gp" href="https://play.google.com/store/apps/details?id=com.fc.p.cp.transform.game.tricky.puzzle">▶ <div><small>GET IT ON</small><b>Google Play</b></div></a>
+    </div>
+    <div class="gphone rv"><div class="phone"><div class="screen" style="background:linear-gradient(160deg,#4de0d0,#0b7a6e)"><div class="art">T</div><div class="hud"><span>🧩 Lv 51</span><span>⭐ 312</span></div><div class="play">PLAY</div></div></div></div>
+  </section>
+</main>
+
+<section class="wrap toolkit" id="toolkit" data-bg="#101014">
+  <div class="rv">
+    <span class="m">Behind the games</span>
+    <h2 style="margin-top:12px">My toolkit,<br>installed in every game.</h2>
+    <p class="lead">Eight in-house Unity packages. Tap an app to see what it does.</p>
+    <div class="detail" id="detail"></div>
+  </div>
+  <div class="home rv"><div class="phone"><div class="screen">
+    <div class="apps" id="apps"></div>
+    <div class="dock"><i>🎮</i><i>✉️</i><i>📝</i><i>🐙</i></div>
+  </div></div></div>
+</section>
+
+<section class="wrap xp" id="xp" data-bg="#101014">
+  <div class="rv">
+    <h2>Experience</h2>
+    <div class="card">
+      <div class="row"><span class="m">20XX — Now</span><div><b>Team Leader</b><span class="s">Champion Game Studio</span></div></div>
+      <div class="row"><span class="m">20XX — 20XX</span><div><b>Unity Trainer</b><span class="s"><span class="todo">điền thật</span></span></div></div>
+      <div class="row"><span class="m">20XX — 20XX</span><div><b>Game Developer</b><span class="s">Champion Game Studio</span></div></div>
+    </div>
+  </div>
+  <div class="rv">
+    <h2>Skills</h2>
+    <div class="card"><div class="chips"><span class="k">Unity</span><span class="k">C#</span><span>Mobile UI/UX</span><span>Optimization</span><span>Game feel</span><span>Addressables</span><span>Spine</span><span>Ads / IAP</span><span>Firebase</span><span>AppsFlyer</span><span>Team lead</span><span>Training</span><span>C++</span><span>Cocos2d-x</span><span>SDL</span></div></div>
+  </div>
+</section>
+
+<section class="wrap contact" id="contact" data-bg="#101014">
+  <h2 class="rv">Your next hit<br>starts with a message.</h2>
+  <div class="notif">
+    <div class="h"><i>NIX</i><span>MESSAGES</span><span>now</span></div>
+    <b>Trần Tiến</b>
+    <p>Hi! I'm open to new roles, collaborations and Unity training. Let's build something players love 🎮</p>
+    <div class="acts"><a href="mailto:tientv.0702@gmail.com">Reply by email</a><a href="https://www.linkedin.com/in/ti%E1%BA%BFn-tr%E1%BA%A7n-a675a8223/">LinkedIn</a></div>
+  </div>
+  <div class="soc"><a href="https://github.com/tien0702">GitHub</a><a href="https://tien0702.github.io/nix-blog/">Blog</a><a href="https://tiennix.itch.io/">itch.io</a><span style="opacity:.5">EN / VI</span></div>
+</section>
+<footer>© 2026 Trần Tiến · tientv.0702@gmail.com</footer>
+
+<div class="pv">PLAN <a href="plan-1.html">1</a><a href="plan-2.html">2</a><a href="plan-3.html">3</a><a href="plan-4.html">4</a><a href="plan-5.html">5</a><a href="plan-6.html">6</a><a href="plan-7.html">7</a><a href="plan-8.html">8</a><a href="plan-9.html" class="on">9</a></div>
+
+<script>
+// packages as apps
+var APPS=[['⚙️','NIX Core','#1e88e5','Shared foundation for every game — design patterns, extensions, utils. Required by every other module.'],
+['🌐','Localization','#43a047','Font size sync across languages, CJK font optimization, Google Sheets sync.'],
+['🪟','UI Framework','#8e24aa','Popups, screens, transitions and UI animations for uGUI.'],
+['💰','Monetization','#fdd835','Swap Ads / IAP SDKs just by changing a scripting define.'],
+['📊','Tracking','#fb8c00','One API for Firebase, AppsFlyer, Adjust with built-in casual events.'],
+['🔊','Audio','#e53935','Data-driven audio events per AudioClip.'],
+['💾','Storage','#00897b','ScriptableObject-based save/load, debuggable in the Inspector.'],
+['🦴','Skeleton','#5e35b1','Preview multiple Spine skins & animations in the editor.']];
+var apps=document.getElementById('apps'),det=document.getElementById('detail');
+apps.innerHTML=APPS.map(function(a,i){return '<div class="app" data-i="'+i+'"><i style="background:'+a[2]+'">'+a[0]+'</i><span>'+a[1]+'</span></div>'}).join('');
+function pick(i){var a=APPS[i];apps.querySelectorAll('.app').forEach(function(el){el.classList.toggle('on',el.dataset.i==i)});
+  det.innerHTML='<b>'+a[0]+' '+a[1]+'</b><p>'+a[3]+'</p><span class="v">v1.0.0 · <a href="https://github.com/tien0702" style="text-decoration:underline">GitHub ↗</a></span>';}
+apps.querySelectorAll('.app').forEach(function(el){el.onclick=function(){pick(el.dataset.i)};el.onmouseenter=function(){pick(el.dataset.i)}});
+pick(0);
+
+// reveal + counters
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;e.target.classList.add('in');
+  e.target.querySelectorAll('.count').forEach(function(el){var to=+el.dataset.to,t0=null;(function s(t){if(!t0)t0=t;var p=Math.min((t-t0)/1500,1);el.textContent=Math.round((1-Math.pow(1-p,4))*to);if(p<1)requestAnimationFrame(s)})(performance.now())});io.unobserve(e.target)})},{threshold:.15});
+document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
+
+// background color follows the section in view
+var bgs=document.querySelectorAll('[data-bg]');
+function bg(){var mid=innerHeight/2;bgs.forEach(function(s){var r=s.getBoundingClientRect();if(r.top<=mid&&r.bottom>mid)document.body.style.backgroundColor=s.dataset.bg})}
+addEventListener('scroll',bg,{passive:true});bg();
+
+// tilt phones in game sections
+document.querySelectorAll('.gphone').forEach(function(g){var ph=g.querySelector('.phone'),base=g.closest('.rev')?4:-4;
+  g.addEventListener('pointermove',function(e){var r=g.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;ph.style.transform='perspective(900px) rotate('+base+'deg) rotateY('+x*16+'deg) rotateX('+(-y*12)+'deg)'});
+  g.addEventListener('pointerleave',function(){ph.style.transform=''});});
+</script>
+</body>
+</html>

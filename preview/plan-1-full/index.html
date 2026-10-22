@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trần Tiến [NIX] — Game Developer</title>
+  <meta name="description" content="Trần Tiến [NIX] — Unity game developer, team leader and trainer. Mobile & casual games with 80M+ downloads." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Trần Tiến [NIX] — Game Developer" />
+  <meta property="og:description" content="Unity game developer, team leader and trainer. Mobile & casual games with 80M+ downloads." />
+  <meta property="og:image" content="../../assets/images/avt.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="theme-color" content="#07090f" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%23141820'/><rect x='4' y='4' width='92' height='92' rx='12' fill='none' stroke='%2300e5ff' stroke-width='3'/><text x='50' y='64' font-family='monospace' font-size='36' font-weight='bold' fill='%2300e5ff' text-anchor='middle'>NIX</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <a class="skip" href="#work" data-i18n="skip">Skip to content</a>
+
+  <!-- LOADER -->
+  <div id="loader" aria-hidden="true">
+    <div class="ld-logo"><b>[</b><span>NIX</span><b>]</b></div>
+    <div class="ld-bar"><i id="ldFill"></i></div>
+    <div class="ld-txt" id="ldTxt">BOOTING PORTFOLIO…</div>
+  </div>
+
+  <div class="scroll-prog" id="scrollProg"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow" id="glow" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a class="logo" href="#top" aria-label="Home"><img id="navAva" src="" alt="" /><span><b>[</b>NIX<b>]</b></span></a>
+    <ul class="links" id="navLinks">
+      <li><a href="#work" data-i18n="nav_work">Work</a></li>
+      <li><a href="#experience" data-i18n="nav_experience">Experience</a></li>
+      <li><a href="#skills" data-i18n="nav_skills">Skills</a></li>
+      <li><a href="#toolkit" data-i18n="nav_toolkit">Toolkit</a></li>
+    </ul>
+    <div class="nav-r">
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="en">EN</button><button type="button" data-lang="vi">VI</button>
+      </div>
+      <a class="btn btn-pri btn-sm hide-sm" href="#contact" data-i18n="hire">Hire me</a>
+      <button class="burger" id="burger" type="button" aria-label="Menu" aria-expanded="false"><i></i><i></i><i></i></button>
+    </div>
+  </nav>
+
+  <!-- MOBILE DRAWER -->
+  <div class="drawer" id="drawer" aria-hidden="true">
+    <ul>
+      <li><a href="#work" data-i18n="nav_work">Work</a></li>
+      <li><a href="#experience" data-i18n="nav_experience">Experience</a></li>
+      <li><a href="#skills" data-i18n="nav_skills">Skills</a></li>
+      <li><a href="#toolkit" data-i18n="nav_toolkit">Toolkit</a></li>
+      <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
+    </ul>
+    <div class="drawer-soc" id="drawerSoc"></div>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero wrap" id="top">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow rv"><span class="dot"></span><span id="heroStatus"></span></div>
+        <h1 class="rv" id="heroH1"></h1>
+        <p class="typed rv" aria-hidden="true"><span id="typed"></span></p>
+        <p class="lead rv" id="heroBio"></p>
+        <div class="cta rv">
+          <a class="btn btn-pri" href="#work"><span data-i18n="view_work">View my work</span> <span aria-hidden="true">→</span></a>
+          <a class="btn btn-ghost" id="cvBtn" href="#" target="_blank" rel="noopener" hidden>⬇ <span data-i18n="download_cv">Download CV</span></a>
+          <a class="btn btn-ghost" href="#contact" id="ctaContact" data-i18n="contact_me">Contact me</a>
+        </div>
+        <div class="socials rv" id="heroSoc"></div>
+      </div>
+
+      <div class="card-wrap rv">
+        <div class="pcard" id="pcard">
+          <div class="pc-top"><span>PLAYER // NIX</span><span class="lv" id="pcLv"></span></div>
+          <div class="pc-img">
+            <img id="pcImg" src="" alt="" />
+            <i class="corner c1"></i><i class="corner c2"></i><i class="corner c3"></i><i class="corner c4"></i>
+            <div class="pc-name"><b id="pcName"></b><span id="pcClass"></span></div>
+          </div>
+          <div class="pc-stats" id="pcStats"></div>
+        </div>
+        <div class="float f1" id="float1"></div>
+        <div class="float f2" id="float2"></div>
+      </div>
+    </div>
+
+    <div class="strip rv" id="strip"></div>
+  </header>
+
+  <div class="marquee" aria-hidden="true"><div class="mq-track" id="mq"></div></div>
+
+  <main class="wrap">
+    <!-- WORK -->
+    <section id="work">
+      <div class="sh rv">
+        <div><div class="sh-k">01 // <span data-i18n="work_k">SELECTED WORK</span></div><h2 data-i18n="work_t">Games in players' hands</h2></div>
+        <p data-i18n="work_p">Hit titles shipped with Champion Game Studio — from prototype to live ops. Click any game for details.</p>
+      </div>
+      <div id="featured"></div>
+      <div class="games" id="games"></div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience">
+      <div class="sh rv">
+        <div><div class="sh-k">02 // <span data-i18n="exp_k">EXPERIENCE</span></div><h2 data-i18n="exp_t">Quest log</h2></div>
+        <p data-i18n="exp_p">Roles I've played — and what I brought to each team.</p>
+      </div>
+      <div class="tl" id="timeline"></div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <div class="sh rv">
+        <div><div class="sh-k">03 // <span data-i18n="skills_k">SKILL TREE</span></div><h2 data-i18n="skills_t">What I bring to a team</h2></div>
+        <p data-i18n="skills_p">Ranked like a game character — click a skill to inspect it.</p>
+      </div>
+      <div class="bento" id="bento"></div>
+    </section>
+
+    <!-- TOOLKIT -->
+    <section id="toolkit">
+      <div class="sh rv">
+        <div><div class="sh-k">04 // <span data-i18n="tk_k">TOOLKIT</span></div><h2 data-i18n="tk_t">The engine behind the games</h2></div>
+        <p id="tkP"></p>
+      </div>
+      <div class="toolkit">
+        <div class="spot graph rv"><svg viewBox="0 0 460 420" id="graph" role="img" aria-label="Package dependency graph"></svg></div>
+        <div class="pkgs" id="pkgs"></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact rv" id="contact">
+      <div class="term">&gt; nix.status() <b id="termStatus">// OPEN TO OPPORTUNITIES</b></div>
+      <h2 data-i18n-html="contact_t">Let's build something<br>players will love.</h2>
+      <p data-i18n="contact_p">Open to new roles, collaborations and Unity training.</p>
+      <div class="mailbox"><span id="mailTxt"></span>
+        <button class="btn btn-pri btn-sm" id="copyBtn" type="button" data-i18n="copy">Copy</button>
+        <a class="btn btn-ghost btn-sm" id="mailBtn" href="#"><span data-i18n="send">Send</span> ↗</a>
+      </div>
+      <div class="socials center" id="contactSoc"></div>
+    </section>
+
+    <footer>
+      <span id="footL"></span>
+      <span id="footR"></span>
+    </footer>
+  </main>
+
+  <!-- BACK TO TOP -->
+  <button class="totop" id="totop" type="button" aria-label="Back to top">
+    <svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="20" class="trk"/><circle cx="22" cy="22" r="20" class="prg" id="totopRing"/></svg>
+    <span aria-hidden="true">↑</span>
+  </button>
+
+  <!-- MODAL -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle" hidden>
+    <div class="m-backdrop" data-close></div>
+    <div class="m-panel" id="mPanel">
+      <button class="m-close" type="button" data-close aria-label="Close">✕</button>
+      <div class="m-media" id="mMedia"></div>
+      <div class="m-body">
+        <div class="m-kicker" id="mKicker"></div>
+        <h3 id="mTitle"></h3>
+        <div class="meta" id="mTags"></div>
+        <div class="m-stats" id="mStats"></div>
+        <div class="m-desc" id="mDesc"></div>
+        <div class="m-actions" id="mActions"></div>
+      </div>
+      <div class="m-nav">
+        <button type="button" id="mPrev">← <span id="mPrevT"></span></button>
+        <span class="m-count" id="mCount"></span>
+        <button type="button" id="mNext"><span id="mNextT"></span> →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,694 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Logo Intro</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=JetBrains+Mono:wght@400;500;700&display=block" rel="stylesheet">
+<style>
+  :root{--bg:#07090f;--panel:#0e131d;--panel2:#121927;--line:#1e2636;--line2:#2c3750;--text:#b3bccf;--dim:#6b7690;--bright:#eef2f8;--cyan:#00e5ff;--pink:#ff2d75;--gold:#ffd54f;--green:#69ff47}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{background:var(--bg);color:var(--text);font:12px/1.5 "JetBrains Mono",monospace;display:grid;grid-template-columns:minmax(0,1fr) 380px;overflow:hidden}
+  #stage{display:flex;flex-direction:column;gap:10px;padding:16px;min-width:0;min-height:0}
+  #view{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:10px;background:repeating-conic-gradient(#0a0e16 0 25%,#0c111a 0 50%) 0 0/24px 24px;padding:12px}
+  #c{max-width:100%;max-height:100%;display:block;box-shadow:0 0 0 1px var(--line2)}
+  .bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  button,select,input[type=text]{font:inherit;color:var(--bright);background:var(--panel2);border:1px solid var(--line2);border-radius:7px;padding:6px 10px}
+  button{cursor:pointer}
+  button:hover{border-color:var(--cyan)}
+  button.primary{background:rgba(0,229,255,.12);border-color:rgba(0,229,255,.5);color:var(--cyan)}
+  button.on{border-color:var(--cyan);color:var(--cyan)}
+  #time{font-variant-numeric:tabular-nums;color:var(--bright);min-width:110px}
+  #tl{width:100%;height:118px;display:block;border:1px solid var(--line);border-radius:8px;background:var(--panel);cursor:ew-resize;touch-action:none}
+  #panel{background:var(--panel);border-left:1px solid var(--line);overflow-y:auto;padding:14px 16px 40px}
+  h1{font:700 13px "JetBrains Mono",monospace;letter-spacing:.18em;color:var(--bright);margin:0 0 4px}
+  .sub{color:var(--dim);margin:0 0 14px}
+  details{border-top:1px solid var(--line);padding:8px 0}
+  summary{cursor:pointer;color:var(--cyan);letter-spacing:.12em;text-transform:uppercase;font-size:11px;padding:4px 0;list-style:none;display:flex;align-items:center;gap:8px}
+  summary::before{content:"▸";transition:transform .15s}
+  details[open] summary::before{transform:rotate(90deg)}
+  summary i{width:8px;height:8px;border-radius:2px;display:inline-block}
+  .row{display:grid;grid-template-columns:1fr 64px;gap:4px 10px;align-items:center;margin:8px 0}
+  .row label{color:var(--text)}
+  .row small{grid-column:1/-1;color:var(--dim);margin-top:-4px}
+  .row input[type=range]{grid-column:1/-1;width:100%;accent-color:var(--cyan)}
+  .row input[type=number]{width:64px;font:inherit;color:var(--bright);background:var(--panel2);border:1px solid var(--line2);border-radius:6px;padding:2px 6px;text-align:right}
+  .row input[type=color]{width:64px;height:26px;border:1px solid var(--line2);border-radius:6px;background:none;padding:0}
+  .row select,.row input[type=text]{grid-column:2;width:100%;padding:3px 6px}
+  .row.wide select,.row.wide input[type=text]{grid-column:1/-1}
+  .row input[type=checkbox]{justify-self:end;accent-color:var(--cyan);width:16px;height:16px}
+  .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+  #msg{color:var(--green);min-height:1.5em;margin-top:8px}
+  body.render{display:block;background:#000}
+  body.render #panel,body.render .bar,body.render #tl{display:none}
+  body.render #stage,body.render #view{padding:0;border:0;background:none}
+  body.render #c{max-width:none;max-height:none;box-shadow:none}
+  @media (max-width:900px){
+    body{grid-template-columns:1fr;overflow:auto;height:auto}
+    #stage{padding:12px 16px}
+    #view{height:56vh;flex:none}
+    #panel{border-left:0;border-top:1px solid var(--line)}
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="view"><canvas id="c" width="1920" height="1080"></canvas></div>
+  <div class="bar">
+    <button id="play" class="primary">▶ Phát</button>
+    <button id="rewind">⏮ Về đầu</button>
+    <button id="loop" class="on">⟳ Lặp</button>
+    <span id="time">0.00 / 5.00s</span>
+    <span style="flex:1"></span>
+    <button data-aspect="16:9">16:9</button><button data-aspect="9:16">9:16</button><button data-aspect="1:1">1:1</button><button data-aspect="4:5">4:5</button>
+  </div>
+  <canvas id="tl" width="1200" height="236"></canvas>
+</div>
+<aside id="panel">
+  <h1>NIX · INTRO EDITOR</h1>
+  <p class="sub">Kéo timeline để tua · Space: phát/dừng</p>
+  <div id="controls"></div>
+  <div class="actions">
+    <button id="export" class="primary">⬇ Xuất video</button>
+    <button id="saveJson">💾 Lưu .json</button>
+    <button id="openJson">📂 Mở .json</button>
+    <button id="copy">Copy tham số</button>
+    <button id="paste">Dán tham số</button>
+    <button id="reset">Mặc định</button>
+  </div>
+  <div id="msg"></div>
+</aside>
+
+<svg id="measure" width="0" height="0" style="position:absolute"></svg>
+<script>
+// ---------------------------------------------------------------------------
+// Logo paths copied from assets/logo/NIX-02.svg (viewBox 283.46)
+// ---------------------------------------------------------------------------
+const LOGO_D = [
+  "M155.72,217.1V170.15a1.8,1.8,0,0,0-.9-1.57l-11.88-6.86a1.83,1.83,0,0,0-1.81,0l-12.1,7a1.8,1.8,0,0,0-.9,1.57v47a1.8,1.8,0,0,0,.9,1.57l11.8,6.81a1.83,1.83,0,0,0,1.81,0l12.18-7A1.8,1.8,0,0,0,155.72,217.1Z",
+  "M128.13,66.14v47.62a1.8,1.8,0,0,0,.9,1.57l12.1,7a1.83,1.83,0,0,0,1.81,0l11.88-6.86a1.8,1.8,0,0,0,.9-1.57V66.36a1.8,1.8,0,0,0-.9-1.56l-12.18-7a1.83,1.83,0,0,0-1.81,0L129,64.57A1.81,1.81,0,0,0,128.13,66.14Z",
+  "M141.9,151.59l8.39,4.85,5.43,3.13,42.55,24.56,7.28,4.21a1.83,1.83,0,0,0,1.81,0L214,184.5a1.8,1.8,0,0,0,.9-1.57v-82.4A1.81,1.81,0,0,0,214,99l-6.24-3.6a1.83,1.83,0,0,0-1.81,0l-7.68,4.43-42.55,24.56L152.91,126a1.81,1.81,0,0,0,0,3.14l2.81,1.62L166,136.65a1.78,1.78,0,0,0,1.81,0l27.78-16a1.82,1.82,0,0,1,2.72,1.57v39.56a1.81,1.81,0,0,1-2.72,1.57L167,146.81l-8.4-4.85-2.85-1.64-13.82-8-8.16-4.71-5.61-3.25L85.2,99.6l-7.51-4.34a1.83,1.83,0,0,0-1.81,0L69.47,99a1.82,1.82,0,0,0-.91,1.57v82.4a1.81,1.81,0,0,0,.91,1.57l6.8,3.93a1.78,1.78,0,0,0,1.81,0l7.12-4.11,42.93-24.78,2.8-1.62a1.81,1.81,0,0,0,0-3.13l-2.8-1.62-10.25-5.92a1.85,1.85,0,0,0-1.82,0L87.92,163.5a1.81,1.81,0,0,1-2.72-1.56V122a1.81,1.81,0,0,1,2.72-1.57l29.15,16.83,8.16,4.71,2.9,1.68Z",
+  "M140.83,28.37,44,84.27a1.81,1.81,0,0,0-.91,1.56v111.8A1.82,1.82,0,0,0,44,199.2l96.82,55.9a1.83,1.83,0,0,0,1.81,0l96.82-55.9a1.81,1.81,0,0,0,.9-1.57V85.83a1.8,1.8,0,0,0-.9-1.56l-96.82-55.9A1.78,1.78,0,0,0,140.83,28.37Zm84.84,162.87-83,47.94a1.83,1.83,0,0,1-1.81,0l-83-47.94a1.8,1.8,0,0,1-.9-1.57V93.79a1.83,1.83,0,0,1,.9-1.57l83-47.93a1.78,1.78,0,0,1,1.81,0l83,47.93a1.84,1.84,0,0,1,.91,1.57v95.88A1.81,1.81,0,0,1,225.67,191.24Z"
+];
+const LC = 141.73, HEX_W = 197.3, HEX_H = 227.3;   // logo centre + visible size (viewBox units)
+// outer hexagon vertices (viewBox units), clockwise from top; inner edge of the ring is INNER_K of it
+const HEXV = [[141.73,28.1],[240.4,85],[240.4,198.5],[141.73,255.4],[43.1,198.5],[43.1,85]];
+const INNER_K = 0.8575;
+const ASPECTS = { "16:9": [1920, 1080], "9:16": [1080, 1920], "1:1": [1080, 1080], "4:5": [1080, 1350] };
+const EASE = {
+  linear: k => k,
+  in: k => k * k * k,
+  out: k => 1 - Math.pow(1 - k, 3),
+  inOut: k => k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2,
+  outExpo: k => k >= 1 ? 1 : 1 - Math.pow(2, -10 * k),
+};
+const EASE_OPTS = { linear: "Đều (linear)", in: "Chậm → nhanh", out: "Nhanh → chậm", inOut: "Chậm – nhanh – chậm", outExpo: "Bật nhanh (expo)" };
+
+// ---------------------------------------------------------------------------
+// Parameters (every control in the panel is generated from this list)
+// ---------------------------------------------------------------------------
+const DEF = [
+  { g: "Khung hình", c: "#6b7690" },
+  { k: "aspect", type: "select", opts: Object.fromEntries(Object.keys(ASPECTS).map(a => [a, a])), v: "16:9", label: "Tỉ lệ khung" },
+  { k: "duration", min: 2, max: 12, step: .1, v: 5, label: "Tổng thời lượng (s)" },
+  { k: "trimIn", time: true, min: 0, max: 12, step: .01, v: 0, label: "Trim đầu (s)", hint: "Kéo tay cầm vàng trên timeline để cắt đầu/đuôi" },
+  { k: "trimOut", time: true, min: 0, max: 12, step: .01, v: 5, label: "Trim cuối (s)" },
+  { k: "logoScale", min: .15, max: .7, step: .01, v: .36, label: "Cỡ logo", hint: "Chiều cao logo / cạnh ngắn của khung" },
+  { k: "bg", type: "color", v: "#07090f", label: "Màu nền" },
+  { k: "transparent", type: "check", v: false, label: "Nền trong suốt", hint: "Dùng để xuất bản master có kênh alpha (render.mjs → .mov / PNG)" },
+
+  { g: "Line bay từ ngoài vào", c: "#7c4dff" },
+  { k: "inOn", type: "check", v: true, label: "Bật" },
+  { k: "inStart", time: true, min: 0, max: 12, step: .01, v: 0, label: "Bắt đầu (s)" },
+  { k: "inDur", time: true, min: .2, max: 12, step: .01, v: 1.1, label: "Thời gian bay vào (s)" },
+  { k: "inStagger", time: true, min: 0, max: 2, step: .01, v: .05, label: "Lệch giữa các line (s)" },
+  { k: "inEase", type: "select", opts: EASE_OPTS, v: "out", label: "Nhịp bay" },
+  { k: "inFrom", min: .5, max: 8, step: .1, v: 3.5, label: "Xuất phát xa", hint: "Tính theo số lần độ dài một cạnh lục giác" },
+  { k: "inOver", min: 0, max: 2, step: .05, v: .6, label: "Vượt qua đỉnh", hint: "Line xuyên qua điểm giao bao xa rồi mới khớp vào cạnh" },
+  { k: "inInner", type: "check", v: true, label: "Thêm viền trong lục giác" },
+  { k: "inCross", type: "check", v: true, label: "2 line chéo cắt nhau ở tâm" },
+  { k: "inFade", time: true, min: 0, max: 12, step: .01, v: .6, label: "Mờ dần sau khi khớp (s)" },
+
+  { g: "Line chạy theo cạnh logo", c: "#00e5ff" },
+  { k: "lineStart", time: true, min: 0, max: 12, step: .01, v: .9, label: "Bắt đầu (s)" },
+  { k: "lineDur", time: true, min: .2, max: 12, step: .01, v: 1.8, label: "Thời gian chạy hết cạnh (s)" },
+  { k: "lineStagger", time: true, min: 0, max: 2, step: .01, v: .1, label: "Lệch giữa các cạnh (s)", hint: "0 = tất cả cạnh chạy cùng lúc" },
+  { k: "lineEase", type: "select", opts: EASE_OPTS, v: "inOut", label: "Nhịp chạy" },
+  { k: "lineCount", min: 1, max: 4, step: 1, v: 2, label: "Số vệt mỗi cạnh" },
+  { k: "lineTail", min: .05, max: 1, step: .01, v: .45, label: "Độ dài vệt", hint: "1 = vẽ và giữ nguyên cả viền" },
+  { k: "lineFade", time: true, min: 0, max: 12, step: .01, v: .5, label: "Mờ dần sau khi chạy (s)", hint: "Chỉ có tác dụng khi vệt còn lại trên viền" },
+  { k: "lineReverse", type: "check", v: true, label: "Đảo chiều xen kẽ" },
+  { k: "lineWidth", min: .5, max: 10, step: .5, v: 2.5, label: "Độ dày line (px)" },
+  { k: "lineColor", type: "color", v: "#ffffff", label: "Màu line" },
+  { k: "lineGlow", min: 0, max: 40, step: 1, v: 0, label: "Glow của line (px)" },
+
+  { g: "Logo dissolve", c: "#ff2d75" },
+  { k: "dStart", time: true, min: 0, max: 12, step: .01, v: 1.0, label: "Bắt đầu (s)" },
+  { k: "dDur", time: true, min: .1, max: 12, step: .01, v: 1.8, label: "Thời gian hiện (s)" },
+  { k: "dEase", type: "select", opts: EASE_OPTS, v: "inOut", label: "Nhịp hiện" },
+  { k: "grain", min: 1, max: 40, step: 1, v: 6, label: "Cỡ mảng nhiễu (px)" },
+  { k: "dust", min: 0, max: 1, step: .01, v: .35, label: "Hạt li ti", hint: "0 = mảng mượt · 1 = toàn hạt pixel" },
+  { k: "soft", min: .01, max: .6, step: .01, v: .1, label: "Độ mềm biên dissolve" },
+  { k: "logoColor", type: "color", v: "#ffffff", label: "Màu logo" },
+
+  { g: "Chữ NIX (dưới logo)", c: "#ffd54f" },
+  { k: "textSource", type: "select", v: "image", label: "Nguồn chữ", opts: { image: "Ảnh Nix-text-04", font: "Chữ gõ + font" } },
+  { k: "textImage", type: "file", accept: ".png,.webp,.svg", label: "Thay ảnh chữ (PNG nền trong suốt)", hint: "Chỉ dùng trong lần mở trang này" },
+  { k: "text", type: "text", v: "NIX", label: "Nội dung (khi dùng font)" },
+  { k: "font", type: "text", v: "Acumin Variable Concept", label: "Font", wide: true, hint: "Tên font đã cài/kích hoạt trên máy, hoặc tên family trong link CSS bên dưới" },
+  { k: "fontCss", type: "text", v: "", label: "Link CSS font (Adobe Fonts)", wide: true, hint: "VD: https://use.typekit.net/abc1234.css — để trống nếu font đã kích hoạt trên máy" },
+  { k: "fontFile", type: "file", label: "Hoặc nạp file font (.otf/.ttf/.woff2)" },
+  { k: "weight", min: 100, max: 900, step: 10, v: 700, label: "Độ đậm (wght)" },
+  { k: "stretch", type: "select", v: "normal", label: "Độ rộng (wdth)", opts: {
+    "extra-condensed": "Extra condensed", condensed: "Condensed", "semi-condensed": "Semi condensed",
+    normal: "Normal", "semi-expanded": "Semi expanded", expanded: "Expanded" } },
+  { k: "tStart", time: true, min: 0, max: 12, step: .01, v: 2.1, label: "Bắt đầu (s)" },
+  { k: "tDur", time: true, min: .1, max: 12, step: .01, v: 1.2, label: "Thời gian hiện (s)" },
+  { k: "tEase", type: "select", opts: EASE_OPTS, v: "inOut", label: "Nhịp hiện" },
+  { k: "textScale", min: .04, max: .3, step: .005, v: .11, label: "Cỡ chữ" },
+  { k: "tracking", min: 0, max: .6, step: .01, v: .18, label: "Giãn chữ (em)" },
+  { k: "gap", min: 0, max: .2, step: .005, v: .06, label: "Khoảng cách logo ↔ chữ" },
+  { k: "textColor", type: "color", v: "#ffffff", label: "Màu chữ" },
+
+  { g: "Kết thúc (dissolve out)", c: "#69ff47" },
+  { k: "fadeStart", time: true, min: 0, max: 12, step: .01, v: 4.0, label: "Bắt đầu tan (s)" },
+  { k: "fadeDur", time: true, min: 0, max: 12, step: .01, v: .9, label: "Thời gian tan (s)" },
+  { k: "fadeEase", type: "select", opts: EASE_OPTS, v: "inOut", label: "Nhịp tan" },
+];
+const DEFAULTS = Object.fromEntries(DEF.filter(d => d.k).map(d => [d.k, d.v]));
+const qs = new URLSearchParams(location.search);
+const RENDER = qs.has("render");
+let P = { ...DEFAULTS };
+{
+  let saved = {};
+  try { if (!RENDER) saved = JSON.parse(localStorage.getItem("nix-intro-v2") || "{}"); } catch {}
+  if (qs.get("cfg")) Object.assign(saved, JSON.parse(qs.get("cfg")));
+  Object.assign(P, saved);
+  if (!("trimOut" in saved)) P.trimOut = P.duration;    // older saved params had no trim
+}
+// keep 0 ≤ trimIn < trimOut ≤ duration
+function fixTrim(){
+  P.trimOut = clamp(P.trimOut, .1, P.duration);
+  P.trimIn = clamp(P.trimIn, 0, P.trimOut - .1);
+}
+
+// ---------------------------------------------------------------------------
+// Logo outlines: each subpath is traced separately by the running lines
+// ---------------------------------------------------------------------------
+const LOGO = LOGO_D.map(d => new Path2D(d));
+const OUTLINES = (() => {
+  const svg = document.getElementById("measure"), out = [];
+  LOGO_D.forEach(d => {
+    let start = null;
+    d.split(/(?=[Mm])/).forEach(sub => {
+      if (sub[0] === "m"){                                   // relative move after Z -> make absolute
+        const m = sub.match(/^m(-?[\d.]+),?(-?[\d.]+)(.*)$/s);
+        const x = start[0] + +m[1], y = start[1] + +m[2];
+        sub = `M${x},${y}` + (/^[-\d.,]/.test(m[3]) ? "l" : "") + m[3];
+      }
+      const m = sub.match(/^M(-?[\d.]+),?(-?[\d.]+)/); start = [+m[1], +m[2]];
+      const el = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      el.setAttribute("d", sub); svg.appendChild(el);
+      out.push({ path: new Path2D(sub), len: el.getTotalLength() });
+    });
+  });
+  return out;
+})();
+
+// ---------------------------------------------------------------------------
+// Rendering
+// ---------------------------------------------------------------------------
+const cv = document.getElementById("c"), ctx = cv.getContext("2d");
+const layer = document.createElement("canvas"), lctx = layer.getContext("2d", { willReadFrequently: true });
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, a, b) => b <= a ? (t >= a ? 1 : 0) : clamp((t - a) / (b - a));
+const lerp = (a, b, k) => a + (b - a) * k;
+const FALLBACK_FONT = "Archivo";
+const fontOf = px => `${P.weight} ${px}px "${P.font}", "${FALLBACK_FONT}", sans-serif`;
+function setFont(c, px){ c.font = fontOf(px); c.fontStretch = P.stretch; }
+let G, NOISE = { key: "" };
+
+// load the chosen font (Adobe Fonts CSS link if given) and report whether it is really available
+async function loadFont(){
+  let link = document.getElementById("font-css");
+  if (P.fontCss){
+    if (!link){ link = document.createElement("link"); link.id = "font-css"; link.rel = "stylesheet"; document.head.appendChild(link); }
+    if (link.href !== P.fontCss){
+      link.href = P.fontCss;
+      await new Promise(r => { link.onload = link.onerror = r; setTimeout(r, 4000); });
+    }
+  } else if (link) link.remove();
+  try { await document.fonts.load(fontOf(100), P.text || "NIX"); } catch {}
+  await document.fonts.ready;
+  // a missing family falls through to the fallback, so widths match the fallback-only text
+  const probe = document.createElement("canvas").getContext("2d"), s = "NIXWMQ 0123";
+  const width = f => { probe.font = f; return probe.measureText(s).width; };
+  return ["monospace", "serif"].some(fb => width(`${P.weight} 80px "${P.font}", ${fb}`) !== width(`${P.weight} 80px ${fb}`));
+}
+function fontStatus(ok){
+  const el = document.getElementById("font-status"); if (!el) return;
+  el.textContent = ok ? `✓ Đang dùng font "${P.font}"` : `⚠ Không tìm thấy "${P.font}" — đang dùng tạm ${FALLBACK_FONT}`;
+  el.style.color = ok ? "var(--green)" : "var(--gold)";
+}
+
+// logo stacked above the text, the pair centred in the frame
+function layout(){
+  const [W, H] = ASPECTS[P.aspect];
+  if (cv.width !== W || cv.height !== H){ cv.width = W; cv.height = H; }
+  if (layer.width !== W || layer.height !== H){ layer.width = W; layer.height = H; }
+  const m = Math.min(W, H);
+  const s = m * P.logoScale / HEX_H, logoH = HEX_H * s, logoW = HEX_W * s;
+  const fs = m * P.textScale, track = P.tracking * fs;
+  // text block: the trimmed text image, or typed text in the chosen font
+  const useImg = P.textSource === "image" && TEXT_IMG.box;
+  let cap, chars = [], textW;
+  if (useImg){ cap = fs * .722; textW = cap * TEXT_IMG.box.w / TEXT_IMG.box.h; }
+  else {
+    setFont(ctx, fs);
+    cap = P.text ? ctx.measureText(P.text).actualBoundingBoxAscent : 0;
+    chars = [...(P.text || "")].map(ch => ({ ch, w: ctx.measureText(ch).width }));
+    textW = chars.reduce((a, c) => a + c.w, 0) + track * Math.max(0, chars.length - 1);
+  }
+  const gap = m * P.gap, hasText = useImg || chars.length > 0;
+  const totalH = logoH + (hasText ? gap + cap : 0);
+  const top = H / 2 - totalH / 2;
+  let x = W / 2 - textW / 2; chars.forEach(c => { c.x = x; x += c.w + track; });
+  const left = Math.floor(Math.min(W / 2 - logoW / 2, W / 2 - textW / 2) - 6);
+  const right = Math.ceil(Math.max(W / 2 + logoW / 2, W / 2 + textW / 2) + 6);
+  const bottom = Math.ceil(top + totalH + fs * .08 + 6);
+  G = { W, H, s, fs, chars, lx: W / 2, ly: top + logoH / 2, baseY: top + logoH + gap + cap,
+        splitY: top + logoH + gap / 2,
+        box: { x: clamp(left, 0, W), y: clamp(Math.floor(top - 6), 0, H), w: 0, h: 0 } };
+  G.box.w = clamp(right, 0, W) - G.box.x; G.box.h = clamp(bottom, 0, H) - G.box.y;
+  G.img = useImg ? { x: W / 2 - textW / 2, y: G.baseY - cap, w: textW, h: cap } : null;
+  buildNoise();
+}
+
+// dissolve threshold map: smooth value noise mixed with per-pixel dust
+function buildNoise(){
+  const { w, h } = G.box, key = `${w}x${h}:${P.grain}:${P.dust}`;
+  if (NOISE.key === key) return;
+  const hash = (x, y) => { const v = Math.sin(x * 127.1 + y * 311.7) * 43758.5453; return v - Math.floor(v); };
+  const sm = k => k * k * (3 - 2 * k), g = P.grain, a = new Float32Array(w * h);
+  for (let y = 0; y < h; y++){
+    const gy = y / g, iy = Math.floor(gy), fy = sm(gy - iy);
+    for (let x = 0; x < w; x++){
+      const gx = x / g, ix = Math.floor(gx), fx = sm(gx - ix);
+      const n = (hash(ix, iy) * (1 - fx) + hash(ix + 1, iy) * fx) * (1 - fy) + (hash(ix, iy + 1) * (1 - fx) + hash(ix + 1, iy + 1) * fx) * fy;
+      a[y * w + x] = n * (1 - P.dust) + hash(x + .37, y + 91.3) * P.dust;
+    }
+  }
+  NOISE = { key, a };
+}
+
+function drawContent(c){
+  c.save(); c.translate(G.lx, G.ly); c.scale(G.s, G.s); c.translate(-LC, -LC);
+  c.fillStyle = P.logoColor; LOGO.forEach(p => c.fill(p)); c.restore();
+  if (G.img){
+    const b = TEXT_IMG.box;
+    c.drawImage(TEXT_IMG.img, b.x, b.y, b.w, b.h, G.img.x, G.img.y, G.img.w, G.img.h);
+    return;
+  }
+  setFont(c, G.fs); c.textBaseline = "alphabetic"; c.fillStyle = P.textColor;
+  G.chars.forEach(ch => c.fillText(ch.ch, ch.x, G.baseY));
+}
+
+// text image (assets/logo/Nix-text-04.png embedded as a data URI so the canvas stays readable for the dissolve)
+const TEXT_IMG_SRC = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAscAAAFLCAYAAAA6bCEQAAAACXBIWXMAABcRAAAXEQHKJvM/AAAY3klEQVR4nO3d7VFb2ZYG4HOn7n/IAGdgZwATAdwITEdgHAEiAosILs4AMoAMIAPIACLoKbUX026bD30cSXuv9TxVU/PvlkBu8Wqfd6/1rz///HMAAACG4X/8DgAA4AfhGAAAgnAMAABBOAYAgCAcAwBAEI4BACAIxwAAEIRjAAAIwjEAAAThGAAAgnAMAABBOAYAgCAcAwBAEI4BACAIxwAAEIRjAAAIwjEAAAThGAAAgnAMAABBOAYAgCAcAwBAEI4BACAIxwAAEIRjAAAIwjEAAAThGAAAgnAMAABBOAYAgCAcAwBAEI4BACAIxwAAEIRjAAAIwjEAAAThGAAAgnAMAABBOAYAgCAcAwBAEI4BACAIxwAAEIRjAAAIwjEAAAThGAAAgnAMAABBOAYAgCAcAwBAEI4BACAIxwAAEIRjAAAIwjEAAAThGAAAgnAMAABBOAYAgPDvhL+I6TAMnxp4Hdt2MgzDbe1fQZOuE/0sBw28hk05jv/L6DY+L7ZhdxiGi/j/lV3E/9GHy0L/Zh+HYThq4HVsVMZwPAvG+w28jm278CWhSf5t9umD924tHiNo/Dfhz7aI/fiS4kCjfbMDuMNCP+//NvAaNk6tIq+PwzBMqv8SgObNvsh/9zY5Qe/A7AT1S6Gf92uyp51zE45zO3V6DHRgVlm5K/5GfYxTSdr0oVj15aryv0fhOD89NqAHs1O5p+Lv1OfE3fbezeo/O0V+1rvq/w6F4/zUK4Ae3Ff/gxymcUpJOybxt7SC2RfU47gPUJZwXMOJD1ugA7PTufPib9RO/B5ow0FUFKuYBePyF0OF4xp21CuATsy+zN8Uf7P0j9uwW+yLyrkvZj8Ix3Xsb3GWKcAi9I9/TEUoN1+2MZV6xjcywt+E41om6hVAB0ouHniB8W7bMyk02/zJf2//JBzXol4B9GI2X/Ws+Lulf7wd1XrGB9Uv4P1KOK5HvQLoxSTmrVa2b+LQRu0WO0T6wwW83wnHNalXAL2Y3Z5/KP5uncbpHus3C8Z7RX7P3z1NfplwXJN6BdAL/eMf9I/Xb/ZU9TD7DxnuPEV+nXBc174/OEAnZo99vxZ/s/YcaqzVp2EYviX++X72fAFPz/gVwnFtTiKAXkzjMXBlh0771qLaPOPj2EjJK4Tj2tQrgJ6cxOPgyr7FKSfjqdQzPjMB5X3CMYfqFUAnHuPUq/qCEE/9xnNcqGd8ZfLJfIRjBh+0QEduVQuslx7Jp0K/x4f4IsAchGMG9QqgMxf6x8NnYWclz/OMK6yHdgFvQcIxz9QrgJ4c6x//deppZv1ypnECX8GJRR+LEY75mXoF0JOj4v1j66WXcxwn7xVY9LEE4ZifqVcAPblXLdA/XtCHQr+vO/99LEc45lfqFUBPZien58XfsS8+t+d2WahnbOX4koRjXjJVrwA6MutU3hR/w9Ti3lepZ+wC3gqEY16yZxYi0Bn9Y/3jtxzFCXsFs1Xr10V+1rUQjnnNF49kgI48qhYM+w42XvSh0H2aKx301QnHvMVjOqAn17Eet7JTBxu/qdIzdgFvJMIxb1GvAHozidOzyhxs/G1SpGf8FMFYz3gEwjHvUa8AenMc63Kr2jOW8y8HcZJewbFFH+MRjpmHUwigJ/rHP8ZynjTwOrZlt9AFxXOXMcclHDMP9QqgN7dxa7+yb8MwfCr681fpGd8U/xK0FsIx81KvAHozjfW5lVV88jeJyR3ZPXlCsh7CMYtQrwB6cxK3+Kuqtl66Us/4wAW89RCOWYR6BdCbx7isVHlByOciI752C11E/MMFvPURjlmUegXQm1u9zL9Ojz808DrW6SIOcbL7bhrJegnHLMP2HaA3F3Grv6rs66VPYkJHdne+6K2fcMwyPqpXAB3SP855uPEpJnNk93wBT894zYRjlnVaeEQQ0K+j4v3jL8kmHFSaZzzrjd838DrSE45Zhc4T0Jv7IpfT3pJp8lCVnvGZRR+bIxyzCvUKoEeXETaqytI/Pi7SM77yt3azhGNWpV4B9GgS28Wq2u88cH0qcjn8wZOOzROOGYN6BdCj6v3j005Hcz7PM86+HtoFvC0RjhmDegXQo0frd7vsH0/j7052JxZ9bIdwzFjUK4AeXQ/D8LXwO7fX2dO/49j4l51FH1skHDMm/yEDPZrGpaeqDjtZLPGhSM/4Ts94u4RjxqReAfTqOC4/VfWtg6d/l0V6xj32wFMRjhmbegXQI/3jH+Gz1f5xlZ6xC3gNEI5ZB/UKoEezy09/FH7n9hqtLRzFZr/svkYHni0TjlkH9QqgVxdxGaqqz431XT8UOXC5KtKn7oJwzLqoVwC9OolLUVVNG/r8rjDP2AW8xgjHrJN6BdCjxwgrVReE7DTy+T2JTX6ZPcW/NT3jhgjHrJN6BdCr207Gm63Lxy0/5j+IJ5DZHVv00R7hmHU7jc4YQG9mp6fnhd+1L1ua4LEbkzOyOy/yc3ZHOGYT1CuAXlXvH19s4YCjwjzjm+JPJpomHLfpP8m6bvs+BICOHekfb0yVnnH1mdpNE47blHFF5kS9AujUffFpAvsbuj/yqUjP+MAFvLYJx23ajXCc6aSildvPAMuYPeo/K/ybO13zWuMqPeM/XMBrn3DcrseEVQT1CqBnk+iKVrXO9dIXsaEvs+8OifogHLdt9h/RQ7KfSb0C6Jn+8fhmhyaH2/7h1uzO4VA/hOM2/byZKFvPTb0C6Nlj8ctUhyOHvNnfu28j/u+16PkCnp5xJ4TjNv382Oo64WM89QqgZ7PP5a+F38FvI62XrtIzPo5LnXRCOO5DxlvS6hVAz2aXpq8Kv4Nj9I+nBXrGZxZ99Ec47sN9wi1N6hVA744T3guZ196KI0dnv7vPm33JG3e1oRF4jEw47sck4SUQ9QqgZ9X7x5+XfLL5KeEs/189FJ+N3TXhuE0vbQd6TPoNVL0C6NltzK6tarpg/3g3nhpmXg/tAl7nhOO+TBPu+FevAHp3ETNsK1r0M3z2d+xj8t/TiUUffROO+5OxhqBeAfTuJOHhxbw+zlmTOCrQM7boIwHhuD/XSW9Iq1cAPXuMjmnVBSFf3ulffygQGu/0jHMQjvt0kvADWL0C6N1t8adgF28cclwW6BkfNPA6GIFw3K63TlHvk970Va8AeneRcPTmvF475KjQM3YBLxHhuF3vVQwmSedrqlcAvavcP97/ZbLSUVQuMvsalUeSEI77lrHbpF4BZHBUuH98GhWDCj3jqwIzm8sRjvuW9XKeegXQu/vil7MuC/SMXcBLSjjuX8bLeYN6BZDALByeFX0jd5L3jJ8iGOsZJyQc9y/r5Tz1CiCD2Rf9G+9kOscWfeQlHLdrd4FXlvVynnoFkEHl/nFG5/FUgKSE43Ytsqt+SNx7Uq8Aevf4zoIM+nHj0CY/4TiPrJfz1CuADK5j5Bf9evIlpwbhOJesl/PUK4AMpkkPMao4cAGvBuE4l6yX8wb1CiCJ46R3RLL7wwW8OoTjfLJezlOvADLQP+7Pd39/ahGOc8p6OU+9AsjgNk4iad+dvzv1CMc5Zb2cN6hXAElcxIkk7Xq+gKdnXIxwnNdx0st56hVAFidxMkmbjuMuD8UIx+06WPGVPcYpa0bqFUAGj4kPMnp3ZtFHXcJxbtPEpxLqFUAGt4nvifTqKvHhEnMQjvPLesKqXgFkcRkridm+B19WEI7zu078oateAWShf7x9LuDxF+G4hkniTpt6BZDFkf7xVp1Y9MEgHJfxqF4B0Lx7C0K2xqIP/p9wXMfsP/qbpD+tegWQxXVMSmBz7vSM+ZlwXEvm//hn9YrdBl4HwKomiQ8zWvM0wuhUkhGOa7lPfCKhXgFkon+8GS7g8RvhuJ5pjKrJ6FBfD0ji0Ynm2n2NGgv8g3Bcz2PyesWFegWQxG0EOMZ3FYdF8BvhuF3rDHjX8cGQkXoFkMk08ef1triAx5uE43Z9XPMrO0ncZ1OvADI5TlyH27Sn+H3qGfMq4biu++S749UrgCweXdAbzbFFH7xHOK5tmnhdqXoFkMmtee4rOx+G4bLzn4ENEI7J3LtqsV7h5AdY1kVscmNxN75cMC/hmNv4Np1Va/UKj/OAVZwkfuK3Lk/uobAI4ZghusdZL3uoVwCZPI/j9BRqfgcu4LEI4ZghPjQyP24yvQLI5NYosrn94YkdixKOeXaZfJe/6RVAJpfJK3Fj+O7JIcsQjvlZ5kd16hVANvrHr7tzAY9lCcf87D75Ok31CiAb849/93wBT8+YpQjH/GqS/CRCvQLI5N6X/t8cx+8FliIc85LMj6LUK4BsrodhOPOu/uXMog9WJRzzkuvkFz3UK4BsJskvVc/Lk0FWJhzzmknyHpt6BZCN/vEwfHH4waqEY17zmHyO5k58AQDIIvvM+nnNDj8+9PFSaZFwzFuyzz7+EpuTADLYTT5xaF47esesQjjmPdnXlKpXAFlcRjBkGD76osCyhGPek3328Z56BZDA7HNs3xv5D/rHLEU4Zh7ZZx+rVwA9m31+nXoHX6R/zMKEY+aV/ZKHegXQo1392jc99499vjM34Zh5ZZ99rF4B9EjP+H36xyxEOGYR2Wcfz+oVnxp4HQDz0DOe3+fk40kZkXDMIrLPPh6slgY6oWe8uKkDEOYhHLOo7LOPP6pXAI3TM17OjvslzEM4ZhnZZx+fOl0AGqZnvDz9Y94lHLOM7LOPB/UKoFF6xqvTP+ZNwnHbWp69m332sXoF0Bo94/HoH/Mq4ZhVZJ99fLKG4fG3I//vATXoGY9L/5hXCcesIvvs45011CseR/7fA2q41jMenf4xLxKOWdWsevCQ+Le4X+CEHGjbNIIc4/vsM55fCces6rHAB8vEozdgS45iQRHr803/mJ8Jx4xh1oO7SvybXEe9AuA9H3z2bMylQxCeCceM5ST57OPDOMEB2BTzjDdnzxcRngnHjOW+wOgzN5uBTdEz3rxD/WMG4ZiRTZPPPt4x+xjYAD3j7dE/RjhmdNm3Dn1pfDkL0Dc94+3TPy5OOGZssyUXZ8l/q/5wAeuiZ7x9+sfFCceswzT57OM99QpgDfSM23Hoc74u4Zh1eCxQrzhdcrX09RpeC9A/PeP2nKrR1SQcsy7XyWcfDx67ASPRM26X/nFBwjHrdJx89vF+gRNyYP30jNu1E+8PhQjHrFOF1dJTpwrACvSM27evf1yLcMy6zR4V3iT+Le/EHzeARekZ90P/uBDhmE3IXj347EMTWJCecX/0j4sQjtmE+wKzj50eA4vQM+6P/nERwjGbMkm+WvrjnJ202w28FqBtF3rG3dp3GJKfcMwmZb+cdzLH7OPHDb0WoE3HUcWiX1+iL05SwjGbNJt9fJ74N+5yHvCWTz4j0rhYchEUHRCO2bRJ8tnHhy7nAS/YjUClZ5yD/nFiwjGbVmG1tBvowK/MM87noycBOQnHbMNl8tXSe+9czst8cg78Ts84L/3jhIRjtuUkeUh863KeiRVQR6We8ddhGB4aeB2bpn+cjHDMttwnX8e5Y90olFepZ3weXwIqnqLqHycjHLNN0+Szj23Og9qq9IwffjoMuC2w9OklH903yUM4ZtuyX85zegw1VeoZH/0yw332uXezxdezLZ8L/E0rQThm27KfMuy/8GGpcwy5VeoZn73ymXZU9PLxNN5/OiYc04Jp8ksck+gePrMlD/Kq1DO+eePp2GPh/vHFL5/5dEY4pgXZZx/vFVidDfxQpWf8NMfndvatqK8x/7hzwjGtmH2Ifk/8brw12g3IoVLP+DimDr3nJPnF69foH3dMOKYlmWcf/zza7XrLrwUYX6We8dWCo8v0j+mKcExLstcrPjs9hpQq9Ywflvicvi9aLdM/7pRwTGsuk48AMgcT8qnSMx4iGC9zqfgieXXuNfrHHRKOadFx4kdw+w28BmA8lXrGZyvWwk6KrpfWP+6McEyL7pN/03Z6DDnM+qT/LfJe3o2w1KjqeLch/p3oH3dCOKZVk8Q3nPcaeA3AanYXvJTWs3nGts1rtjDka9F/e5f6x30QjmmZx1BAqy4KfdGdjLzZc1p0vfSeJ4d9EI5p2W3RAfJA22bd2cMi79HVmmpuVce7HVoK1T7hmNZNil7gANo0641+K/LejFmn+FXl/vE3/eO2Cce0LvvsY6AflXrGQ4TXZca2zes6JmBUpH/cMOGYHlzHoz2AbarUMz7f0DbPzJev36J/3DDhmF5knn0MtK9Sz3iMsW2L0D+mKcIxvXj0IQJsSaWe8bDCFrxl3Reuz83+XR008Dr4iXBMTy6Kjv8Btqdaz/jryGPb5nVZdL30oH/cHuGY3qhXAJtUqWd8s+XtpCdF+8c7xb6ANU84pjfZV0sD7ajUM35qYLRa5elE+xvuefMG4ZgeVb3dDGyOnvF2VF4vfap/3AbhmF6ZfQysS7We8ffGft5p4fGd+scNEI7pldXSwLpU6hk/NDoJ6LjodlT94wYIx/TMamlgbJV6xsMGtuAtS/+YrRGO6ZnV0sCYqvWMz7Y0tm1elddLnzZwQbIs4ZjeWS0NjGF3Q+uSW7HpLXjLmhSebz+r93xo4HWUIxyTgdnHwKouo+9ZQQtj2xZR9TNe/3hLhGMysFoaWMUkep5VnMTM+F5UXi/90Wz/zROOycJqaWAZB9HvrOIqPi97c1l4QtEX/ePNEo7JRL0CWES1ecYPnZ/AVl4ApX+8QcIxmVgtDSyiUs94aGgL3rIe9Y/ZBOGYbKyWBuZRrWd8nmQax23hOyb6xxsiHJOR2cfAW6r1jO+SBcqLwiM89Y83QDgmI6ulgddU6xk/JT0wqLpeeogvB58aeB1pCcdkZbU08JJqPeNJ41vwlvVY+AR1JwLybgOvJSXhmKyslgZ+Va1nfJW8o3pbeL20/vEaCcdkZrU08KxazzhrneJXlddLf3YItB7CMdmZfQxU6xkPCca2LeKo8Of8VP94fMIx2VktDVTrGZ8X+zJQuUanf7wGwjEVWC0NdVXrGd/Fz1xN5fXS+scjE46pQr0C6qnWMx6K1Sl+dVJ4CZT+8YiEY6qwWhpqqdgz/pp0bNsi9I9ZmXBMJVZLQx3XxXrGNw4A/nJf+J7JTnwh1D9ekXBMNR47QX7T6GFWUWVs27xm90y+9/FSR7cXPz8rEI6pxmppyG32WP1Lsff4OE5M+dtJ4S2ph6Y0rUY4piKrpSGnDwVPzb4X7FbPo/J66Zlv+sfLE46pyGppyKnaPOMHJ4Rvuo1LilXpHy9JOKaq68KdNMioWs94KD62bV7TwnPu9Y+XJBxT2YnZx5BCxZ7xWXzJ532Vx7vpHy9BOKYy9QroX8WecdUteMvSP9Y/XohwTHWXVktD16r1jJ+KB71lXRefVHStfzw/4RisloZeVewZnxjbtrTK66V3TDWZn3AMP/7QeEQJfanYM75ywWpllfvH+/7WzUc4hh+mVktDNyr2jG3BG8d98d/j6TAMBw28jqYJx/A3f3igD9V6xkOceBrbNo7L4qM8zT9+h3AMf7uN8UhAuyr2jM+NbRud/jGvEo7hn6ZWS0OzKvaM78ypXYvqozz1j98gHMM/Vf/AhFbpGTO26uul9Y9fIRzD76yWhvZU7BlPIsCxPtOYAlKV/vELhGN4mdXS0I6Lgj3jmwhurF/lWfc7+uy/E47hZeoV0IbZf4efi70XtuBtVvX10h99Efsn4RheZ7U0bNenon+0j41t27jr4tOKvvhC9jfhGN5mtTRsx27UKar1jM+N2dqaSfEDkYu4+FqecAxvs1oatqPiPOMHnzdbV71/XP6L2SAcw1yslobNqtgzHmzBa0L19dLl+8eDcAxzczkPNqNqz/jM2LZmXEa9pary/WPhGOZjtTSsX9We8Y06RXMmxZ8Ylu4fC8cwP6ulYb0q9oxtwWvTo/5x3QUhwjHMz+xjWJ+qPePj6LnSntviJ/pl+8fCMSzGamkYX9We8ZXpAM2rvl76c8VDIeEYFme1NIynas/4wZOobhwXr9RN4wtsGcIxLE69AsZTsWc82ILXlerrpXfiC2yZ/rFwDMuxWhpWV7VnfBYVLfpRfWJRqf6xcAzLs1oalle1Z3xnbFu3qq+XLtM/Fo5heVZLw3Kq9oyfqi9XSOCo+KFIif7xvxt4DWPLtGFIH619sw+Kg6qzIAu5T3xitI3PzOc1ydVO4S6Mbeve852Tk8K/g/Q//7/+/PPPBl4GAABsn1oFAAAE4RgAAIJwDAAAQTgGAIAgHAMAQBCOAQAgCMcAABCEYwAACMIxAAAE4RgAAIJwDAAAQTgGAIAgHAMAQBCOAQAgCMcAABCEYwAACMIxAAAE4RgAAIJwDAAAQTgGAIAgHAMAQBCOAQAgCMcAABCEYwAACMIxAAAE4RgAAIJwDAAAQTgGAIAgHAMAQBCOAQAgCMcAABCEYwAACMIxAAAE4RgAAIJwDAAAQTgGAIAgHAMAQBCOAQAgCMcAABCEYwAACMIxAAAE4RgAAIJwDAAAQTgGAIAgHAMAQBCOAQAgCMcAABCEYwAACMIxAADMDMPwf4klb6SW6BzOAAAAAElFTkSuQmCC";
+const TEXT_IMG = { img: null, box: null };
+async function loadTextImage(src){
+  const img = new Image(); img.src = src; await img.decode();
+  const c = document.createElement("canvas"); c.width = img.width; c.height = img.height;
+  const x = c.getContext("2d"); x.drawImage(img, 0, 0);
+  const d = x.getImageData(0, 0, c.width, c.height).data;
+  // crop to the visible pixels so transparent padding doesn't affect layout
+  let x0 = c.width, y0 = c.height, x1 = -1, y1 = -1;
+  for (let y = 0; y < c.height; y++) for (let i = 0; i < c.width; i++){
+    if (d[(y * c.width + i) * 4 + 3] > 8){ if (i < x0) x0 = i; if (i > x1) x1 = i; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+  }
+  TEXT_IMG.img = img;
+  TEXT_IMG.box = x1 < 0 ? null : { x: x0, y: y0, w: x1 - x0 + 1, h: y1 - y0 + 1 };
+}
+
+function drawDissolve(t){
+  // the outro runs the same noise threshold backwards, so it dissolves away like it came in
+  const pl = Math.min(EASE[P.dEase](seg(t, P.dStart, P.dStart + P.dDur)), OUT_A);
+  const pt = Math.min(EASE[P.tEase](seg(t, P.tStart, P.tStart + P.tDur)), OUT_A);
+  if (pl <= 0 && pt <= 0) return;
+  lctx.clearRect(0, 0, G.W, G.H); drawContent(lctx);
+  if (pl < 1 || pt < 1){
+    const { x: bx, y: by, w, h } = G.box;
+    if (w <= 0 || h <= 0) return;
+    const img = lctx.getImageData(bx, by, w, h), d = img.data, n = NOISE.a, sf = P.soft;
+    for (let y = 0; y < h; y++){
+      const p = by + y < G.splitY ? pl : pt;
+      if (p >= 1) continue;
+      const row = y * w;
+      if (p <= 0){ for (let x = 0; x < w; x++) d[(row + x) * 4 + 3] = 0; continue; }
+      const pp = p * (1 + sf);
+      for (let x = 0; x < w; x++){
+        const i = (row + x) * 4 + 3; if (d[i] === 0) continue;
+        d[i] *= clamp((pp - n[row + x]) / sf);
+      }
+    }
+    lctx.putImageData(img, bx, by);
+  }
+  ctx.drawImage(layer, 0, 0);
+}
+
+// comet-like strokes running along every outline of the logo
+function drawLines(t){
+  ctx.save(); ctx.translate(G.lx, G.ly); ctx.scale(G.s, G.s); ctx.translate(-LC, -LC);
+  ctx.strokeStyle = P.lineColor; ctx.lineWidth = P.lineWidth / G.s; ctx.lineCap = "round"; ctx.lineJoin = "round";
+  if (P.lineGlow > 0){ ctx.shadowColor = P.lineColor; ctx.shadowBlur = P.lineGlow; }
+  const T = P.lineTail, n = P.lineCount;
+  OUTLINES.forEach((o, j) => {
+    const st = P.lineStart + j * P.lineStagger, end = st + P.lineDur;
+    const k = seg(t, st, end); if (k <= 0) return;
+    const keep = T >= 1;
+    const alpha = keep ? 1 - seg(t, end, end + P.lineFade) : 1;
+    if (alpha <= 0) return;
+    const kk = k * (keep ? 1 : 1 + T);
+    const uh = EASE[P.lineEase](clamp(kk)), ut = keep ? 0 : EASE[P.lineEase](clamp(kk - T));
+    if (uh - ut <= 1e-4) return;
+    const cover = o.len / n, dir = P.lineReverse && j % 2 ? -1 : 1;
+    ctx.globalAlpha = alpha * OUT_A;
+    for (let i = 0; i < n; i++){
+      const base = i * cover, a = base + dir * ut * cover, b = base + dir * uh * cover;
+      const from = Math.min(a, b), len = Math.abs(b - a);
+      ctx.setLineDash([len, Math.max(.001, o.len - len)]);
+      ctx.lineDashOffset = -from;
+      ctx.stroke(o.path);
+    }
+  });
+  ctx.restore();
+}
+
+// lines flying in from outside along the hexagon's edges: each shoots through
+// the vertex (intersection point), then settles exactly on its edge
+function drawInLines(t){
+  if (!P.inOn) return;
+  const E = EASE[P.inEase];
+  const seg2 = (A, B, u0, u1) => { ctx.beginPath(); ctx.moveTo(lerp(A[0], B[0], u0), lerp(A[1], B[1], u0)); ctx.lineTo(lerp(A[0], B[0], u1), lerp(A[1], B[1], u1)); ctx.stroke(); };
+  ctx.save();
+  ctx.strokeStyle = P.lineColor; ctx.lineCap = "round"; ctx.globalAlpha = OUT_A;
+  if (P.lineGlow > 0){ ctx.shadowColor = P.lineColor; ctx.shadowBlur = P.lineGlow; }
+  // two diagonals that fly through the logo centre, crossing there
+  if (P.inCross){
+    const r = Math.hypot(G.W, G.H) * .55, a = 35 * Math.PI / 180;
+    ctx.lineWidth = P.lineWidth;
+    [-1, 1].forEach((sx, i) => {
+      const st = P.inStart + i * .08, k = seg(t, st, st + P.inDur * .8);
+      if (k <= 0 || k >= 1) return;
+      const A = [G.lx - sx * Math.cos(a) * r, G.ly - Math.sin(a) * r], B = [2 * G.lx - A[0], 2 * G.ly - A[1]];
+      seg2(A, B, E(clamp(k * 1.6 - .6)), E(k));
+    });
+  }
+  ctx.translate(G.lx, G.ly); ctx.scale(G.s, G.s); ctx.translate(-LC, -LC);
+  ctx.lineWidth = P.lineWidth / G.s;
+  (P.inInner ? [1, INNER_K] : [1]).forEach((sc, r) => {
+    const pt = v => [LC + (v[0] - LC) * sc, LC + (v[1] - LC) * sc];
+    for (let i = 0; i < 6; i++){
+      const st = P.inStart + (r * 6 + i) * P.inStagger, end = st + P.inDur;
+      const k = seg(t, st, end); if (k <= 0) continue;
+      const alpha = 1 - seg(t, end, end + P.inFade); if (alpha <= 0) continue;
+      let A = pt(HEXV[i]), B = pt(HEXV[(i + 1) % 6]);
+      if (i % 2) [A, B] = [B, A];                         // alternate directions so lines cross at vertices
+      const F = P.inFrom, O = P.inOver;
+      const hu = k < .7 ? lerp(-F, 1 + O, E(k / .7)) : lerp(1 + O, 1, EASE.out((k - .7) / .3));
+      const tu = Math.min(hu, lerp(-F - 1, 0, E(k)));
+      ctx.globalAlpha = alpha * OUT_A;
+      seg2(A, B, tu, hu);
+    }
+  });
+  ctx.restore();
+}
+
+let OUT_A = 1;   // 1 → 0 over the outro; logo/text dissolve out, any remaining lines fade
+function renderFrame(t){
+  OUT_A = 1 - EASE[P.fadeEase](seg(t, P.fadeStart, P.fadeStart + P.fadeDur));
+  ctx.setLineDash([]); ctx.globalAlpha = 1;
+  ctx.clearRect(0, 0, G.W, G.H);
+  if (!P.transparent){ ctx.fillStyle = P.bg; ctx.fillRect(0, 0, G.W, G.H); }
+  drawDissolve(t);
+  drawInLines(t);
+  drawLines(t);
+}
+
+// ---------------------------------------------------------------------------
+// Editor UI
+// ---------------------------------------------------------------------------
+let time = 0, playing = false, looping = true, dirty = true, recorder = null;
+const $ = id => document.getElementById(id);
+const msg = s => { $("msg").textContent = s; clearTimeout(msg.t); msg.t = setTimeout(() => $("msg").textContent = "", 3500); };
+const save = () => { try { localStorage.setItem("nix-intro-v2", JSON.stringify(P)); } catch {} };
+const INPUTS = {};
+
+function buildControls(){
+  const root = $("controls"); root.innerHTML = "";
+  let box = root;
+  DEF.forEach(d => {
+    if (d.g){
+      const det = document.createElement("details"); det.open = true;
+      det.innerHTML = `<summary><i style="background:${d.c}"></i>${d.g}</summary>`;
+      root.appendChild(det); box = det; return;
+    }
+    const row = document.createElement("div"); row.className = "row";
+    const lab = document.createElement("label"); lab.textContent = d.label; row.appendChild(lab);
+    const set = v => {
+      if (d.k === "duration") scaleTimes(v / P.duration);
+      P[d.k] = v; save(); onChange(d.k);
+    };
+    let el;
+    if (d.type === "select"){
+      el = document.createElement("select");
+      Object.entries(d.opts).forEach(([v, l]) => el.add(new Option(l, v)));
+      el.value = P[d.k]; el.onchange = () => set(el.value);
+      if (Object.values(d.opts).some(l => l.length > 8)) row.classList.add("wide");
+      row.appendChild(el);
+    } else if (d.type === "color" || d.type === "text"){
+      el = document.createElement("input"); el.type = d.type; el.value = P[d.k];
+      if (d.k === "font" || d.k === "fontCss") el.onchange = () => set(el.value.trim());   // reload font on commit, not per keystroke
+      else el.oninput = () => set(el.value);
+      if (d.wide) row.classList.add("wide");
+      row.appendChild(el);
+    } else if (d.type === "file"){
+      // font / text-image file loaded in the browser only (not saved with the parameters)
+      row.classList.add("wide");
+      el = document.createElement("input"); el.type = "file"; el.accept = d.accept || ".otf,.ttf,.woff,.woff2";
+      el.style.gridColumn = "1/-1";
+      el.onchange = async () => {
+        const file = el.files[0]; if (!file) return;
+        if (d.k === "textImage"){
+          try {
+            const url = await new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = no; r.readAsDataURL(file); });
+            await loadTextImage(url); P.textSource = "image"; syncControls(); layout(); dirty = true; msg(`Đã thay ảnh chữ: ${file.name}`);
+          } catch { msg("Không đọc được ảnh."); }
+          return;
+        }
+        try {
+          const face = new FontFace(P.font, await file.arrayBuffer(), { weight: "100 900", stretch: "50% 200%" });
+          document.fonts.add(await face.load());
+          msg(`Đã nạp ${file.name} với tên "${P.font}".`); onChange("font");
+        } catch { msg("Không đọc được file font."); }
+      };
+      row.appendChild(el);
+      INPUTS[d.k] = { el: { set value(v){} }, d }; box.appendChild(row); return;
+    } else if (d.type === "check"){
+      el = document.createElement("input"); el.type = "checkbox"; el.checked = P[d.k];
+      el.onchange = () => set(el.checked); row.appendChild(el);
+    } else {
+      const num = document.createElement("input"); num.type = "number";
+      Object.assign(num, { min: d.min, max: d.max, step: d.step, value: P[d.k] });
+      const rng = document.createElement("input"); rng.type = "range";
+      Object.assign(rng, { min: d.min, max: d.max, step: d.step, value: P[d.k] });
+      rng.oninput = () => { num.value = rng.value; set(+rng.value); };
+      num.onchange = () => { rng.value = num.value; set(+num.value); };
+      row.appendChild(num); row.appendChild(rng);
+      el = { set value(v){ num.value = +(+v).toFixed(2); rng.value = v; } };
+    }
+    if (d.hint){ const h = document.createElement("small"); h.textContent = d.hint; row.appendChild(h); }
+    if (d.k === "font"){ const st = document.createElement("small"); st.id = "font-status"; row.appendChild(st); }
+    INPUTS[d.k] = { el, d };
+    box.appendChild(row);
+  });
+}
+// changing the total duration stretches every timing parameter (and the playhead) by the same ratio
+function scaleTimes(r){
+  if (!isFinite(r) || r === 1) return;
+  DEF.forEach(d => { if (d.time) P[d.k] *= r; });
+  time *= r;
+  Object.values(INPUTS).forEach(({ el, d }) => { if (d.time) el.value = P[d.k]; });
+}
+function syncControls(){
+  Object.values(INPUTS).forEach(({ el, d }) => { if (d.type === "check") el.checked = P[d.k]; else el.value = P[d.k]; });
+}
+function onChange(k){
+  if (["font", "fontCss", "weight", "stretch", "text"].includes(k)) loadFont().then(ok => { fontStatus(ok); layout(); dirty = true; });
+  if (["aspect", "logoScale", "textScale", "tracking", "gap", "text", "textSource", "grain", "dust", "weight", "stretch"].includes(k)) layout();
+  if (k === "aspect") markAspect();
+  if (["trimIn", "trimOut", "duration"].includes(k)){
+    fixTrim(); save();
+    ["trimIn", "trimOut"].forEach(t => INPUTS[t] && (INPUTS[t].el.value = P[t]));
+    time = clamp(time, P.trimIn, P.trimOut);
+  }
+  dirty = true;
+}
+function markAspect(){ document.querySelectorAll("[data-aspect]").forEach(b => b.classList.toggle("on", b.dataset.aspect === P.aspect)); }
+
+// timeline: one bar per section + draggable playhead
+const tl = $("tl"), tctx = tl.getContext("2d");
+function drawTimeline(){
+  const r = tl.getBoundingClientRect(), dpr = devicePixelRatio || 1;
+  if (tl.width !== Math.round(r.width * dpr)){ tl.width = Math.round(r.width * dpr); tl.height = Math.round(r.height * dpr); }
+  const W = tl.width, Hh = tl.height, pad = 90 * dpr, x = t => pad + (W - pad - 12 * dpr) * t / P.duration;
+  tctx.clearRect(0, 0, W, Hh);
+  tctx.font = `${11 * dpr}px "JetBrains Mono"`; tctx.textBaseline = "middle";
+  // ticks
+  tctx.fillStyle = "#2c3750";
+  for (let s = 0; s <= P.duration + 1e-6; s += .5){
+    const X = x(s); tctx.fillRect(X, 0, 1, Hh);
+    if (Math.abs(s % 1) < 1e-6){ tctx.fillStyle = "#6b7690"; tctx.fillText(s + "s", X + 3 * dpr, 9 * dpr); tctx.fillStyle = "#2c3750"; }
+  }
+  const lastLine = P.lineStart + (OUTLINES.length - 1) * P.lineStagger + P.lineDur;
+  const lastIn = P.inStart + ((P.inInner ? 12 : 6) - 1) * P.inStagger + P.inDur;
+  const rows = [
+    ...(P.inOn ? [["Line ngoài", "#7c4dff", P.inStart, lastIn, P.inFade]] : []),
+    ["Line cạnh", "#00e5ff", P.lineStart, lastLine, P.lineTail >= 1 ? P.lineFade : 0],
+    ["Dissolve", "#ff2d75", P.dStart, P.dStart + P.dDur, 0],
+    ["Chữ", "#ffd54f", P.tStart, P.tStart + P.tDur, 0],
+    ["Tan ra", "#69ff47", P.fadeStart, P.fadeStart + P.fadeDur, 0],
+  ];
+  const rh = (Hh - 22 * dpr) / rows.length;
+  rows.forEach(([name, col, a, b, tail], i) => {
+    const y = 20 * dpr + i * rh + rh / 2;
+    tctx.fillStyle = "#b3bccf"; tctx.fillText(name, 10 * dpr, y);
+    tctx.fillStyle = col; tctx.globalAlpha = .85;
+    tctx.fillRect(x(a), y - rh * .28, Math.max(2, x(b) - x(a)), rh * .56);
+    if (tail > 0){ tctx.globalAlpha = .3; tctx.fillRect(x(b), y - rh * .28, x(b + tail) - x(b), rh * .56); }
+    tctx.globalAlpha = 1;
+  });
+  // trimmed-off head/tail are dimmed; gold handles mark the kept range
+  const a = x(P.trimIn), b = x(P.trimOut);
+  tctx.fillStyle = "rgba(4,6,10,.72)";
+  tctx.fillRect(pad, 0, a - pad, Hh); tctx.fillRect(b, 0, W - b, Hh);
+  tctx.fillStyle = "#ffd54f";
+  tctx.fillRect(a, 0, b - a, 2 * dpr); tctx.fillRect(a, Hh - 2 * dpr, b - a, 2 * dpr);
+  [[a, 1], [b, -1]].forEach(([hx, dir]) => {
+    tctx.fillStyle = "#ffd54f";
+    tctx.fillRect(dir > 0 ? hx : hx - 8 * dpr, 0, 8 * dpr, Hh);
+    tctx.fillStyle = "#0e131d";
+    const gx = dir > 0 ? hx + 3 * dpr : hx - 5 * dpr;
+    tctx.fillRect(gx, Hh / 2 - 9 * dpr, 2 * dpr, 18 * dpr);
+  });
+  const X = x(time);
+  tctx.fillStyle = "#eef2f8"; tctx.fillRect(X - dpr, 0, 2 * dpr, Hh);
+}
+// timeline geometry in CSS px (matches drawTimeline)
+const TL_PAD = 90;
+const tlX = t => TL_PAD + (tl.getBoundingClientRect().width - TL_PAD - 12) * t / P.duration;
+const tlT = e => { const r = tl.getBoundingClientRect(); return clamp((e.clientX - r.left - TL_PAD) / (r.width - TL_PAD - 12)) * P.duration; };
+const tlHandle = e => {
+  const px = e.clientX - tl.getBoundingClientRect().left;
+  if (px >= tlX(P.trimIn) - 4 && px <= tlX(P.trimIn) + 12) return "trimIn";
+  if (px >= tlX(P.trimOut) - 12 && px <= tlX(P.trimOut) + 4) return "trimOut";
+  return null;
+};
+let tlDrag = null;
+function tlMove(e){
+  const t = tlT(e);
+  if (tlDrag === "trimIn"){ P.trimIn = Math.min(t, P.trimOut - .1); time = P.trimIn; onChange("trimIn"); }
+  else if (tlDrag === "trimOut"){ P.trimOut = Math.max(t, P.trimIn + .1); time = P.trimOut; onChange("trimOut"); }
+  else { time = clamp(t, P.trimIn, P.trimOut); dirty = true; }
+}
+tl.addEventListener("pointerdown", e => { tl.setPointerCapture(e.pointerId); setPlaying(false); tlDrag = tlHandle(e); tlMove(e); });
+tl.addEventListener("pointermove", e => {
+  if (e.buttons) tlMove(e);
+  else tl.style.cursor = tlHandle(e) ? "col-resize" : "ew-resize";
+});
+tl.addEventListener("pointerup", () => tlDrag = null);
+
+function setPlaying(v){ playing = v; $("play").textContent = v ? "❚❚ Dừng" : "▶ Phát"; }
+$("play").onclick = () => { if (!playing && (time >= P.trimOut || time < P.trimIn)) time = P.trimIn; setPlaying(!playing); };
+$("rewind").onclick = () => { time = P.trimIn; dirty = true; };
+$("loop").onclick = () => { looping = !looping; $("loop").classList.toggle("on", looping); };
+document.querySelectorAll("[data-aspect]").forEach(b => b.onclick = () => { P.aspect = b.dataset.aspect; syncControls(); save(); onChange("aspect"); });
+addEventListener("keydown", e => { if (e.code === "Space" && !/INPUT|SELECT|BUTTON/.test(e.target.tagName)){ e.preventDefault(); $("play").click(); } });
+
+$("copy").onclick = async () => {
+  const s = JSON.stringify(P, null, 2);
+  try { await navigator.clipboard.writeText(s); msg("Đã copy tham số (JSON)."); } catch { prompt("Copy tham số:", JSON.stringify(P)); }
+};
+function applyParams(s, label){
+  try { Object.assign(P, JSON.parse(s)); fixTrim(); save(); syncControls(); markAspect(); layout(); onChange("font"); msg(`Đã nạp ${label}.`); }
+  catch { msg("JSON không hợp lệ."); }
+}
+$("paste").onclick = () => { const s = prompt("Dán JSON tham số:"); if (s) applyParams(s, "tham số"); };
+$("saveJson").onclick = () => {
+  const round = v => typeof v === "number" ? +v.toFixed(4) : v;
+  const data = Object.fromEntries(Object.keys(DEFAULTS).map(k => [k, round(P[k])]));
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2)], { type: "application/json" }));
+  a.download = "logo-intro.json"; a.click();
+  msg("Đã lưu logo-intro.json.");
+};
+$("openJson").onclick = () => {
+  const inp = document.createElement("input"); inp.type = "file"; inp.accept = ".json,application/json";
+  inp.onchange = async () => { const f = inp.files[0]; if (f) applyParams(await f.text(), f.name); };
+  inp.click();
+};
+$("reset").onclick = () => { P = { ...DEFAULTS }; fixTrim(); save(); syncControls(); markAspect(); layout(); onChange("font"); msg("Đã về mặc định."); };
+
+// realtime capture of the canvas (MP4 when the browser supports it, else WebM)
+$("export").onclick = () => {
+  if (recorder) return;
+  const type = ["video/mp4;codecs=avc1", "video/mp4", "video/webm;codecs=vp9", "video/webm"].find(t => window.MediaRecorder && MediaRecorder.isTypeSupported(t));
+  if (!type){ msg("Trình duyệt không hỗ trợ ghi video."); return; }
+  if (P.transparent && !confirm("Ghi video trong trình duyệt không giữ được nền trong suốt.\nĐể có alpha, xuất bằng render.mjs ra .mov (ProRes 4444) hoặc PNG.\n\nVẫn ghi bản có nền đen?")) return;
+  const chunks = [];
+  recorder = new MediaRecorder(cv.captureStream(60), { mimeType: type, videoBitsPerSecond: 16e6 });
+  recorder.ondataavailable = e => e.data.size && chunks.push(e.data);
+  recorder.onstop = () => {
+    const ext = type.includes("mp4") ? "mp4" : "webm";
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob(chunks, { type }));
+    a.download = `nix-intro-${P.aspect.replace(":", "x")}.${ext}`; a.click();
+    recorder = null; $("export").textContent = "⬇ Xuất video"; msg(`Đã xuất ${ext.toUpperCase()}.`);
+  };
+  time = P.trimIn; renderFrame(time);
+  recorder.start(); setPlaying(true);
+  $("export").textContent = "● Đang ghi…";
+};
+
+let last = performance.now();
+function tick(now){
+  const dt = Math.min(.1, (now - last) / 1000); last = now;
+  if (playing){
+    time += dt;
+    if (time >= P.trimOut){
+      if (recorder){ time = P.trimOut; renderFrame(time); recorder.stop(); setPlaying(false); }
+      else if (looping) time = P.trimIn;
+      else { time = P.trimOut; setPlaying(false); }
+    }
+    dirty = true;
+  }
+  if (dirty){ renderFrame(time); drawTimeline(); $("time").textContent = `${time.toFixed(2)}s · trim ${P.trimIn.toFixed(2)}–${P.trimOut.toFixed(2)} (${(P.trimOut - P.trimIn).toFixed(2)}s)`; dirty = false; }
+  requestAnimationFrame(tick);
+}
+
+// hooks for the offline renderer (render.mjs)
+window.renderFrame = renderFrame;
+window.ready = loadTextImage(TEXT_IMG_SRC).then(() => document.fonts.load(`700 100px "${FALLBACK_FONT}"`)).then(loadFont).then(ok => {
+  window.FONT_OK = ok;
+  layout();
+  fixTrim();
+  window.DURATION = P.duration; window.SIZE = ASPECTS[P.aspect]; window.TRIM = [P.trimIn, P.trimOut];
+  if (RENDER){ document.body.classList.add("render"); return; }
+  buildControls(); markAspect(); fontStatus(ok);
+  addEventListener("resize", () => dirty = true);
+  requestAnimationFrame(tick);
+});
+</script>
+</body>
+</html>

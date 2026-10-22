@@ -77,13 +77,13 @@ function confirmDlg(title, html, yesLabel) {
 // ══════════════════════════════
 // DATA ↔ FORM
 // ══════════════════════════════
-var KEY_ORDER = ['placeholder', 'title', 'studio', 'accentColor', 'downloads', 'store', 'video', 'poster', 'icon', 'tagline', 'team', 'teamDetail', 'duration', 'status', 'platform', 'engine', 'year', 'overview', 'roles', 'learned', 'challenges', 'results', 'screenshots'];
+var KEY_ORDER = ['publish', 'placeholder', 'title', 'studio', 'accentColor', 'downloads', 'store', 'video', 'poster', 'icon', 'tagline', 'team', 'teamDetail', 'duration', 'status', 'platform', 'engine', 'year', 'overview', 'roles', 'learned', 'challenges', 'results', 'screenshots'];
 
 function toDraft(o) {
   o = o || {};
   var v = o.video || {}, st = o.store || {};
   return {
-    placeholder: !!o.placeholder, title: o.title || '', studio: o.studio || '', accentColor: o.accentColor || '#7c4dff', downloads: o.downloads || '',
+    publish: o.publish !== false, placeholder: !!o.placeholder, title: o.title || '', studio: o.studio || '', accentColor: o.accentColor || '#7c4dff', downloads: o.downloads || '',
     store: { googlePlay: st.googlePlay || '', appStore: st.appStore || '', apk: st.apk || '' },
     video: { youtube: v.youtube || '', file: v.file || '', orientation: v.orientation === 'portrait' ? 'portrait' : 'landscape' },
     poster: o.poster || '', icon: o.icon || '',
@@ -124,7 +124,7 @@ function fromDraft(d, orig, vsrc) {
   if (vsrc === 'file' && s(d.video.file)) video = { file: s(d.video.file), orientation: d.video.orientation };
   var team = s(d.team);
   var known = {
-    placeholder: d.placeholder ? true : undefined,
+    publish: !!d.publish, placeholder: d.placeholder ? true : undefined,
     title: (d.title || '').trim(), studio: s(d.studio), accentColor: s(d.accentColor), downloads: s(d.downloads),
     store: Object.keys(store).length ? store : undefined, video: video, poster: s(d.poster), icon: s(d.icon),
     tagline: l(d.tagline), team: team && /^\d+$/.test(team) ? +team : team, teamDetail: (function (x) { return x && !x.vi ? x.en : x; })(l(d.teamDetail)), duration: l(d.duration), status: l(d.status),
@@ -220,8 +220,10 @@ function rowHTML(id, i, listed) {
     if ((p.screenshots || []).length) badges.push('<span class="bdg">' + p.screenshots.length + ' ảnh</span>');
     if (p.downloads) badges.push('<span class="bdg g">' + esc(p.downloads) + '</span>');
     if (p.placeholder) badges.push('<span class="bdg y">sample data</span>');
+    if (p.publish === false) badges.push('<span class="bdg r">đã ẩn</span>');
   }
-  return '<li class="prow' + (broken ? ' broken' : '') + '" data-id="' + id + '"' + (listed ? ' draggable="true"' : '') + '>' +
+  var hidden = !broken && p.publish === false;
+  return '<li class="prow' + (broken ? ' broken' : '') + (hidden ? ' hidden' : '') + '" data-id="' + id + '"' + (listed ? ' draggable="true"' : '') + '>' +
     (listed ? '<span class="handle" title="Kéo để sắp xếp">⠿</span><span class="num">' + String(i + 1).padStart(2, '0') + '</span>' : '<span></span><span></span>') +
     '<div class="thumb">' + (broken ? '!' : thumbHTML(id)) + '</div>' +
     '<div class="t"><b>' + esc(broken ? id : p.title || id) + '</b><span>' + esc(broken ? broken : id) + '</span></div>' +
@@ -230,15 +232,39 @@ function rowHTML(id, i, listed) {
       (listed ? '<div class="updown"><button type="button" data-act="mv" data-id="' + id + '" data-d="-1" aria-label="Lên">▲</button><button type="button" data-act="mv" data-id="' + id + '" data-d="1" aria-label="Xuống">▼</button></div>'
               : '<button class="btn ghost sm" type="button" data-act="addIndex" data-id="' + id + '">Thêm vào danh sách</button>') +
       (broken ? '' : '<a class="btn ghost sm" href="#/edit/' + id + '">Sửa</a>') +
-      '<a class="icon-btn" href="/project.html?p=' + id + '" target="_blank" rel="noopener" title="Xem trên site">↗</a>' +
-      '<button class="icon-btn del" type="button" data-act="delProject" data-id="' + id + '" title="Xoá dự án">🗑</button>' +
+      '<a class="icon-btn" href="/project.html?p=' + id + '&draft" target="_blank" rel="noopener" title="Xem trên site">↗</a>' +
+      (broken ? '' : hidden ? '<button class="icon-btn" type="button" data-act="pubProject" data-id="' + id + '" title="Hiện lại trên portfolio">👁</button>'
+                            : '<button class="icon-btn del" type="button" data-act="delProject" data-id="' + id + '" title="Ẩn khỏi portfolio">🗑</button>') +
     '</div></li>';
 }
 function gitBox() {
   var ch = [].slice.call(S.changed);
   return '<div class="gitbox"><div><b style="color:var(--bright)">Xong thì commit để đăng lên web</b>' +
     (ch.length ? '<ul>' + ch.slice(0, 12).map(function (c) { return '<li>• ' + esc(c) + '</li>'; }).join('') + (ch.length > 12 ? '<li>… +' + (ch.length - 12) + '</li>' : '') + '</ul>' : '<div style="font-size:.78rem;color:var(--dim)">Chưa có thay đổi trong phiên này.</div>') +
-    '</div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><code id="gitCmd">git add Database/Projects && git commit -m "Update projects"</code><button class="btn ghost sm" type="button" data-act="copyGit">Copy</button></div></div>';
+    '</div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><code id="gitCmd">git add Database/Projects && git commit -m "Update projects"</code><button class="btn ghost sm" type="button" data-act="copyGit">Copy</button>' +
+    '<button class="btn pri sm" type="button" data-act="gitPush">Commit &amp; Push</button></div></div>';
+}
+function gitPush(btn) {
+  btn.disabled = true;
+  return api('GET', '/api/git').then(function (j) {
+    if (!j.files.length && !j.ahead) { toast('Không có gì để commit'); return; }
+    var big = j.files.filter(function (f) { return f.size > 100 * 1024 * 1024; });
+    if (big.length) { toast('Có file > 100 MB, GitHub sẽ từ chối — xoá hoặc chuyển đi trước: ' + big.map(function (f) { return f.path.split('/').pop() + ' (' + fmtSize(f.size) + ')'; }).join(', '), 'err'); return; }
+    var list = j.files.slice(0, 15).map(function (f) { return '<li><code>' + esc(f.status) + '</code> ' + esc(f.path) + '</li>'; }).join('') +
+      (j.files.length > 15 ? '<li>… +' + (j.files.length - 15) + ' file</li>' : '');
+    return confirmDlg('Commit & Push?',
+      (j.files.length ? '<p>' + j.files.length + ' file thay đổi trong <code>Database/Projects</code>:</p><ul class="git-files">' + list + '</ul>' +
+        '<div class="f"><label>Commit message</label><input type="text" id="gitMsg" value="Update projects"></div>' : '') +
+      (j.ahead ? '<p style="color:var(--dim);font-size:.78rem">Có ' + j.ahead + ' commit chưa push — cũng sẽ được đẩy lên.</p>' : ''), 'Commit & Push')
+      .then(function (ok) {
+        if (!ok) return;
+        var msg = $('gitMsg') ? $('gitMsg').value.trim() : 'Update projects';
+        toast('Đang đẩy lên git…');
+        return api('POST', '/api/git', { message: msg || 'Update projects' }).then(function () {
+          S.changed.clear(); renderList(); toast('Đã commit & push — web sẽ cập nhật sau ít phút');
+        });
+      });
+  }).catch(function (e) { toast(e.message, 'err'); }).then(function () { btn.disabled = false; });
 }
 function saveOrder(order) {
   return api('PUT', '/api/order', { order: order }).then(function () { S.order = order; S.changed.add('Database/Projects/index.json'); renderList(); toast('Đã lưu thứ tự'); })
@@ -259,17 +285,18 @@ function bindListDnD() {
   });
 }
 function deleteProject(id) {
-  var files = S.files[id] || [], p = S.projects[id] || {};
-  return confirmDlg('Xoá dự án?',
-    '<p>Sẽ xoá vĩnh viễn thư mục <code>Database/Projects/' + esc(id) + '/</code> (' + (files.length + 1) + ' file' + (files.length ? ', ' + fmtSize(files.reduce(function (a, f) { return a + f.size; }, 0)) : '') + ') và gỡ khỏi <code>index.json</code>.</p>' +
-    '<p><b style="color:var(--bright)">' + esc(p.title || id) + '</b></p><p style="color:var(--dim);font-size:.78rem">Nếu đã commit trước đó, bạn vẫn có thể khôi phục bằng git.</p>')
-    .then(function (ok) {
-      if (!ok) return false;
-      return api('DELETE', '/api/projects/' + id).then(function () {
-        S.changed.add('Database/Projects/' + id + '/ (deleted)'); S.changed.add('Database/Projects/index.json');
-        toast('Đã xoá ' + (p.title || id)); return load().then(function () { return true; });
-      });
-    }).catch(function (e) { toast(e.message, 'err'); return false; });
+  var p = S.projects[id] || {};
+  return confirmDlg('Ẩn dự án?',
+    '<p>Dự án sẽ không còn hiện trên portfolio (<code>"publish": false</code> trong <code>data.json</code>). Dữ liệu và file vẫn được giữ nguyên.</p>' +
+    '<p><b style="color:var(--bright)">' + esc(p.title || id) + '</b></p><p style="color:var(--dim);font-size:.78rem">Có thể hiện lại bất cứ lúc nào bằng nút 👁.</p>', 'Ẩn')
+    .then(function (ok) { return ok ? setPublish(id, false) : false; });
+}
+function setPublish(id, on) {
+  var p = S.projects[id] || {}, data = Object.assign({}, p, { publish: on });
+  return api('PUT', '/api/projects/' + id, { data: data }).then(function () {
+    S.changed.add('Database/Projects/' + id + '/data.json');
+    toast((on ? 'Đã hiện ' : 'Đã ẩn ') + (p.title || id)); return load().then(function () { return true; });
+  }).catch(function (e) { toast(e.message, 'err'); return false; });
 }
 
 // ══════════════════════════════
@@ -321,9 +348,14 @@ function itemHead(listPath, i, n, label) {
 }
 function bulletRows(path, label) {
   var rows = getPath(ED.d, path);
-  return '<div class="f"><span class="lbl">' + label + ' <code>EN | VI — mỗi dòng là một gạch đầu dòng</code></span><div class="bullets">' + rows.map(function (b, j) {
-    return '<div class="bullet"><input type="text" data-path="' + path + '.' + j + '.en" value="' + esc(b.en) + '" placeholder="EN">' +
+  var n = rows.length;
+  return '<div class="f"><span class="lbl">' + label + ' <code>EN | VI — mỗi dòng là một gạch đầu dòng · kéo ⠿ hoặc Alt+↑/↓ để đổi thứ tự</code></span><div class="bullets" data-list="' + path + '">' + rows.map(function (b, j) {
+    return '<div class="bullet" data-i="' + j + '">' +
+      '<span class="grip" title="Kéo để đổi thứ tự">⠿</span><span class="bnum">' + (j + 1) + '</span>' +
+      '<input type="text" data-path="' + path + '.' + j + '.en" value="' + esc(b.en) + '" placeholder="EN">' +
       '<input class="vi" type="text" data-path="' + path + '.' + j + '.vi" value="' + esc(b.vi) + '" placeholder="VI">' +
+      '<span class="bmv"><button class="icon-btn" type="button" data-act="mvItem" data-path="' + path + '" data-i="' + j + '" data-d="-1" title="Lên"' + (j ? '' : ' disabled') + '>↑</button>' +
+      '<button class="icon-btn" type="button" data-act="mvItem" data-path="' + path + '" data-i="' + j + '" data-d="1" title="Xuống"' + (j < n - 1 ? '' : ' disabled') + '>↓</button></span>' +
       '<button class="icon-btn del" type="button" data-act="rmItem" data-path="' + path + '" data-i="' + j + '" title="Xoá dòng">✕</button></div>';
   }).join('') + '</div><button class="btn ghost sm add" type="button" data-act="addItem" data-path="' + path + '" data-t="did">+ Dòng</button></div>';
 }
@@ -341,7 +373,7 @@ function renderEditor() {
   var d = ED.d, isNew = !ED.id;
   var bar = '<div class="ed-bar"><div><div class="crumb"><a href="#/">← Dự án</a> / ' + esc(isNew ? 'mới' : ED.id) + '</div>' +
     '<h1>' + esc(isNew ? 'Thêm dự án' : d.title || ED.id) + ' <span class="dirty" id="dirtyFlag" hidden>● chưa lưu</span></h1></div>' +
-    '<div class="acts">' + (isNew ? '' : '<button class="btn danger sm" type="button" data-act="delCurrent">Xoá dự án</button><a class="btn ghost sm" href="/project.html?p=' + ED.id + '" target="_blank" rel="noopener">Mở trang ↗</a>') +
+    '<div class="acts">' + (isNew ? '' : '' + (ED.orig.publish === false ? '<button class="btn ghost sm" type="button" data-act="pubCurrent">Hiện lại</button>' : '<button class="btn danger sm" type="button" data-act="delCurrent">Ẩn dự án</button>') + '<a class="btn ghost sm" href="/project.html?p=' + ED.id + '&draft" target="_blank" rel="noopener">Mở trang ↗</a>') +
     '<button class="btn pri" type="button" data-act="save" id="saveBtn">' + (isNew ? 'Tạo dự án' : 'Lưu <span style="opacity:.6;font-weight:400">⌘S</span>') + '</button></div></div>';
 
   var basics = sec('s-basic', 'Thông tin chính',
@@ -352,6 +384,7 @@ function renderEditor() {
     '<div class="grid2">' + inp('store.googlePlay', 'Google Play', { key: 'store.googlePlay', type: 'url', ph: 'https://play.google.com/store/apps/details?id=…' }) +
       inp('store.appStore', 'App Store', { key: 'store.appStore', type: 'url', ph: 'https://apps.apple.com/…' }) + '</div>' +
     inp('store.apk', 'Link tải APK', { key: 'store.apk', ph: 'https://drive.google.com/… hoặc game.apk', hint: 'Dùng khi game không có trên store. Có thể là link ngoài, hoặc tên file .apk đặt trong thư mục dự án (GitHub chặn file > 100 MB — file lớn nên để link ngoài).' }) +
+    '<label class="check"><input type="checkbox" data-path="publish"' + (d.publish ? ' checked' : '') + '> <b style="color:var(--bright)">Hiển thị</b> trên portfolio (<code>publish</code>)</label>' +
     '<label class="check"><input type="checkbox" data-path="placeholder"' + (d.placeholder ? ' checked' : '') + '> Đánh dấu là <b style="color:var(--gold)">dữ liệu mẫu</b> (hiện nhãn "sample data" trên site)</label>');
 
   if (isNew) {
@@ -414,6 +447,8 @@ function renderEditor() {
         '<input type="text" data-path="screenshots.' + i + '.caption.en" value="' + esc(x.caption.en) + '" placeholder="Caption EN">' +
         '<input type="text" data-path="screenshots.' + i + '.caption.vi" value="' + esc(x.caption.vi) + '" placeholder="Caption VI"></div>';
     }).join('') + '</div>' +
+    '<div class="shot-tools"><button class="btn ghost sm" type="button" data-act="loadShotsDir">⟳ Nạp ảnh từ <code>images/screenshots/</code></button>' +
+      '<span class="hint">Thêm các ảnh trong thư mục này (chưa có trong danh sách) theo thứ tự tên file.</span></div>' +
     '<div class="drop" data-drop="shots">Kéo thả <b>nhiều ảnh</b> vào đây, hoặc <b>bấm để chọn</b> — tự resize ≤1600px, nén JPG, lưu thành <code>images/screenshot-N.jpg</code>. Kéo ảnh để đổi thứ tự.<div class="prog" id="shotProg" hidden><i></i></div></div>', 'screenshots[]');
 
   var nav = '<nav class="secnav">' + [['s-basic', 'Chính'], ['s-media', 'Video & ảnh'], ['s-details', 'Chi tiết'], ['s-roles', 'Trách nhiệm'], ['s-learned', 'Học được'], ['s-challenges', 'Thử thách'], ['s-results', 'Kết quả'], ['s-shots', 'Screenshots']]
@@ -422,7 +457,7 @@ function renderEditor() {
   var pv = '<aside class="pv' + (ED.pvMobile ? ' mobile' : '') + '"><div class="pv-bar"><span>Xem trước · cập nhật khi Lưu</span>' +
     seg('pvMode', '', ED.pvMobile ? 'm' : 'd', [['d', 'Desktop'], ['m', 'Mobile']]) +
     '<button class="icon-btn" type="button" data-act="pvReload" title="Tải lại">⟳</button></div>' +
-    '<div class="pv-frame"><iframe id="pvFrame" title="Preview" src="/project.html?p=' + id + '&_=' + ED.pvStamp + '"></iframe></div></aside>';
+    '<div class="pv-frame"><iframe id="pvFrame" title="Preview" src="/project.html?p=' + id + '&draft&_=' + ED.pvStamp + '"></iframe></div></aside>';
 
   $('app').innerHTML = bar + '<div class="ed"><div>' + nav + basics + media + details + roles + learned + chal + results + shots + '</div>' + pv + '</div>';
   afterRender();
@@ -436,6 +471,40 @@ function mediaCard(id, rel, kind, act) {
 function afterRender() {
   updateDirty(); validateFolder();
   var shots = $('shots'); if (shots) bindShotDnD(shots);
+  document.querySelectorAll('.bullets[data-list]').forEach(bindBulletDnD);
+}
+
+// Reorder bullet rows by dragging the ⠿ handle (only the handle starts a drag, so text stays selectable).
+function moveRow(path, from, to) {
+  var arr = getPath(ED.d, path);
+  if (from === to || to < 0 || to >= arr.length) return false;
+  arr.splice(to, 0, arr.splice(from, 1)[0]);
+  return true;
+}
+function bindBulletDnD(list) {
+  var path = list.dataset.list, from = null, target = null;
+  function clear() { list.querySelectorAll('.over-top,.over-bot,.drag').forEach(function (x) { x.classList.remove('over-top', 'over-bot', 'drag'); }); }
+  list.addEventListener('pointerdown', function (e) { var g = e.target.closest('.grip'); if (g) g.parentNode.draggable = true; });
+  list.addEventListener('dragstart', function (e) {
+    var r = e.target.closest && e.target.closest('.bullet'); if (!r || !r.draggable) return;
+    from = +r.dataset.i; r.classList.add('drag'); e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', '');
+  });
+  list.addEventListener('dragover', function (e) {
+    var r = e.target.closest('.bullet'); if (from == null || !r) return;
+    e.preventDefault(); clear(); list.querySelector('.bullet[data-i="' + from + '"]').classList.add('drag');
+    var box = r.getBoundingClientRect(), after = e.clientY > box.top + box.height / 2;
+    r.classList.add(after ? 'over-bot' : 'over-top');
+    target = +r.dataset.i + (after ? 1 : 0);
+  });
+  list.addEventListener('drop', function (e) {
+    if (from == null) return; e.preventDefault(); e.stopPropagation();
+    var src = from, to = target > src ? target - 1 : target; // index after removing the dragged row
+    from = null; clear();
+    if (moveRow(path, src, to)) { rerenderKeepScroll(); updateDirty(); }
+  });
+  list.addEventListener('dragend', function () {
+    list.querySelectorAll('.bullet').forEach(function (r) { r.draggable = false; }); clear(); from = null;
+  });
 }
 
 // ── validation ──
@@ -485,6 +554,26 @@ function save() {
 }
 
 // ── uploads ──
+// Add every image found in <project>/images/screenshots/ that isn't in the list yet (natural name order).
+// No folder / empty folder → nothing changes.
+var SHOTS_DIR = 'images/screenshots/';
+function loadShotsDir() {
+  var id = ED.id;
+  return load().then(function () {
+    if (!ED || ED.id !== id) return;
+    var found = (S.files[id] || []).map(function (f) { return f.path; })
+      .filter(function (p) { return p.indexOf(SHOTS_DIR) === 0 && p.slice(SHOTS_DIR.length).indexOf('/') < 0 && /\.(jpe?g|png|webp|gif)$/i.test(p); })
+      .sort(function (a, b) { return a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }); });
+    if (!found.length) { toast('Không có ảnh nào trong ' + SHOTS_DIR + ' — không thay đổi gì.'); return; }
+    var have = new Set(ED.d.screenshots.map(function (x) { return x.src; }));
+    var add = found.filter(function (p) { return !have.has(p); });
+    if (!add.length) { toast('Tất cả ' + found.length + ' ảnh trong ' + SHOTS_DIR + ' đã có trong danh sách.'); return; }
+    add.forEach(function (p) { ED.d.screenshots.push({ src: p, caption: L('') }); });
+    rerenderKeepScroll(); updateDirty();
+    toast('Đã thêm ' + add.length + ' ảnh từ ' + SHOTS_DIR + ' — bấm Lưu để áp dụng');
+  }).catch(function (e) { toast(e.message, 'err'); });
+}
+
 function nextShotName() {
   var used = new Set((S.files[ED.id] || []).map(function (f) { return f.path; }).concat(ED.d.screenshots.map(function (s) { return s.src; })));
   for (var n = 1; ; n++) { var p = 'images/screenshot-' + n + '.jpg'; if (!used.has(p)) return p; }
@@ -579,10 +668,13 @@ document.addEventListener('click', function (e) {
     }
     case 'addIndex': saveOrder(S.order.concat([b.dataset.id])); return;
     case 'delProject': deleteProject(b.dataset.id).then(function (ok) { if (ok) renderList(); }); return;
-    case 'delCurrent': {
+    case 'pubProject': setPublish(b.dataset.id, true).then(function (ok) { if (ok) renderList(); }); return;
+    case 'delCurrent': case 'pubCurrent': {
+      if (isDirty()) { toast('Lưu thay đổi trước đã', 'err'); return; }
       var cur = ED.id;
-      deleteProject(cur).then(function (ok) { if (ok) { ED = null; location.hash = '#/'; renderList(); } }); return;
+      (act === 'delCurrent' ? deleteProject(cur) : setPublish(cur, true)).then(function (ok) { if (ok) openEditor(cur); }); return;
     }
+    case 'gitPush': gitPush(b); return;
     case 'copyGit': navigator.clipboard.writeText($('gitCmd').textContent).then(function () { toast('Đã copy lệnh git'); }); return;
     case 'save': save(); return;
     case 'goto': $(b.dataset.to).scrollIntoView({ behavior: 'smooth', block: 'start' }); return;
@@ -598,6 +690,7 @@ document.addEventListener('click', function (e) {
     case 'rmIcon': ED.d.icon = ''; rerenderKeepScroll(); return;
     case 'rmPoster': ED.d.poster = ''; rerenderKeepScroll(); return;
     case 'pvMode': ED.pvMobile = b.dataset.v === 'm'; rerenderKeepScroll(); return;
+    case 'loadShotsDir': loadShotsDir(); return;
     case 'pvReload': ED.pvStamp = Date.now(); $('pvFrame').src = '/project.html?p=' + ED.id + '&_=' + ED.pvStamp; return;
   }
 });
@@ -614,6 +707,19 @@ document.addEventListener('click', function (e) {
 });
 
 document.addEventListener('keydown', function (e) {
+  if (ED && e.altKey && (e.key === 'ArrowUp' || e.key === 'ArrowDown')) {
+    var m = (e.target.dataset && e.target.dataset.path || '').match(/^(.*)\.(\d+)\.(en|vi)$/);
+    if (m && e.target.closest('.bullet')) {
+      e.preventDefault();
+      var i = +m[2], j = i + (e.key === 'ArrowUp' ? -1 : 1);
+      if (moveRow(m[1], i, j)) {
+        rerenderKeepScroll(); updateDirty();
+        var el = document.querySelector('[data-path="' + m[1] + '.' + j + '.' + m[3] + '"]');
+        if (el) { el.focus(); el.setSelectionRange(el.value.length, el.value.length); }
+      }
+      return;
+    }
+  }
   if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's' && ED) { e.preventDefault(); save(); }
   if (e.key === 'Escape' && !$('dlg').hidden) $('dlgNo').click();
 });

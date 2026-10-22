@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Star Cursor — Demo</title>
+<link rel="stylesheet" href="star-cursor.css" />
+<style>
+  body{margin:0;min-height:100vh;background:#07090f;color:#b3bccf;font-family:system-ui,sans-serif;display:grid;place-content:center;gap:24px;text-align:center;padding:24px}
+  h1{color:#eef2f8;font-size:2.4rem;margin:0}
+  .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  a,button{padding:12px 20px;border-radius:10px;border:1px solid #2c3750;background:none;color:#eef2f8;font:inherit;text-decoration:none}
+  a{background:#00e5ff;color:#001318;border-color:transparent;font-weight:700}
+  input{padding:12px 14px;border-radius:10px;border:1px solid #2c3750;background:#0a0e16;color:#eef2f8;font:inherit;width:min(320px,80vw)}
+  .card{padding:20px;border-radius:14px;border:1px solid #1e2636;background:#0e131d;max-width:420px;margin:0 auto}
+</style>
+</head>
+<body>
+  <h1>Move the mouse ✦</h1>
+  <p>Hover the buttons (star grows + spins faster), click anywhere (burst), type in the field (text caret stays).</p>
+  <div class="row"><a href="#">A link</a><button type="button">A button</button><div class="card clickable">A .clickable card</div></div>
+  <input type="text" placeholder="Text caret is kept here" />
+  <script src="star-cursor.js"></script>
+</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>[NIX] — Plan 6 · Bento</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+:root{--bg:#09090b;--tile:#131316;--tile2:#1a1a1f;--line:#26262c;--ink:#f4f4f5;--dim:#8b8b96;--cy:#00e5ff;--pk:#ff2d75;--pu:#7c4dff;--gr:#69ff47;--f:'Be Vietnam Pro',sans-serif;--m:'JetBrains Mono',monospace;--ease:cubic-bezier(.16,1,.3,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--f);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+.m{font-family:var(--m);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim)}
+.wrap{max-width:1180px;margin:0 auto;padding:28px clamp(16px,3vw,32px) 90px}
+
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.logo{font-family:var(--m);font-weight:700}.logo b{color:var(--cy)}
+header nav{display:flex;gap:6px;background:var(--tile);border:1px solid var(--line);border-radius:999px;padding:4px}
+header nav a{padding:6px 14px;border-radius:999px;font-size:13px;color:var(--dim);transition:.2s}
+header nav a:hover,header nav a.on{background:var(--tile2);color:var(--ink)}
+
+.bento{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:minmax(92px,auto);gap:12px}
+.t{background:var(--tile);border:1px solid var(--line);border-radius:24px;padding:22px;position:relative;overflow:hidden;
+  opacity:0;transform:translateY(16px) scale(.98);animation:in .8s var(--ease) forwards;transition:border-color .3s,transform .4s var(--ease)}
+.t:hover{border-color:#3a3a44}
+.t::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(300px circle at var(--x,50%) var(--y,50%),rgba(255,255,255,.06),transparent 60%)}
+.t:hover::before{opacity:1}
+@keyframes in{to{opacity:1;transform:none}}
+.c2{grid-column:span 2}.c3{grid-column:span 3}.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}.c7{grid-column:span 7}.c8{grid-column:span 8}.c12{grid-column:span 12}
+.r2{grid-row:span 2}.r3{grid-row:span 3}.r4{grid-row:span 4}
+.lbl{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.arrow{width:32px;height:32px;border-radius:50%;background:var(--tile2);display:grid;place-items:center;transition:.3s var(--ease);font-size:14px}
+a.t:hover .arrow{background:var(--ink);color:#000;transform:rotate(-45deg)}
+
+/* profile tile */
+.prof{display:flex;flex-direction:column;justify-content:space-between;background:radial-gradient(500px 300px at 0% 0%,rgba(0,229,255,.10),transparent 60%),var(--tile)}
+.prof .head{display:flex;gap:16px;align-items:center}
+.prof img{width:76px;height:76px;border-radius:20px;object-fit:cover;background:#fff}
+.prof h1{font-size:clamp(28px,3.2vw,40px);font-weight:900;letter-spacing:-.03em;line-height:1.05}
+.prof h1 span{color:var(--cy)}
+.prof p{font-size:clamp(17px,1.6vw,21px);color:#c9c9d1;line-height:1.45;margin:18px 0}
+.prof p b{color:var(--ink)}
+.btns{display:flex;gap:8px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;font-weight:700;font-size:14px;transition:.25s var(--ease)}
+.btn.pri{background:var(--ink);color:#000}.btn.pri:hover{background:var(--cy)}
+.btn.sec{background:var(--tile2);border:1px solid var(--line)}.btn.sec:hover{border-color:var(--dim)}
+
+/* downloads tile */
+.dl{background:linear-gradient(160deg,#0d2a1a,var(--tile) 70%)}
+.dl b{display:block;font-size:clamp(48px,6vw,76px);font-weight:900;letter-spacing:-.05em;line-height:1;color:var(--gr)}
+.spark{position:absolute;left:0;right:0;bottom:0;height:56%}
+.spark path.a{fill:url(#g)}
+.spark path.l{fill:none;stroke:var(--gr);stroke-width:2.5;stroke-dasharray:600;stroke-dashoffset:600;animation:draw 2s .4s var(--ease) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+
+/* small stat */
+.stat b{display:block;font-size:44px;font-weight:900;letter-spacing:-.04em;line-height:1;margin-top:6px}
+.stat b em{font-style:normal;color:var(--cy)}
+
+/* location */
+.loc{background:var(--tile)}
+.loc .map{position:absolute;inset:0;opacity:.5;background-image:radial-gradient(#3a3a44 1.2px,transparent 1.3px);background-size:12px 12px;mask-image:radial-gradient(circle at 62% 46%,#000 10%,transparent 70%)}
+.loc .pin{position:absolute;left:62%;top:46%;width:14px;height:14px;border-radius:50%;background:var(--cy);box-shadow:0 0 0 0 rgba(0,229,255,.6);animation:ping 2s infinite}
+@keyframes ping{70%{box-shadow:0 0 0 22px rgba(0,229,255,0)}100%{box-shadow:0 0 0 0 rgba(0,229,255,0)}}
+.loc .info{position:absolute;left:22px;bottom:20px}
+.loc .info b{font-size:20px;display:block}
+.loc .st{position:absolute;top:20px;right:20px;display:flex;align-items:center;gap:6px;background:rgba(105,255,71,.1);color:var(--gr);border-radius:999px;padding:5px 10px;font-size:12px;font-weight:600}
+.loc .st i{width:7px;height:7px;border-radius:50%;background:var(--gr)}
+
+/* featured game */
+.feat{padding:0;display:grid;grid-template-rows:1fr auto}
+.feat .img{position:relative;min-height:220px;overflow:hidden}
+.feat .img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease)}
+.feat:hover .img img{transform:scale(1.05)}
+.feat .img .badge{position:absolute;top:16px;left:16px;background:var(--ink);color:#000;font-weight:700;font-size:12px;padding:5px 10px;border-radius:999px}
+.feat .bd{padding:18px 22px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.feat h3{font-size:20px;font-weight:800;letter-spacing:-.02em}
+.feat .n{font-size:28px;font-weight:900;color:var(--gr);letter-spacing:-.03em;white-space:nowrap}
+
+.game{display:flex;flex-direction:column;justify-content:space-between}
+.game .ic{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font-weight:900;font-size:24px;color:#fff;margin-bottom:14px}
+.game h4{font-size:17px;font-weight:800;line-height:1.2}
+.game .row{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.game .n{font-weight:800;color:var(--gr)}
+
+/* stack */
+.stack .chips{display:flex;flex-wrap:wrap;gap:6px}
+.stack .chips span{padding:7px 12px;border-radius:10px;background:var(--tile2);border:1px solid var(--line);font-size:13px;font-weight:500;transition:.2s}
+.stack .chips span:hover{border-color:var(--cy);color:var(--cy)}
+.stack .chips span.k{background:rgba(0,229,255,.08);border-color:rgba(0,229,255,.3);color:var(--cy)}
+
+/* experience */
+.xp ul{list-style:none;display:grid;gap:14px}
+.xp li{display:grid;grid-template-columns:12px 1fr;gap:12px}
+.xp li i{width:12px;height:12px;border-radius:50%;border:2px solid var(--cy);margin-top:4px}
+.xp li.p i{border-color:var(--line)}
+.xp li b{display:block;font-size:15px}
+.xp li span{font-size:13px;color:var(--dim)}
+
+/* packages */
+.pk ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pk li{background:var(--tile2);border:1px solid var(--line);border-radius:14px;padding:12px 14px;transition:.2s;cursor:default}
+.pk li:hover{border-color:var(--pu);transform:translateY(-2px)}
+.pk li b{font-size:14px;display:block}
+.pk li span{font-size:12px;color:var(--dim);display:block;margin-top:2px;line-height:1.35}
+.pk li.core{grid-column:span 2;background:linear-gradient(90deg,rgba(124,77,255,.18),var(--tile2));border-color:rgba(124,77,255,.4)}
+
+/* quote */
+.quote p{font-size:clamp(18px,1.9vw,24px);font-weight:600;line-height:1.35;letter-spacing:-.01em}
+.quote p em{font-style:normal;color:var(--pk)}
+
+/* socials */
+.soc{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px}
+.soc a{background:var(--tile2);border-radius:16px;display:flex;flex-direction:column;justify-content:space-between;padding:14px;min-height:80px;transition:.25s var(--ease);border:1px solid transparent}
+.soc a:hover{border-color:var(--line);transform:translateY(-2px)}
+.soc a b{font-size:14px}
+
+/* contact */
+.cta{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;background:linear-gradient(110deg,rgba(0,229,255,.14),rgba(124,77,255,.12) 50%,rgba(255,45,117,.12)),var(--tile)}
+.cta h2{font-size:clamp(26px,3.6vw,44px);font-weight:900;letter-spacing:-.03em;line-height:1.05}
+.copy{display:flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:6px 6px 6px 18px;font-family:var(--m);font-size:14px}
+.copy button{border:0;cursor:pointer;background:var(--ink);color:#000;font-weight:700;padding:10px 16px;border-radius:999px;font-family:var(--f)}
+.todo{font-family:var(--m);font-size:10px;color:#ffd54f;border:1px dashed #ffd54f;border-radius:4px;padding:0 5px;text-transform:none;letter-spacing:0}
+footer{display:flex;justify-content:space-between;margin-top:18px;flex-wrap:wrap;gap:10px}
+
+.pv{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:999;display:flex;gap:2px;align-items:center;font:700 11px 'JetBrains Mono',monospace;padding:5px 5px 5px 12px;border-radius:10px;background:#ffd54f;color:#1a1300;box-shadow:0 10px 30px rgba(0,0,0,.4);white-space:nowrap}
+.pv a{padding:4px 8px;border-radius:6px;color:#1a1300}
+.pv a.on{background:#1a1300;color:#ffd54f}
+
+@media (max-width:980px){
+  .bento{grid-template-columns:repeat(6,1fr)}
+  .c2,.c3{grid-column:span 3}.c4,.c5,.c6,.c7,.c8,.c12{grid-column:span 6}
+  .r3,.r4{grid-row:auto}
+  header nav{display:none}
+}
+@media (max-width:560px){
+  .c3{grid-column:span 6}
+  .stat.c3,.c2{grid-column:span 3}
+  .pk ul{grid-template-columns:1fr}.pk li.core{grid-column:auto}
+  .loc{min-height:200px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.t{opacity:1;transform:none}.spark path.l{stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="logo"><b>[</b>NIX<b>]</b></span>
+    <nav><a class="on" href="#">Overview</a><a href="#work">Work</a><a href="#toolkit">Toolkit</a><a href="#contact">Contact</a></nav>
+    <span class="m">EN / VI</span>
+  </header>
+
+  <div class="bento" id="bento">
+    <!-- row 1 -->
+    <div class="t prof c7 r4">
+      <div>
+        <div class="head"><img src="../assets/images/avt.jpg" alt="Trần Tiến"><div><div class="m">Game Developer · Team Leader · Unity Trainer</div><h1>Trần Tiến <span>[NIX]</span></h1></div></div>
+        <p>I build <b>mobile &amp; casual games</b> that feel good to play — tight loops, juicy feedback — and the <b>reusable tooling</b> that lets a whole team ship faster.</p>
+      </div>
+      <div class="btns"><a class="btn pri" href="#contact">Let's work together →</a><a class="btn sec" href="#">⬇ Download CV</a></div>
+    </div>
+    <div class="t dl c5 r2">
+      <div class="lbl"><span class="m">Total downloads</span><span class="m">Google Play</span></div>
+      <b><span class="count" data-to="80">0</span>M+</b>
+      <svg class="spark" viewBox="0 0 300 100" preserveAspectRatio="none"><defs><linearGradient id="g" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#69ff47" stop-opacity=".35"/><stop offset="1" stop-color="#69ff47" stop-opacity="0"/></linearGradient></defs>
+        <path class="a" d="M0,92 C40,90 60,86 90,78 S140,70 170,52 S230,30 300,6 L300,100 L0,100Z"/><path class="l" d="M0,92 C40,90 60,86 90,78 S140,70 170,52 S230,30 300,6"/></svg>
+    </div>
+    <div class="t stat c3 r2"><span class="m">Games shipped</span><b><span class="count" data-to="12">0</span></b></div>
+    <div class="t loc c2 r2"><div class="map"></div><i class="pin"></i><span class="st"><i></i></span><div class="info"><span class="m">Based in</span><b>Ha Noi</b><span class="m" id="clock">--:--</span></div></div>
+
+    <!-- row 2 -->
+    <a class="t feat c7 r3" id="work" href="https://play.google.com/store/apps/details?id=com.fc.p.cp.jelly.mukbang.asmr.live.diy">
+      <div class="img"><img src="https://img.youtube.com/vi/Yd7vDterctQ/maxresdefault.jpg" alt=""><span class="badge">★ Featured</span></div>
+      <div class="bd"><div><span class="m">Main Dev · Champion Game Studio</span><h3>Jelly Master: Mukbang ASMR</h3></div><span class="n">70M+</span><span class="arrow">→</span></div>
+    </a>
+    <div class="t stat c5" style="display:flex;justify-content:space-between;align-items:center"><div><span class="m">Years in Unity</span><b><span class="count" data-to="3">0</span><em>+</em></b></div><div style="text-align:right"><span class="m">Packages</span><b><span class="count" data-to="8">0</span></b></div></div>
+    <a class="t game c3 r2" href="https://play.google.com/store/apps/details?id=com.left.right.girl.dressup.game">
+      <div><div class="ic" style="background:linear-gradient(140deg,#ce93d8,#7c4dff)">S</div><span class="m">Main Dev</span><h4>Style Star: Left Right Fashion</h4></div>
+      <div class="row"><span class="n">10M+</span><span class="arrow">→</span></div>
+    </a>
+    <a class="t game c2 r2" href="https://play.google.com/store/apps/details?id=com.fc.p.cp.transform.game.tricky.puzzle">
+      <div><div class="ic" style="background:linear-gradient(140deg,#4dd0e1,#00897b)">T</div><span class="m">Team Lead</span><h4>Tictac Transform</h4></div>
+      <div class="row"><span class="todo">DL?</span><span class="arrow">→</span></div>
+    </a>
+
+    <!-- row 3 -->
+    <div class="t stack c5 r3">
+      <div class="lbl"><span class="m">Stack</span><span class="m">3+ yrs Unity</span></div>
+      <div class="chips"><span class="k">Unity</span><span class="k">C#</span><span>C++</span><span>uGUI</span><span>Addressables</span><span>Spine</span><span>Firebase</span><span>AppsFlyer</span><span>Adjust</span><span>Ads / IAP</span><span>Cocos2d-x</span><span>SDL</span><span>Profiler</span></div>
+    </div>
+    <div class="t xp c4 r3">
+      <div class="lbl"><span class="m">Experience</span><span class="todo">mốc mẫu</span></div>
+      <ul>
+        <li><i></i><div><b>Team Leader</b><span>Champion Game Studio · 20XX — Now</span></div></li>
+        <li><i></i><div><b>Unity Trainer</b><span>— · 20XX — 20XX</span></div></li>
+        <li class="p"><i></i><div><b>Game Developer</b><span>Champion Game Studio · 20XX — 20XX</span></div></li>
+        <li class="p"><i></i><div><b>C++ / Cocos2d-x / SDL</b><span>Where it all started</span></div></li>
+      </ul>
+    </div>
+    <div class="t quote c3 r3"><span class="m">Philosophy</span><p style="margin-top:12px">"A tap should feel <em>satisfying</em>. A codebase should feel <em>reusable</em>."</p></div>
+
+    <div class="t pk c8 r4" id="toolkit">
+      <div class="lbl"><span class="m">Toolkit — 8 in-house Unity packages</span><a class="m" href="https://github.com/tien0702" style="color:var(--ink)">GitHub ↗</a></div>
+      <ul>
+        <li class="core"><b>NIX Core</b><span>Shared foundation for every game — patterns, extensions, utils. Required by all modules.</span></li>
+        <li><b>Localization</b><span>CJK font optimization, Google Sheets sync</span></li>
+        <li><b>UI Framework</b><span>Popups, screens, transitions</span></li>
+        <li><b>Monetization Kit</b><span>Swap Ads/IAP SDK by define</span></li>
+        <li><b>Tracking Service</b><span>Firebase, AppsFlyer, Adjust</span></li>
+        <li><b>Audio Service</b><span>Data-driven audio events</span></li>
+        <li><b>Storage Service</b><span>ScriptableObject save/load</span></li>
+        <li><b>Skeleton Extend</b><span>Spine skins &amp; anim preview</span></li>
+      </ul>
+    </div>
+    <div class="t soc c4 r4">
+      <a href="https://www.linkedin.com/in/ti%E1%BA%BFn-tr%E1%BA%A7n-a675a8223/"><span class="m">Connect</span><b>LinkedIn ↗</b></a>
+      <a href="https://github.com/tien0702"><span class="m">Code</span><b>GitHub ↗</b></a>
+      <a href="https://tien0702.github.io/nix-blog/"><span class="m">Writing</span><b>Blog ↗</b></a>
+      <a href="https://tiennix.itch.io/"><span class="m">Play</span><b>itch.io ↗</b></a>
+    </div>
+
+    <div class="t cta c12" id="contact">
+      <div><span class="m">Open to new roles &amp; collaborations</span><h2>Let's build something<br>players will love.</h2></div>
+      <div class="copy">tientv.0702@gmail.com<button id="copy">Copy</button></div>
+    </div>
+  </div>
+
+  <footer class="m"><span>© 2026 Trần Tiến [NIX]</span><span>Built with ☕ in Ha Noi</span></footer>
+</div>
+
+<div class="pv">PLAN <a href="plan-1.html">1</a><a href="plan-2.html">2</a><a href="plan-3.html">3</a><a href="plan-4.html">4</a><a href="plan-5.html">5</a><a href="plan-6.html" class="on">6</a><a href="plan-7.html">7</a><a href="plan-8.html">8</a><a href="plan-9.html">9</a></div>
+
+<script>
+// stagger
+document.querySelectorAll('.t').forEach(function(t,i){t.style.animationDelay=(i*0.05)+'s'});
+// counters
+document.querySelectorAll('.count').forEach(function(el){var to=+el.dataset.to,t0=null;(function s(t){if(!t0)t0=t;var p=Math.min((t-t0)/1600,1);el.textContent=Math.round((1-Math.pow(1-p,4))*to);if(p<1)requestAnimationFrame(s)})(performance.now())});
+// spotlight
+document.addEventListener('pointermove',function(e){var t=e.target.closest('.t');if(!t)return;var r=t.getBoundingClientRect();t.style.setProperty('--x',e.clientX-r.left+'px');t.style.setProperty('--y',e.clientY-r.top+'px')});
+// clock
+(function c(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-GB',{timeZone:'Asia/Ho_Chi_Minh',hour:'2-digit',minute:'2-digit'})+' GMT+7';setTimeout(c,15000)})();
+document.getElementById('copy').onclick=function(){navigator.clipboard&&navigator.clipboard.writeText('tientv.0702@gmail.com');this.textContent='Copied ✓'};
+</script>
+</body>
+</html>

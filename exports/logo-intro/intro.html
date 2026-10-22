@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>NIX Logo Intro</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=JetBrains+Mono:wght@500;700&display=block" rel="stylesheet">
+<style>
+  html,body{margin:0;height:100%;background:#07090f;overflow:hidden}
+  canvas{display:block;width:100vw;height:100vh;object-fit:contain}
+  #ui{position:fixed;left:12px;bottom:10px;font:12px "JetBrains Mono",monospace;color:#6b7690}
+  #ui a{color:#00e5ff;margin-right:10px;text-decoration:none}
+  body.render #ui{display:none}
+</style>
+</head>
+<body>
+<canvas id="c" width="1920" height="1080"></canvas>
+<div id="ui"><a href="?v=1">1 · Line Form</a><a href="?v=2">2 · Hex Trace</a><a href="?v=3">3 · Blueprint</a></div>
+<script>
+// ---------------------------------------------------------------------------
+// Logo paths copied from assets/logo/NIX-02.svg (viewBox 283.46)
+// 0 = bottom bar, 1 = top bar, 2 = inner N/X mark, 3 = outer hexagon ring
+// ---------------------------------------------------------------------------
+const LOGO_D = [
+  "M155.72,217.1V170.15a1.8,1.8,0,0,0-.9-1.57l-11.88-6.86a1.83,1.83,0,0,0-1.81,0l-12.1,7a1.8,1.8,0,0,0-.9,1.57v47a1.8,1.8,0,0,0,.9,1.57l11.8,6.81a1.83,1.83,0,0,0,1.81,0l12.18-7A1.8,1.8,0,0,0,155.72,217.1Z",
+  "M128.13,66.14v47.62a1.8,1.8,0,0,0,.9,1.57l12.1,7a1.83,1.83,0,0,0,1.81,0l11.88-6.86a1.8,1.8,0,0,0,.9-1.57V66.36a1.8,1.8,0,0,0-.9-1.56l-12.18-7a1.83,1.83,0,0,0-1.81,0L129,64.57A1.81,1.81,0,0,0,128.13,66.14Z",
+  "M141.9,151.59l8.39,4.85,5.43,3.13,42.55,24.56,7.28,4.21a1.83,1.83,0,0,0,1.81,0L214,184.5a1.8,1.8,0,0,0,.9-1.57v-82.4A1.81,1.81,0,0,0,214,99l-6.24-3.6a1.83,1.83,0,0,0-1.81,0l-7.68,4.43-42.55,24.56L152.91,126a1.81,1.81,0,0,0,0,3.14l2.81,1.62L166,136.65a1.78,1.78,0,0,0,1.81,0l27.78-16a1.82,1.82,0,0,1,2.72,1.57v39.56a1.81,1.81,0,0,1-2.72,1.57L167,146.81l-8.4-4.85-2.85-1.64-13.82-8-8.16-4.71-5.61-3.25L85.2,99.6l-7.51-4.34a1.83,1.83,0,0,0-1.81,0L69.47,99a1.82,1.82,0,0,0-.91,1.57v82.4a1.81,1.81,0,0,0,.91,1.57l6.8,3.93a1.78,1.78,0,0,0,1.81,0l7.12-4.11,42.93-24.78,2.8-1.62a1.81,1.81,0,0,0,0-3.13l-2.8-1.62-10.25-5.92a1.85,1.85,0,0,0-1.82,0L87.92,163.5a1.81,1.81,0,0,1-2.72-1.56V122a1.81,1.81,0,0,1,2.72-1.57l29.15,16.83,8.16,4.71,2.9,1.68Z",
+  "M140.83,28.37,44,84.27a1.81,1.81,0,0,0-.91,1.56v111.8A1.82,1.82,0,0,0,44,199.2l96.82,55.9a1.83,1.83,0,0,0,1.81,0l96.82-55.9a1.81,1.81,0,0,0,.9-1.57V85.83a1.8,1.8,0,0,0-.9-1.56l-96.82-55.9A1.78,1.78,0,0,0,140.83,28.37Zm84.84,162.87-83,47.94a1.83,1.83,0,0,1-1.81,0l-83-47.94a1.8,1.8,0,0,1-.9-1.57V93.79a1.83,1.83,0,0,1,.9-1.57l83-47.93a1.78,1.78,0,0,1,1.81,0l83,47.93a1.84,1.84,0,0,1,.91,1.57v95.88A1.81,1.81,0,0,1,225.67,191.24Z"
+];
+const LOGO = LOGO_D.map(d => new Path2D(d));
+const LC = 141.73;                   // logo centre (viewBox units)
+const HEX_W = 197.5;                 // visible width of outer hexagon (viewBox units)
+// outer hexagon vertices (viewBox units), clockwise from top
+const HEXV = [[141.73,28.1],[240.4,85],[240.4,198.5],[141.73,255.4],[43.1,198.5],[43.1,85]];
+const INNER_K = 0.8575;              // inner edge of the ring relative to the outer one
+
+const W = 1920, H = 1080, CX = W / 2, CY = H / 2;
+const C = { bg:"#07090f", navy:"#0d2c48", cyan:"#00e5ff", pink:"#ff2d75", purple:"#7c4dff", white:"#eef2f8", dim:"#6b7690" };
+const FONT = '900 230px "Orbitron"';
+const CAP = 166;                     // cap height of FONT in px
+const FONT_MONO = '"JetBrains Mono", monospace';
+
+const cv = document.getElementById("c");
+const ctx = cv.getContext("2d");
+const layer = document.createElement("canvas"); layer.width = W; layer.height = H;
+
+// ---------- math helpers ----------
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const lerp = (a, b, k) => a + (b - a) * k;
+const eOutCubic = k => 1 - Math.pow(1 - k, 3);
+const eInOutCubic = k => k < .5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+const eOutExpo = k => k === 1 ? 1 : 1 - Math.pow(2, -10 * k);
+const eOutBack = (k, s = 1.70158) => 1 + (s + 1) * Math.pow(k - 1, 3) + s * Math.pow(k - 1, 2);
+
+// ---------- layout: logo + "NIX" side by side, centred as a group ----------
+let L; // computed after fonts load
+function layout(){
+  ctx.font = FONT;
+  const letters = [..."NIX"].map(ch => ({ ch, w: ctx.measureText(ch).width }));
+  const track = 18;
+  const textW = letters.reduce((s, l) => s + l.w, 0) + track * (letters.length - 1);
+  const s = 420 / 283.46;                       // logo scale (px per viewBox unit)
+  const logoW = HEX_W * s, gap = 70;
+  const total = logoW + gap + textW;
+  const left = CX - total / 2;
+  let x = left + logoW + gap;
+  letters.forEach(l => { l.x = x; x += l.w + track; });
+  L = { s, logoX: left + logoW / 2, logoY: CY, textX: left + logoW + gap, textW, letters, baseY: CY + 84, right: left + total, left };
+}
+
+// logo point (viewBox) -> screen
+const P = (p, lx, ly, s, k = 1) => [lx + (p[0] - LC) * s * k, ly + (p[1] - LC) * s * k];
+
+function logo(c, x, y, s, pieces = [0,1,2,3], fill = C.white){
+  c.save(); c.translate(x, y); c.scale(s, s); c.translate(-LC, -LC);
+  c.fillStyle = fill; pieces.forEach(i => c.fill(LOGO[i])); c.restore();
+}
+function letter(c, i, fill = C.white){
+  const l = L.letters[i];
+  c.font = FONT; c.textBaseline = "alphabetic"; c.fillStyle = fill;
+  c.fillText(l.ch, l.x, L.baseY);
+}
+
+// A line segment travelling along the infinite line A->B. It comes in from
+// beyond A, shoots through B (the intersection point), then settles exactly on AB.
+function travelLine(c, A, B, k, o = {}){
+  if (k <= 0) return;
+  const from = o.from ?? -2.2, back = o.back ?? -3.2;
+  const hu = from + (1 - from) * eOutBack(seg(k, 0, .8), o.over ?? 2.2);
+  const tu = Math.min(hu, back + (0 - back) * eOutCubic(seg(k, .12, 1)));
+  const at = u => [lerp(A[0], B[0], u), lerp(A[1], B[1], u)];
+  const p0 = at(tu), p1 = at(hu);
+  c.save();
+  c.strokeStyle = o.color || C.white; c.lineWidth = o.w || 2.5; c.lineCap = "round";
+  c.globalAlpha = o.alpha ?? 1;
+  if (o.glow){ c.shadowColor = o.glow; c.shadowBlur = 18; }
+  c.beginPath(); c.moveTo(...p0); c.lineTo(...p1); c.stroke();
+  c.restore();
+}
+// six travelling lines forming a hexagon; returns per-edge progress
+function hexLines(c, t, t0, dur, stagger, lx, ly, s, o = {}){
+  const ks = [];
+  for (let i = 0; i < 6; i++){
+    const k = seg(t, t0 + i * stagger, t0 + i * stagger + dur); ks.push(k);
+    let A = P(HEXV[i], lx, ly, s, o.scale), B = P(HEXV[(i + 1) % 6], lx, ly, s, o.scale);
+    if (i % 2) [A, B] = [B, A];               // alternate directions so lines cross at vertices
+    travelLine(c, A, B, k, o);
+  }
+  return ks;
+}
+// small ring that pops when lines meet at a point
+function nodePop(c, x, y, k, color = C.cyan, r = 10){
+  if (k <= 0 || k >= 1) return;
+  c.save(); c.globalAlpha = 1 - k; c.strokeStyle = color; c.lineWidth = 2;
+  c.beginPath(); c.arc(x, y, r * (.4 + 1.6 * eOutCubic(k)), 0, 7); c.stroke();
+  c.fillStyle = "#fff"; c.globalAlpha = (1 - k);
+  c.beginPath(); c.arc(x, y, 3.5, 0, 7); c.fill(); c.restore();
+}
+function hexNodes(c, ks, lx, ly, s, scale = 1, color){
+  for (let j = 0; j < 6; j++){
+    const a = ks[(j + 5) % 6], b = ks[j];           // the two edges touching vertex j
+    const k = seg(Math.min(a, b), .55, 1);
+    nodePop(c, ...P(HEXV[j], lx, ly, s, scale), k, color);
+  }
+}
+// reveal whatever draw() paints with a straight wipe; a thin line rides the edge
+function wipe(c, k, cx, cy, R, ang, draw, o = {}){
+  if (k <= 0) return;
+  const d = lerp(-R, R, k);
+  c.save(); c.translate(cx, cy); c.rotate(ang);
+  c.beginPath(); c.rect(-R * 3, -R * 3, R * 3 + d, R * 6); c.clip();
+  c.rotate(-ang); c.translate(-cx, -cy); draw(c); c.restore();
+  if (k < 1 && o.line !== false){
+    const ext = o.ext ?? 1.35;
+    c.save(); c.translate(cx, cy); c.rotate(ang);
+    c.globalAlpha = Math.sin(k * Math.PI); c.strokeStyle = o.color || C.white; c.lineWidth = o.w || 3;
+    c.shadowColor = o.glow || C.cyan; c.shadowBlur = 14;
+    c.beginPath(); c.moveTo(d, -R * ext); c.lineTo(d, R * ext); c.stroke(); c.restore();
+  }
+}
+
+// ---------- shared backdrop ----------
+function backdrop(c, k = 1, hue = C.navy){
+  c.fillStyle = C.bg; c.fillRect(0, 0, W, H);
+  c.save(); c.globalAlpha = k;
+  const g = c.createRadialGradient(CX, CY, 0, CX, CY, 760);
+  g.addColorStop(0, hue); g.addColorStop(.55, "rgba(13,44,72,.35)"); g.addColorStop(1, "rgba(7,9,15,0)");
+  c.fillStyle = g; c.fillRect(0, 0, W, H);
+  const w = c.createLinearGradient(0, H, W, H - 80);
+  w.addColorStop(0, "rgba(13,44,72,0)"); w.addColorStop(1, "rgba(18,70,110,.55)");
+  c.fillStyle = w; c.beginPath(); c.moveTo(0, H); c.lineTo(W, H - 70); c.lineTo(W, H); c.fill();
+  c.restore();
+}
+function vignette(c){
+  const g = c.createRadialGradient(CX, CY, 400, CX, CY, 1150);
+  g.addColorStop(0, "rgba(0,0,0,0)"); g.addColorStop(1, "rgba(0,0,0,.75)");
+  c.fillStyle = g; c.fillRect(0, 0, W, H);
+}
+function fadeOut(c, t, a = 4.5, b = 5){ c.fillStyle = `rgba(7,9,15,${seg(t, a, b)})`; c.fillRect(0, 0, W, H); }
+function hudText(c, k){
+  if (k <= 0) return;
+  c.save(); c.globalAlpha = k * .8;
+  c.font = `500 26px ${FONT_MONO}`; c.textAlign = "center"; c.fillStyle = "#8fa3c0";
+  c.letterSpacing = "6px";
+  c.fillText("0.7  |  NIX STUDIO", CX, 70);
+  const y = H - 150, x0 = 260, x1 = W - 260, half = (x1 - x0) / 2 * eOutCubic(k);
+  c.strokeStyle = "rgba(143,163,192,.5)"; c.lineWidth = 2;
+  c.beginPath(); c.moveTo(CX - half, y); c.lineTo(CX - 160, y); c.moveTo(CX + 160, y); c.lineTo(CX + half, y); c.stroke();
+  [CX - half, CX + half].forEach(x => { c.save(); c.translate(x, y); c.rotate(Math.PI / 4); c.strokeRect(-7, -7, 14, 14); c.restore(); });
+  c.font = `500 20px ${FONT_MONO}`; c.letterSpacing = "8px"; c.fillStyle = "#6b7690";
+  c.fillText("GAME DEVELOPER", CX, y + 7);
+  c.restore();
+}
+// a line that just flies through (slash)
+function flyLine(c, t, s){
+  const k = seg(t, s.t0, s.t0 + s.d); if (k <= 0 || k >= 1) return;
+  const head = eOutCubic(k), tail = eOutCubic(clamp(k * 1.6 - .6));
+  c.save(); c.strokeStyle = s.color || C.white; c.lineCap = "round"; c.lineWidth = s.w; c.globalAlpha = s.a ?? 1;
+  c.beginPath(); c.moveTo(lerp(s.x0, s.x1, tail), lerp(s.y0, s.y1, tail)); c.lineTo(lerp(s.x0, s.x1, head), lerp(s.y0, s.y1, head)); c.stroke();
+  c.restore();
+}
+
+// ===========================================================================
+// 1 · LINE FORM — closest to the reference: diagonal lines fly in and cross
+//     at the centre, lines shoot through the vertices and lock into a hexagon,
+//     it expands into the HUD frame, then the logo and "NIX" are revealed by
+//     thin sweeping lines
+// ===========================================================================
+function hudFrame(c, k){
+  if (k <= 0) return;
+  c.save(); c.globalAlpha = k * .55; c.strokeStyle = "#5d7fa6"; c.lineWidth = 2;
+  const R = lerp(260, 470, eOutExpo(k));
+  for (let i = 0; i < 6; i++){
+    const a0 = -Math.PI / 2 + i * Math.PI / 3, a1 = a0 + Math.PI / 3;
+    const p0 = [CX + Math.cos(a0) * R * 1.75, CY + Math.sin(a0) * R];
+    const p1 = [CX + Math.cos(a1) * R * 1.75, CY + Math.sin(a1) * R];
+    [[.18, .42], [.58, .82]].forEach(([u0, u1]) => {
+      c.beginPath(); c.moveTo(lerp(p0[0], p1[0], u0), lerp(p0[1], p1[1], u0)); c.lineTo(lerp(p0[0], p1[0], u1), lerp(p0[1], p1[1], u1)); c.stroke();
+    });
+  }
+  c.fillStyle = "#5d7fa6";
+  [-1, 1].forEach(sx => {
+    const x = CX + sx * R * 1.75;
+    c.beginPath(); c.moveTo(x, CY); c.lineTo(x - sx * 16, CY - 9); c.lineTo(x - sx * 16, CY + 9); c.fill();
+    c.beginPath(); c.arc(CX + sx * R * 1.1, CY, 9, 0, 7); c.stroke();
+    c.beginPath(); c.arc(CX + sx * R * .55, CY - R * .78, 5, 0, 7); c.fill();
+    c.beginPath(); c.arc(CX + sx * R * .55, CY + R * .78, 5, 0, 7); c.fill();
+  });
+  c.restore();
+}
+// diagonal lines that cross through the centre point (forming an X)
+const V1_CROSS = [
+  { t0: .05, d: .55, x0: CX - 620, y0: CY - 420, x1: CX + 620, y1: CY + 420, w: 3 },
+  { t0: .12, d: .55, x0: CX + 620, y0: CY - 420, x1: CX - 620, y1: CY + 420, w: 3 },
+  { t0: .2,  d: .5,  x0: CX - 700, y0: CY + 300, x1: CX + 500, y1: CY - 520, w: 2 },
+  { t0: .26, d: .5,  x0: CX + 700, y0: CY + 300, x1: CX - 500, y1: CY - 520, w: 2 },
+];
+const V1_SLASH = [
+  { t0: 2.45, d: .35, x0: CX - 700, y0: CY + 90,  x1: CX - 380, y1: CY + 90,  w: 2 },
+  { t0: 2.6,  d: .35, x0: CX + 760, y0: CY - 120, x1: CX + 440, y1: CY - 120, w: 2 },
+  { t0: 3.05, d: .4,  x0: CX - 330, y0: CY - 360, x1: CX - 60,  y1: CY + 360, w: 2.5 },
+];
+function chevron(c, x, y, dir, a){
+  c.save(); c.globalAlpha = a; c.strokeStyle = C.white; c.lineWidth = 3;
+  c.beginPath(); c.moveTo(x - dir * 14, y - 22); c.lineTo(x, y); c.lineTo(x - dir * 14, y + 22); c.stroke(); c.restore();
+}
+function v1(t){
+  backdrop(ctx, seg(t, 0, .5));
+  hudText(ctx, seg(t, .1, .8));
+  hudFrame(ctx, seg(t, 1.25, 1.8) * (1 - seg(t, 4.2, 4.8)));
+  V1_CROSS.forEach(s => flyLine(ctx, t, s));
+  nodePop(ctx, CX, CY, seg(t, .3, .75), C.white, 14);
+
+  // small hexagon formed by lines shooting through its vertices
+  const sm = L.s * .5;
+  const formOut = seg(t, 1.2, 1.65);                      // then expands & fades
+  if (t < 1.65){
+    ctx.save();
+    const sc = 1 + 2.2 * eInOutCubic(formOut);
+    ctx.translate(CX, CY); ctx.scale(sc, sc); ctx.translate(-CX, -CY);
+    ctx.globalAlpha = 1 - formOut;
+    const ks = hexLines(ctx, t, .45, .6, .05, CX, CY, sm, { w: 2.5 / sc, from: -1.8, back: -2.6 });
+    hexNodes(ctx, ks, CX, CY, sm, 1, C.white);
+    // pink core
+    ctx.globalAlpha = .4 * seg(t, .8, 1.1) * (1 - formOut);
+    logo(ctx, CX, CY, sm * .3, [3], C.pink);
+    ctx.restore();
+    const ck = seg(t, .85, 1.5);
+    if (ck > 0 && ck < 1){
+      const dx = lerp(150, 420, eOutCubic(ck)), a = Math.sin(ck * Math.PI);
+      chevron(ctx, CX + dx, CY, 1, a); chevron(ctx, CX - dx, CY, -1, a);
+    }
+  }
+
+  const dim = 1 - .45 * seg(t, 3.7, 4.1);
+  const lc = layer.getContext("2d"); lc.clearRect(0, 0, W, H);
+  const lx = L.logoX, ly = L.logoY, s = L.s;
+  // logo hexagon outline formed by travelling lines, then the logo is revealed
+  const ks = hexLines(lc, t, 1.35, .55, .04, lx, ly, s, { w: 3, from: -1.6, back: -2.4, alpha: 1 - seg(t, 2.0, 2.3) });
+  hexNodes(lc, ks, lx, ly, s, 1, C.cyan);
+  const R = 150 * s;
+  wipe(lc, eInOutCubic(seg(t, 1.8, 2.25)), lx, ly, R, -Math.PI / 3, c => logo(c, lx, ly, s, [3]));
+  wipe(lc, eInOutCubic(seg(t, 2.0, 2.35)), lx, ly, R, Math.PI / 2, c => logo(c, lx, ly, s, [1]), { ext: .5 });
+  wipe(lc, eInOutCubic(seg(t, 2.0, 2.35)), lx, ly, R, -Math.PI / 2, c => logo(c, lx, ly, s, [0]), { ext: .5 });
+  wipe(lc, eInOutCubic(seg(t, 2.1, 2.5)), lx, ly, R, 0, c => logo(c, lx, ly, s, [2]), { ext: .8 });
+  // NIX: each letter revealed by a slanted sweeping line
+  [0, 1, 2].forEach(i => {
+    const l = L.letters[i], st = 2.25 + i * .13;
+    wipe(lc, eInOutCubic(seg(t, st, st + .4)), l.x + l.w / 2, L.baseY - CAP / 2, l.w * .9 + 40, -.35, c => letter(c, i), { ext: 1.6 });
+  });
+  ctx.save(); ctx.globalAlpha = dim * (1 - seg(t, 4.35, 4.85));
+  ctx.shadowColor = "rgba(0,229,255,.35)"; ctx.shadowBlur = 40 * seg(t, 2.3, 2.8);
+  ctx.drawImage(layer, 0, 0); ctx.restore();
+  V1_SLASH.forEach(s => flyLine(ctx, t, s));
+  vignette(ctx); fadeOut(ctx, t);
+}
+
+// ===========================================================================
+// 2 · HEX TRACE — long cyan lines run along the hexagon's edges, cross at
+//     every vertex and lock into the outer & inner outline; the ring fills,
+//     bars and mark are swept in, logo slides left and "NIX" emerges
+// ===========================================================================
+const PARTS = (() => { let sd = 42; const r = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
+  return Array.from({ length: 70 }, () => ({ x: r() * W, y: r() * H, s: .6 + r() * 2, v: 8 + r() * 25, a: .15 + r() * .45 })); })();
+function hexGrid(c, k){
+  if (k <= 0) return;
+  c.save(); c.globalAlpha = .07 * k; c.strokeStyle = C.cyan; c.lineWidth = 1;
+  const R = 46, dx = R * Math.sqrt(3), dy = R * 1.5;
+  for (let row = -1; row < H / dy + 1; row++) for (let col = -1; col < W / dx + 1; col++){
+    const x = col * dx + (row % 2 ? dx / 2 : 0), y = row * dy;
+    if (Math.hypot(x - CX, y - CY) > 900) continue;
+    c.beginPath();
+    for (let i = 0; i < 6; i++){ const a = Math.PI / 6 + i * Math.PI / 3; c.lineTo(x + Math.cos(a) * R, y + Math.sin(a) * R); }
+    c.closePath(); c.stroke();
+  }
+  c.restore();
+}
+function v2(t){
+  backdrop(ctx, seg(t, 0, .6), "#0a2238");
+  hexGrid(ctx, seg(t, .2, 1.2) * (1 - seg(t, 4.3, 4.9)));
+  ctx.save(); ctx.fillStyle = C.cyan;
+  PARTS.forEach(p => { ctx.globalAlpha = p.a * seg(t, .3, 1); ctx.beginPath(); ctx.arc(p.x, (p.y - p.v * t * 3 + H) % H, p.s, 0, 7); ctx.fill(); });
+  ctx.restore();
+
+  const slide = eInOutCubic(seg(t, 2.35, 3.0));
+  const lx = CX + (L.logoX - CX) * slide, ly = CY, s = L.s;
+  const lc = layer.getContext("2d"); lc.clearRect(0, 0, W, H);
+
+  // outer + inner outline built from lines crossing at the vertices
+  const outA = 1 - seg(t, 1.45, 1.8);
+  const o = { w: 2.5, color: C.cyan, glow: C.cyan, from: -4, back: -5.5, over: 1.6, alpha: outA };
+  const ko = hexLines(ctx, t, .25, .9, .07, lx, ly, s, o);
+  const ki = hexLines(ctx, t, .45, .9, .07, lx, ly, s, { ...o, scale: INNER_K, w: 2 });
+  hexNodes(ctx, ko, lx, ly, s, 1, C.cyan);
+  hexNodes(ctx, ki, lx, ly, s, INNER_K, C.cyan);
+  // ring fills in from the outline
+  const fk = seg(t, 1.3, 1.7);
+  if (fk > 0){ lc.globalAlpha = eOutCubic(fk); logo(lc, lx, ly, s, [3]); lc.globalAlpha = 1; }
+  // vertical scan line through the centre reveals the bars from the middle out
+  const R = 150 * s, bk = eInOutCubic(seg(t, 1.55, 2.0));
+  wipe(lc, bk, lx, ly, R, -Math.PI / 2, c => logo(c, lx, ly, s, [1]), { ext: .45, color: C.cyan });
+  wipe(lc, bk, lx, ly, R, Math.PI / 2, c => logo(c, lx, ly, s, [0]), { ext: .45, color: C.cyan });
+  // mark opens horizontally from the centre with two lines riding its edges
+  const mk = eInOutCubic(seg(t, 1.8, 2.3));
+  if (mk > 0){
+    const hw = 80 * s * mk;
+    lc.save(); lc.beginPath(); lc.rect(lx - hw, 0, hw * 2, H); lc.clip(); logo(lc, lx, ly, s, [2]); lc.restore();
+    if (mk < 1){
+      lc.save(); lc.strokeStyle = C.cyan; lc.lineWidth = 3; lc.shadowColor = C.cyan; lc.shadowBlur = 14; lc.globalAlpha = Math.sin(mk * Math.PI);
+      [-1, 1].forEach(d => { lc.beginPath(); lc.moveTo(lx + d * hw, ly - 70 * s); lc.lineTo(lx + d * hw, ly + 70 * s); lc.stroke(); });
+      lc.restore();
+    }
+  }
+  const fl = 1 - seg(t, 2.2, 2.6);
+  if (t > 2.2 && fl > 0){
+    ctx.save(); ctx.globalAlpha = fl * .7; ctx.globalCompositeOperation = "lighter";
+    const g = ctx.createRadialGradient(lx, ly, 0, lx, ly, 420 * (1.3 - fl));
+    g.addColorStop(0, "rgba(0,229,255,.8)"); g.addColorStop(1, "rgba(0,229,255,0)");
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H); ctx.restore();
+  }
+  // "NIX" slides out from behind the logo
+  const clipX = lx + HEX_W * s / 2 + 8;
+  lc.save(); lc.beginPath(); lc.rect(clipX, 0, W, H); lc.clip();
+  [0, 1, 2].forEach(i => {
+    const k = eOutExpo(seg(t, 2.65 + i * .1, 3.35 + i * .1));
+    if (k <= 0) return;
+    lc.save(); lc.translate(-(1 - k) * (L.letters[i].x - L.textX + 260), 0); letter(lc, i); lc.restore();
+  });
+  lc.restore();
+  const uk = eOutCubic(seg(t, 3.05, 3.65));
+  if (uk > 0){
+    lc.fillStyle = C.cyan; lc.fillRect(L.textX, L.baseY + 34, L.textW * uk, 5);
+    lc.globalAlpha = seg(t, 3.25, 3.75); lc.font = `500 30px ${FONT_MONO}`; lc.letterSpacing = "12px"; lc.fillStyle = "#9fb0c8";
+    lc.fillText("GAME DEVELOPER", L.textX, L.baseY + 92); lc.letterSpacing = "0px"; lc.globalAlpha = 1;
+  }
+  // light sweep over the finished lockup
+  const sk = seg(t, 3.4, 4.05);
+  if (sk > 0 && sk < 1){
+    lc.save(); lc.globalCompositeOperation = "source-atop";
+    const x = lerp(L.left - 300, L.right + 300, eInOutCubic(sk));
+    const g = lc.createLinearGradient(x - 120, 0, x + 120, 0);
+    g.addColorStop(0, "rgba(0,229,255,0)"); g.addColorStop(.5, "rgba(140,250,255,.95)"); g.addColorStop(1, "rgba(0,229,255,0)");
+    lc.translate(x, CY); lc.transform(1, 0, -.35, 1, 0, 0); lc.translate(-x, -CY);
+    lc.fillStyle = g; lc.fillRect(x - 120, 0, 240, H); lc.restore();
+  }
+  ctx.save(); ctx.globalAlpha = 1 - seg(t, 4.35, 4.9); ctx.shadowColor = "rgba(0,229,255,.45)"; ctx.shadowBlur = 30;
+  ctx.drawImage(layer, 0, 0); ctx.restore();
+  vignette(ctx); fadeOut(ctx, t);
+}
+
+// ===========================================================================
+// 3 · BLUEPRINT — full-screen construction lines run across the frame and
+//     mark every intersection; the hexagon is inked between those points,
+//     the logo fills in from the centre, guides for "NIX" draw and the
+//     letters rise into place
+// ===========================================================================
+// guide line drawn across the whole screen through point p at angle a
+function guide(c, p, a, k, color, alpha){
+  if (k <= 0) return;
+  const dx = Math.cos(a), dy = Math.sin(a), Lg = 2400;
+  const x0 = p[0] - dx * Lg, y0 = p[1] - dy * Lg;
+  const e = eInOutCubic(k);
+  c.save(); c.strokeStyle = color; c.globalAlpha = alpha; c.lineWidth = 1.5;
+  c.beginPath(); c.moveTo(x0, y0); c.lineTo(x0 + dx * Lg * 2 * e, y0 + dy * Lg * 2 * e); c.stroke(); c.restore();
+}
+function cross(c, x, y, k, color){
+  if (k <= 0) return;
+  const r = 12 * eOutBack(k);
+  c.save(); c.strokeStyle = color; c.lineWidth = 2; c.globalAlpha = .9;
+  c.beginPath(); c.moveTo(x - r, y); c.lineTo(x + r, y); c.moveTo(x, y - r); c.lineTo(x, y + r); c.stroke();
+  c.beginPath(); c.arc(x, y, r * .55, 0, 7); c.stroke(); c.restore();
+}
+function v3(t){
+  backdrop(ctx, seg(t, 0, .5), "#14123a");
+  // faint blueprint grid
+  ctx.save(); ctx.globalAlpha = .06 * seg(t, 0, .6); ctx.strokeStyle = C.purple;
+  for (let x = 0; x < W; x += 60){ ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+  for (let y = 0; y < H; y += 60){ ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+  ctx.restore();
+
+  const lx = L.logoX, ly = L.logoY, s = L.s;
+  const V = HEXV.map(p => P(p, lx, ly, s));
+  const gA = .75 * (1 - seg(t, 2.6, 3.3));
+  const GC = "#7f8cff";
+  // construction lines: the hexagon's six edge lines (60° families) + centre axes
+  const guides = [
+    [V[0], Math.atan2(V[1][1] - V[0][1], V[1][0] - V[0][0]), .1],
+    [V[3], Math.atan2(V[4][1] - V[3][1], V[4][0] - V[3][0]), .18],
+    [V[5], Math.atan2(V[0][1] - V[5][1], V[0][0] - V[5][0]), .26],
+    [V[2], Math.atan2(V[3][1] - V[2][1], V[3][0] - V[2][0]), .34],
+    [V[1], Math.PI / 2, .42], [V[5], Math.PI / 2, .48],
+    [[lx, ly], 0, .56], [[lx, ly], Math.PI / 2, .6],
+  ];
+  guides.forEach(([p, a, st]) => guide(ctx, p, a, seg(t, st, st + .6), GC, gA));
+  // markers pop on every vertex once both guides have passed it
+  V.forEach((p, j) => cross(ctx, p[0], p[1], seg(t, .7 + j * .05, .95 + j * .05) * (1 - seg(t, 2.6, 3.1)), C.pink));
+  cross(ctx, lx, ly, seg(t, 1.0, 1.25) * (1 - seg(t, 2.6, 3.1)), C.pink);
+
+  const lc = layer.getContext("2d"); lc.clearRect(0, 0, W, H);
+  // ink the hexagon between the marked points
+  const ik = seg(t, 1.0, 1.6);
+  if (ik > 0){
+    lc.save(); lc.strokeStyle = C.white; lc.lineWidth = 2.5; lc.lineJoin = "round"; lc.globalAlpha = 1 - seg(t, 2.0, 2.4);
+    for (let i = 0; i < 6; i++){
+      const k = eInOutCubic(seg(ik, i * .08, i * .08 + .6)); if (k <= 0) continue;
+      const A = V[i], B = V[(i + 1) % 6], m = [(A[0] + B[0]) / 2, (A[1] + B[1]) / 2];
+      // each edge grows outward from its midpoint to both vertices
+      lc.beginPath(); lc.moveTo(lerp(m[0], A[0], k), lerp(m[1], A[1], k)); lc.lineTo(lerp(m[0], B[0], k), lerp(m[1], B[1], k)); lc.stroke();
+    }
+    lc.restore();
+  }
+  // logo fills in from the centre (expanding circle) piece by piece
+  [[3, 1.45], [1, 1.75], [0, 1.75], [2, 1.95]].forEach(([i, st]) => {
+    const k = eInOutCubic(seg(t, st, st + .5)); if (k <= 0) return;
+    lc.save(); lc.beginPath(); lc.arc(lx, ly, 160 * s * k, 0, 7); lc.clip();
+    lc.globalAlpha = clamp(k * 1.5); logo(lc, lx, ly, s, [i]); lc.restore();
+  });
+  const ring = seg(t, 1.45, 2.3);
+  if (ring > 0 && ring < 1){
+    lc.save(); lc.strokeStyle = C.pink; lc.lineWidth = 2; lc.globalAlpha = Math.sin(ring * Math.PI) * .8;
+    lc.beginPath(); lc.arc(lx, ly, 160 * s * eInOutCubic(ring), 0, 7); lc.stroke(); lc.restore();
+  }
+  // text guides: baseline + cap line run across, then letters rise up
+  const tg = 1 - seg(t, 3.2, 3.8);
+  guide(ctx, [L.textX, L.baseY], 0, seg(t, 2.0, 2.5), GC, .55 * tg);
+  guide(ctx, [L.textX, L.baseY - CAP], Math.PI, seg(t, 2.08, 2.58), GC, .55 * tg);
+  [0, 1, 2].forEach(i => {
+    const l = L.letters[i], k = eInOutCubic(seg(t, 2.4 + i * .13, 2.9 + i * .13));
+    cross(ctx, l.x, L.baseY, seg(t, 2.3 + i * .1, 2.55 + i * .1) * tg, C.pink);
+    if (k <= 0) return;
+    lc.save(); lc.beginPath(); lc.rect(l.x - 10, L.baseY - CAP * k - 4, l.w + 20, CAP * k + 8); lc.clip();
+    letter(lc, i); lc.restore();
+    if (k < 1){ lc.save(); lc.fillStyle = C.pink; lc.fillRect(l.x - 10, L.baseY - CAP * k - 2, l.w + 20, 3); lc.restore(); }
+  });
+  const ck = seg(t, 3.0, 3.5);
+  if (ck > 0){
+    lc.save(); lc.globalAlpha = ck; lc.font = `700 28px ${FONT_MONO}`; lc.letterSpacing = "14px"; lc.fillStyle = C.pink;
+    lc.fillText("// GAME DEVELOPER", L.textX + 4, L.baseY + 70); lc.restore();
+  }
+  ctx.save(); ctx.globalAlpha = 1 - seg(t, 4.35, 4.85); ctx.shadowColor = "rgba(124,77,255,.5)"; ctx.shadowBlur = 30 * seg(t, 2.2, 2.8);
+  ctx.drawImage(layer, 0, 0); ctx.restore();
+  vignette(ctx); fadeOut(ctx, t);
+}
+
+// ---------------------------------------------------------------------------
+const VARIANTS = { 1: v1, 2: v2, 3: v3 };
+const DURATION = 5;
+const v = +(new URLSearchParams(location.search).get("v") || 1);
+window.renderFrame = t => { ctx.save(); VARIANTS[v](t); ctx.restore(); };
+window.DURATION = DURATION;
+window.ready = document.fonts.load(FONT).then(() => document.fonts.load(`500 20px "JetBrains Mono"`)).then(() => document.fonts.ready).then(layout);
+
+if (new URLSearchParams(location.search).has("render")) document.body.classList.add("render");
+else window.ready.then(() => {
+  const t0 = performance.now();
+  (function loop(now){ renderFrame(((now - t0) / 1000) % (DURATION + .6)); requestAnimationFrame(loop); })(t0);
+});
+</script>
+</body>
+</html>

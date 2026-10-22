@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>[NIX] — Plan 3 · Arcade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Be+Vietnam+Pro:wght@500;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#0b0820; --bg2:#151036; --panel:#1d1748; --edge:#3b2f8f;
+  --ink:#f4f0ff; --dim:#9a90c8;
+  --yel:#ffd23f; --pink:#ff3d8b; --cyan:#3df5ff; --lime:#8cff3d; --orange:#ff8a3d;
+  --px:'Press Start 2P',monospace; --vt:'VT323',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--vt);font-size:22px;line-height:1.25;overflow-x:hidden;image-rendering:pixelated}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--pink);color:#fff}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+.px{font-family:var(--px);line-height:1.6}
+
+/* CRT overlay */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:200;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.22) 0 1px,transparent 1px 3px),radial-gradient(ellipse at center,transparent 60%,rgba(0,0,0,.55));}
+.stars{position:fixed;inset:0;z-index:-1;background-image:
+  radial-gradient(2px 2px at 20% 30%,#fff8,transparent),radial-gradient(2px 2px at 70% 20%,#fff6,transparent),
+  radial-gradient(2px 2px at 40% 80%,#fff5,transparent),radial-gradient(2px 2px at 85% 65%,#fff7,transparent),
+  radial-gradient(2px 2px at 10% 70%,#fff4,transparent),radial-gradient(2px 2px at 55% 50%,#fff3,transparent);
+  background-size:400px 400px;animation:drift 60s linear infinite}
+@keyframes drift{to{background-position:0 400px}}
+
+/* pixel panel */
+.pnl{background:var(--panel);position:relative;
+  box-shadow:0 -4px 0 0 var(--edge),0 4px 0 0 var(--edge),-4px 0 0 0 var(--edge),4px 0 0 0 var(--edge),0 0 0 4px var(--bg),8px 8px 0 4px #000a}
+.pbtn{display:inline-block;font-family:var(--px);font-size:12px;padding:14px 18px;background:var(--yel);color:#2a1a00;cursor:pointer;border:0;
+  box-shadow:inset -4px -4px 0 #c99a00,inset 4px 4px 0 #fff3a8,0 0 0 4px #000;transition:transform .08s}
+.pbtn:hover{transform:translate(-2px,-2px);box-shadow:inset -4px -4px 0 #c99a00,inset 4px 4px 0 #fff3a8,0 0 0 4px #000,4px 4px 0 4px #000}
+.pbtn:active{transform:translate(2px,2px)}
+.pbtn.pk{background:var(--pink);color:#fff;box-shadow:inset -4px -4px 0 #b3195a,inset 4px 4px 0 #ff9cc4,0 0 0 4px #000}
+
+/* HUD */
+.hud{position:sticky;top:0;z-index:50;background:#000c;border-bottom:4px solid var(--edge);backdrop-filter:blur(4px)}
+.hud .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:10px;padding-bottom:10px;font-family:var(--px);font-size:10px}
+.hud .score b{color:var(--yel)}
+.hud nav{display:flex;gap:18px}
+.hud nav a:hover{color:var(--cyan)}
+.hud nav a::before{content:'▶ ';opacity:0}
+.hud nav a:hover::before{opacity:1}
+.hearts{color:var(--pink);letter-spacing:2px}
+
+/* title screen */
+.title{min-height:calc(100vh - 44px);display:grid;place-items:center;text-align:center;padding:60px 0}
+.title .pre{font-family:var(--px);font-size:11px;color:var(--cyan);margin-bottom:26px;letter-spacing:2px}
+.logo{font-family:var(--px);font-size:clamp(46px,12vw,120px);line-height:1;color:var(--yel);
+  text-shadow:4px 4px 0 var(--pink),8px 8px 0 var(--edge),12px 12px 0 #000;animation:float 3s ease-in-out infinite}
+.logo span{color:var(--cyan);text-shadow:4px 4px 0 var(--edge),8px 8px 0 #000}
+@keyframes float{50%{transform:translateY(-8px)}}
+.title h1{font-family:var(--px);font-size:clamp(12px,2.2vw,18px);margin-top:36px;color:var(--ink);line-height:1.8}
+.title h1 em{font-style:normal;color:var(--lime)}
+.title p{color:var(--dim);margin:14px auto 34px;max-width:560px}
+.press{font-family:var(--px);font-size:14px;color:var(--ink);animation:blinkp 1s steps(2) infinite;display:inline-block;margin-top:30px}
+@keyframes blinkp{50%{opacity:0}}
+.hiscore{display:inline-grid;grid-template-columns:auto auto;gap:6px 28px;text-align:left;font-family:var(--px);font-size:11px;margin-top:40px;padding:20px 26px}
+.hiscore b{color:var(--yel);text-align:right}
+
+/* section head */
+section{padding:90px 0 0}
+.stage{font-family:var(--px);font-size:11px;color:var(--pink);margin-bottom:10px}
+.sh{font-family:var(--px);font-size:clamp(18px,3.4vw,30px);line-height:1.4;margin-bottom:34px;text-shadow:4px 4px 0 var(--edge)}
+
+/* character select */
+.char{display:grid;grid-template-columns:300px 1fr;gap:34px;padding:26px}
+.portrait{position:relative;aspect-ratio:1;background:var(--bg2);overflow:hidden;box-shadow:0 0 0 4px #000,0 0 0 8px var(--cyan)}
+.portrait img{width:100%;height:100%;object-fit:cover;image-rendering:pixelated;filter:contrast(1.1) saturate(1.2)}
+.portrait .sel{position:absolute;left:0;right:0;bottom:0;padding:8px;background:#000c;font-family:var(--px);font-size:10px;color:var(--cyan);text-align:center}
+.char h3{font-family:var(--px);font-size:20px;line-height:1.5}
+.char .cls{color:var(--lime);font-family:var(--px);font-size:10px;margin:6px 0 16px;line-height:1.8}
+.char p{color:var(--dim);margin-bottom:18px}
+.bars{display:grid;gap:10px}
+.bar{display:grid;grid-template-columns:110px 1fr 44px;gap:12px;align-items:center;font-family:var(--px);font-size:9px}
+.bar .track{height:16px;background:#000;box-shadow:0 0 0 2px var(--edge);display:flex;gap:2px;padding:2px}
+.bar .track i{flex:1;background:#2a2260}
+.bar .track i.on{background:var(--c,var(--lime))}
+.bar b{color:var(--yel);text-align:right}
+
+/* level select */
+.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.lvl{padding:0;cursor:pointer;transition:transform .15s}
+.lvl:hover{transform:translate(-4px,-4px)}
+.lvl .shot{aspect-ratio:16/10;background:var(--bg2);position:relative;overflow:hidden;border-bottom:4px solid #000}
+.lvl .shot img{width:100%;height:100%;object-fit:cover;image-rendering:pixelated}
+.lvl .shot .big{width:100%;height:100%;display:grid;place-items:center;font-family:var(--px);font-size:56px;color:#fff;text-shadow:4px 4px 0 #0006}
+.lvl .tagw{position:absolute;top:8px;left:8px;background:#000;color:var(--yel);font-family:var(--px);font-size:9px;padding:6px 8px}
+.lvl .boss{position:absolute;top:8px;right:8px;background:var(--pink);color:#fff;font-family:var(--px);font-size:9px;padding:6px 8px;animation:blinkp 1.2s steps(2) infinite}
+.lvl .info{padding:16px}
+.lvl h4{font-family:var(--px);font-size:11px;line-height:1.7;margin-bottom:8px}
+.lvl .stars3{color:var(--yel);font-size:26px;letter-spacing:2px}
+.lvl .row{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.lvl .sc{font-family:var(--px);font-size:10px;color:var(--lime)}
+.lvl .role{color:var(--cyan)}
+.todo{font-family:var(--px);font-size:7px;color:var(--yel);border:2px dashed var(--yel);padding:2px 4px;vertical-align:middle}
+
+/* inventory */
+.inv-wrap{display:grid;grid-template-columns:1fr 340px;gap:26px}
+.inv{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:20px}
+.slot{aspect-ratio:1;background:#0006;box-shadow:inset 0 0 0 3px var(--r,#444),inset 0 0 18px var(--r,#444);display:grid;place-items:center;text-align:center;cursor:pointer;padding:6px;transition:transform .1s}
+.slot:hover,.slot.sel{transform:scale(1.06);background:#fff1}
+.slot .ico{font-size:34px;line-height:1}
+.slot span{font-family:var(--px);font-size:7px;line-height:1.5;margin-top:4px;display:block}
+.leg{--r:var(--orange)}.epi{--r:#b46bff}.rar{--r:#3d9bff}.com{--r:#8a8a8a}
+.tip{padding:20px}
+.tip .rk{font-family:var(--px);font-size:9px;margin-bottom:8px}
+.tip h4{font-family:var(--px);font-size:14px;line-height:1.5;margin-bottom:10px}
+.tip p{color:var(--dim)}
+.tip .lv{font-family:var(--px);font-size:9px;color:var(--yel);margin-top:14px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--px);font-size:8px;margin-top:14px;color:var(--dim)}
+.legend i{display:inline-block;width:10px;height:10px;margin-right:6px;vertical-align:middle}
+
+/* achievements */
+.ach{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.ac{display:flex;gap:14px;align-items:center;padding:16px}
+.ac .medal{width:56px;height:56px;flex-shrink:0;display:grid;place-items:center;font-size:30px;background:var(--bg2);box-shadow:inset 0 0 0 3px var(--yel)}
+.ac b{font-family:var(--px);font-size:10px;line-height:1.6;display:block;color:var(--yel)}
+.ac span{color:var(--dim)}
+.ac.locked{opacity:.45}.ac.locked .medal{box-shadow:inset 0 0 0 3px #555;filter:grayscale(1)}
+
+/* tech tree */
+.tree{padding:26px;display:grid;gap:22px}
+.root{justify-self:center;font-family:var(--px);font-size:12px;padding:14px 18px;background:var(--cyan);color:#001a1c;box-shadow:0 0 0 4px #000}
+.branches{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;position:relative;padding-top:22px}
+.branches::before{content:'';position:absolute;top:0;left:12%;right:12%;height:4px;background:var(--edge)}
+.node{position:relative;padding:12px;background:var(--bg2);box-shadow:0 0 0 3px var(--edge);cursor:default;transition:.1s}
+.node::before{content:'';position:absolute;top:-22px;left:50%;width:4px;height:19px;background:var(--edge)}
+.node:hover{box-shadow:0 0 0 3px var(--lime);transform:translateY(-3px)}
+.node b{font-family:var(--px);font-size:9px;line-height:1.6;display:block;color:var(--lime);margin-bottom:6px}
+.node span{color:var(--dim);font-size:18px;line-height:1.15;display:block}
+
+/* save point */
+.save{text-align:center;padding:44px 22px;margin:100px 0 0}
+.save .px{font-size:12px;color:var(--cyan)}
+.save h2{font-family:var(--px);font-size:clamp(16px,3vw,26px);line-height:1.6;margin:18px 0}
+.menu{display:inline-grid;gap:12px;text-align:left;font-family:var(--px);font-size:12px;margin:18px 0 26px}
+.menu a{padding:4px 0}
+.menu a::before{content:'  ';white-space:pre}
+.menu a:hover{color:var(--yel)}
+.menu a:hover::before{content:'▶ '}
+footer{text-align:center;padding:40px 0 90px;font-family:var(--px);font-size:9px;color:var(--dim);line-height:2}
+
+.toast{position:fixed;top:70px;right:16px;z-index:300;padding:14px 16px;font-family:var(--px);font-size:10px;line-height:1.7;transform:translateX(130%);transition:transform .35s steps(6)}
+.toast.on{transform:none}
+.toast b{color:var(--yel)}
+
+.pv{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:999;display:flex;gap:3px;align-items:center;font:700 11px 'JetBrains Mono',monospace;padding:5px 5px 5px 12px;border-radius:10px;background:#ffd54f;color:#1a1300;box-shadow:0 10px 30px rgba(0,0,0,.4);white-space:nowrap}
+.pv a{padding:4px 8px;border-radius:6px;color:#1a1300}
+.pv a.on{background:#1a1300;color:#ffd54f}
+
+@media (max-width:900px){
+  .hud nav{display:none}
+  .char,.inv-wrap{grid-template-columns:1fr}.portrait{max-width:280px}
+  .levels,.ach{grid-template-columns:1fr 1fr}
+  .branches{grid-template-columns:1fr 1fr}.branches::before{display:none}.node::before{display:none}
+}
+@media (max-width:560px){
+  body{font-size:20px}
+  .levels,.ach{grid-template-columns:1fr}
+  .inv{grid-template-columns:repeat(3,1fr)}
+  .bar{grid-template-columns:80px 1fr 34px}
+  .hud .hearts{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+
+<div class="hud"><div class="wrap">
+  <span class="score">1UP <b id="score">00000000</b></span>
+  <nav><a href="#char">PLAYER</a><a href="#levels">LEVELS</a><a href="#inventory">ITEMS</a><a href="#tree">TECH</a><a href="#save">SAVE</a></nav>
+  <span class="hearts">♥♥♥ <span style="color:var(--ink)">EN/VI</span></span>
+</div></div>
+
+<header class="title wrap">
+  <div>
+    <div class="pre">CHAMPION GAME STUDIO PRESENTS</div>
+    <div class="logo">[<span>NIX</span>]</div>
+    <h1>TRAN TIEN — GAME DEVELOPER<br>BUILDING GAMES FOR <em>80,000,000</em> PLAYERS</h1>
+    <p>Unity developer · Team Leader · Unity Trainer. Mobile &amp; casual games with tight loops and juicy feel.</p>
+    <a class="pbtn" href="#char">▶ PRESS START</a>&nbsp;&nbsp;&nbsp;<a class="pbtn pk" href="#">⬇ LOAD CV</a>
+    <br><span class="press">— INSERT COIN —</span>
+    <br><div class="pnl hiscore">
+      <span>HI-SCORE</span><b>80,000,000</b>
+      <span>GAMES CLEARED</span><b>12</b>
+      <span>YEARS PLAYED</span><b>3+</b>
+      <span>ITEMS CRAFTED</span><b>8</b>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="char">
+    <div class="stage">STAGE 01</div>
+    <h2 class="sh">CHARACTER SELECT</h2>
+    <div class="pnl char">
+      <div class="portrait"><img src="../assets/images/avt.jpg" alt="Trần Tiến"><div class="sel">P1 SELECTED</div></div>
+      <div>
+        <h3>TRAN TIEN</h3>
+        <div class="cls">CLASS: GAME DEV / TEAM LEAD<br>ORIGIN: HA NOI, VN · STATUS: <span style="color:var(--yel)">AVAILABLE</span></div>
+        <p>Started from C++, Cocos2d-x and SDL. Now leads a Unity team, trains juniors, and crafts the in-house packages every new game starts from.</p>
+        <div class="bars">
+          <div class="bar"><span>UNITY</span><div class="track" data-v="8" style="--c:var(--cyan)"></div><b>80</b></div>
+          <div class="bar"><span>C#/C++</span><div class="track" data-v="9" style="--c:var(--lime)"></div><b>88</b></div>
+          <div class="bar"><span>UI/UX</span><div class="track" data-v="8" style="--c:var(--yel)"></div><b>80</b></div>
+          <div class="bar"><span>OPTIMIZE</span><div class="track" data-v="8" style="--c:var(--orange)"></div><b>78</b></div>
+          <div class="bar"><span>GAME FEEL</span><div class="track" data-v="7" style="--c:var(--pink)"></div><b>65</b></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="levels">
+    <div class="stage">STAGE 02</div>
+    <h2 class="sh">LEVEL SELECT</h2>
+    <div class="levels">
+      <a class="pnl lvl" href="https://play.google.com/store/apps/details?id=com.fc.p.cp.jelly.mukbang.asmr.live.diy">
+        <div class="shot"><img src="https://img.youtube.com/vi/Yd7vDterctQ/hqdefault.jpg" alt=""><span class="tagw">WORLD 1-1</span><span class="boss">BOSS</span></div>
+        <div class="info"><h4>JELLY MASTER: MUKBANG ASMR</h4><div class="stars3">★★★</div>
+          <div class="row"><span class="sc">70M+ DL</span><span class="role">MAIN DEV</span></div></div></a>
+      <a class="pnl lvl" href="https://play.google.com/store/apps/details?id=com.left.right.girl.dressup.game">
+        <div class="shot"><div class="big" style="background:linear-gradient(135deg,#c86bd6,#6b3dff)">S</div><span class="tagw">WORLD 1-2</span></div>
+        <div class="info"><h4>STYLE STAR: LEFT RIGHT FASHION</h4><div class="stars3">★★☆</div>
+          <div class="row"><span class="sc">10M+ DL</span><span class="role">MAIN DEV</span></div></div></a>
+      <a class="pnl lvl" href="https://play.google.com/store/apps/details?id=com.fc.p.cp.transform.game.tricky.puzzle">
+        <div class="shot"><div class="big" style="background:linear-gradient(135deg,#2fd6c4,#11756b)">T</div><span class="tagw">WORLD 1-3</span></div>
+        <div class="info"><h4>TICTAC TRANSFORM: MINI GAMES</h4><div class="stars3">★★☆</div>
+          <div class="row"><span class="sc">?? DL <span class="todo">ĐIỀN</span></span><span class="role">TEAM LEAD</span></div></div></a>
+    </div>
+  </section>
+
+  <section id="inventory">
+    <div class="stage">STAGE 03</div>
+    <h2 class="sh">INVENTORY</h2>
+    <div class="inv-wrap">
+      <div class="pnl inv" id="inv"></div>
+      <div class="pnl tip" id="tip"></div>
+    </div>
+    <div class="legend"><span><i style="background:var(--orange)"></i>LEGENDARY</span><span><i style="background:#b46bff"></i>EPIC</span><span><i style="background:#3d9bff"></i>RARE</span><span><i style="background:#8a8a8a"></i>COMMON</span></div>
+  </section>
+
+  <section id="ach">
+    <div class="stage">STAGE 04</div>
+    <h2 class="sh">ACHIEVEMENTS</h2>
+    <div class="ach">
+      <div class="pnl ac"><div class="medal">🏆</div><div><b>VIRAL HIT</b><span>A game passed 70M downloads</span></div></div>
+      <div class="pnl ac"><div class="medal">🎮</div><div><b>SERIAL SHIPPER</b><span>Shipped 12 projects</span></div></div>
+      <div class="pnl ac"><div class="medal">👑</div><div><b>PARTY LEADER</b><span>Promoted to Team Leader</span></div></div>
+      <div class="pnl ac"><div class="medal">📚</div><div><b>SENSEI</b><span>Trained new Unity devs</span></div></div>
+      <div class="pnl ac"><div class="medal">🛠️</div><div><b>MASTER CRAFTER</b><span>Built 8 reusable packages</span></div></div>
+      <div class="pnl ac locked"><div class="medal">❓</div><div><b>??? LOCKED</b><span>Your studio, next?</span></div></div>
+    </div>
+  </section>
+
+  <section id="tree">
+    <div class="stage">STAGE 05</div>
+    <h2 class="sh">TECH TREE</h2>
+    <div class="pnl tree">
+      <div class="root">★ NIX CORE</div>
+      <div class="branches">
+        <div class="node"><b>LOCALIZATION</b><span>CJK font optimize, Sheets sync</span></div>
+        <div class="node"><b>UI FRAMEWORK</b><span>Popups, screens, transitions</span></div>
+        <div class="node"><b>MONETIZATION</b><span>Swap Ads/IAP SDK by define</span></div>
+        <div class="node"><b>TRACKING</b><span>Firebase, AppsFlyer, Adjust</span></div>
+        <div class="node"><b>AUDIO</b><span>Data-driven audio events</span></div>
+        <div class="node"><b>STORAGE</b><span>SO-based save/load</span></div>
+        <div class="node"><b>SKELETON EXT</b><span>Spine skin/anim preview</span></div>
+        <div class="node" style="box-shadow:0 0 0 3px #555;opacity:.6"><b style="color:var(--dim)">NEXT...</b><span>In development</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="pnl save" id="save">
+    <div class="px">♦ SAVE POINT REACHED ♦</div>
+    <h2>START A NEW QUEST<br>TOGETHER?</h2>
+    <div class="menu">
+      <a href="mailto:tientv.0702@gmail.com">SEND EMAIL</a>
+      <a href="https://www.linkedin.com/in/ti%E1%BA%BFn-tr%E1%BA%A7n-a675a8223/">LINKEDIN</a>
+      <a href="https://github.com/tien0702">GITHUB</a>
+      <a href="https://tien0702.github.io/nix-blog/">BLOG</a>
+      <a href="https://tiennix.itch.io/">ITCH.IO</a>
+    </div><br>
+    <span style="color:var(--dim)">tientv.0702@gmail.com</span>
+  </div>
+</main>
+
+<footer>© 2026 TRAN TIEN [NIX] · NO CONTINUES USED<br><span style="color:var(--edge)">TIP: TRY ↑↑↓↓←→←→ B A</span></footer>
+
+<div class="pnl toast" id="toast"></div>
+<div class="pv">PLAN <a href="plan-1.html">1</a><a href="plan-2.html">2</a><a href="plan-3.html" class="on">3</a><a href="plan-4.html">4</a><a href="plan-5.html">5</a><a href="plan-6.html">6</a><a href="plan-7.html">7</a><a href="plan-8.html">8</a><a href="plan-9.html">9</a></div>
+
+<script>
+// stat bars
+document.querySelectorAll('.track').forEach(function(t){for(var i=0;i<10;i++){var e=document.createElement('i');if(i<+t.dataset.v)e.className='on';t.appendChild(e);}});
+// inventory
+var ITEMS=[
+ {i:'🧊',n:'Unity Engine',r:'leg',lv:80,d:'Forged across many shipped titles — gameplay, tooling, release pipelines.'},
+ {i:'⚔️',n:'C# / C / C++',r:'leg',lv:88,d:'The language set I learned and make games with.'},
+ {i:'📱',n:'UI / UX',r:'epi',lv:80,d:'Multi-screen layouts for phones, tablets and notch displays.'},
+ {i:'⚡',n:'Optimization',r:'epi',lv:78,d:'Profiling, Addressables, batching — balancing performance and memory.'},
+ {i:'✨',n:'Game Feel',r:'rar',lv:65,d:'Juice, screen shake, particles, haptics.'},
+ {i:'🛡️',n:'Leadership',r:'rar',lv:70,d:'Leading a dev team, code review, architecture decisions.'},
+ {i:'🔧',n:'Cocos2d-x',r:'com',lv:40,d:'C++ engine that taught me resource management.'},
+ {i:'🖥️',n:'SDL',r:'com',lv:40,d:'Low-level graphics: rendering pipeline and input.'}
+];
+var RN={leg:['LEGENDARY','var(--orange)'],epi:['EPIC','#b46bff'],rar:['RARE','#3d9bff'],com:['COMMON','#aaa']};
+var inv=document.getElementById('inv'),tip=document.getElementById('tip');
+inv.innerHTML=ITEMS.map(function(it,i){return '<div class="slot '+it.r+'" data-i="'+i+'"><div><div class="ico">'+it.i+'</div><span>'+it.n.toUpperCase()+'</span></div></div>';}).join('');
+function show(i){var it=ITEMS[i];inv.querySelectorAll('.slot').forEach(function(s){s.classList.toggle('sel',s.dataset.i==i)});
+  tip.innerHTML='<div class="rk" style="color:'+RN[it.r][1]+'">'+RN[it.r][0]+'</div><h4>'+it.i+' '+it.n.toUpperCase()+'</h4><p>'+it.d+'</p><div class="lv">LV '+it.lv+' / 100</div>';}
+inv.querySelectorAll('.slot').forEach(function(s){s.addEventListener('pointerenter',function(){show(s.dataset.i)});s.addEventListener('click',function(){show(s.dataset.i)});});
+show(0);
+// score counter rolls up as you scroll
+var sc=document.getElementById('score');
+window.addEventListener('scroll',function(){var p=Math.min(scrollY/(document.body.scrollHeight-innerHeight),1);sc.textContent=String(Math.round(p*80000000)).padStart(8,'0');});
+// toast
+var toast=document.getElementById('toast');
+function pop(html){toast.innerHTML=html;toast.classList.add('on');clearTimeout(pop.t);pop.t=setTimeout(function(){toast.classList.remove('on')},2800);}
+var seen=false;new IntersectionObserver(function(es){if(es[0].isIntersecting&&!seen){seen=true;pop('🏆 ACHIEVEMENT UNLOCKED<br><b>READ THE WHOLE PORTFOLIO</b>');}}).observe(document.getElementById('save'));
+// konami
+var K=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'],k=0;
+addEventListener('keydown',function(e){k=(e.key===K[k])?k+1:0;if(k===K.length){k=0;pop('★ CHEAT ACTIVATED ★<br><b>+30 LIVES · HIRE NIX NOW</b>');document.body.style.filter='hue-rotate(90deg)';setTimeout(function(){document.body.style.filter=''},3000);}});
+</script>
+</body>
+</html>

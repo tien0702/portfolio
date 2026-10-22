@@ -1,0 +1,47 @@
+{
+  "_note": "Data the current site doesn't have yet. Everything marked placeholder:true is SAMPLE content — replace with real info, then move into web-config.json when deploying.",
+  "cv": "",
+  "experience": [
+    {
+      "placeholder": true,
+      "current": true,
+      "period": { "en": "20XX — Now", "vi": "20XX — Nay" },
+      "role": { "en": "Team Leader", "vi": "Team Leader" },
+      "org": "Champion Game Studio",
+      "desc": {
+        "en": "Lead a Unity team shipping casual titles; own architecture, code review and the shared package ecosystem (NIX Core).",
+        "vi": "Dẫn dắt team Unity phát triển game casual; chịu trách nhiệm kiến trúc, code review và hệ sinh thái package dùng chung (NIX Core)."
+      },
+      "tags": ["Unity", "Architecture", "Code review"]
+    },
+    {
+      "placeholder": true,
+      "period": { "en": "20XX — 20XX", "vi": "20XX — 20XX" },
+      "role": { "en": "Unity Trainer", "vi": "Unity Trainer" },
+      "org": "—",
+      "desc": {
+        "en": "Train junior developers on Unity fundamentals, clean architecture and mobile optimization.",
+        "vi": "Đào tạo lập trình viên mới về nền tảng Unity, kiến trúc sạch và tối ưu cho mobile."
+      },
+      "tags": ["Mentoring", "Curriculum"]
+    },
+    {
+      "placeholder": true,
+      "period": { "en": "20XX — 20XX", "vi": "20XX — 20XX" },
+      "role": { "en": "Game Developer", "vi": "Game Developer" },
+      "org": "Champion Game Studio",
+      "desc": {
+        "en": "Main developer on hit titles with 70M+ and 10M+ downloads — gameplay, UI, SDK integration and optimization.",
+        "vi": "Main dev cho các game hit 70M+ và 10M+ lượt tải — gameplay, UI, tích hợp SDK và tối ưu."
+      },
+      "tags": ["Gameplay", "UI/UX", "Ads / IAP"]
+    }
+  ],
+  "highlights": {
+    "jelly-master-mukbang-asmr": {
+      "placeholder": true,
+      "en": ["Built the core ASMR eating loop & DIY jelly crafting", "Haptics, particles & sound sync for a satisfying feel", "Optimized for low-end Android devices"],
+      "vi": ["Xây dựng vòng lặp ăn ASMR & chế tạo thạch DIY", "Đồng bộ haptic, particle & âm thanh để tạo cảm giác đã tay", "Tối ưu cho máy Android cấu hình thấp"]
+    }
+  }
+}

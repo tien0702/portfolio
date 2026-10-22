@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Topbar Layouts — Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+:root{--bg:#07090f;--card:#0e131d;--card2:#121927;--line:#1e2636;--line2:#2c3750;--text:#b3bccf;--dim:#6b7690;--bright:#eef2f8;--cyan:#00e5ff;--pink:#ff2d75;--purple:#7c4dff;--gold:#ffd54f;--green:#69ff47;--font:'Be Vietnam Pro',sans-serif;--mono:'JetBrains Mono',monospace;--ease:cubic-bezier(.16,1,.3,1);--pad:max(16px,calc((100% - 1160px) / 2 + 40px))}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:100px}
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.bg{position:fixed;inset:0;z-index:-1;background-image:linear-gradient(rgba(0,229,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.035) 1px,transparent 1px);background-size:56px 56px}
+
+/* shared atoms */
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-weight:700;color:var(--bright);white-space:nowrap}
+.brand img{width:30px;height:30px;border-radius:8px;object-fit:cover;background:#fff}
+.brand .nm{font-family:var(--font);font-weight:800;letter-spacing:.06em}
+.brand .sp{color:var(--dim);font-weight:400}
+.brand b{color:var(--cyan)}
+.lang{display:flex;border:1px solid var(--line);border-radius:9px;padding:3px;font-family:var(--mono);font-size:.65rem}
+.lang span{padding:4px 10px;border-radius:6px;color:var(--dim);cursor:pointer}
+.lang .on{background:var(--cyan);color:#000;font-weight:700}
+.cta{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:10px;font-weight:700;font-size:.82rem;background:var(--cyan);color:#001318;white-space:nowrap}
+.ghost{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:10px;font-weight:600;font-size:.82rem;border:1px solid var(--line2);color:var(--bright);white-space:nowrap}
+.links{display:flex;gap:2px;list-style:none}
+.links a{position:relative;font-size:.88rem;color:var(--dim);padding:8px 14px;border-radius:8px;transition:color .2s,background .2s}
+.links a:hover{color:var(--bright)}
+.links a.on{color:var(--bright)}
+.burger{display:none;width:38px;height:38px;border-radius:9px;border:1px solid var(--line);flex-direction:column;justify-content:center;align-items:center;gap:4px}
+.burger i{display:block;width:16px;height:2px;border-radius:2px;background:var(--bright)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);flex-shrink:0}
+.soc{display:flex;gap:4px}
+.soc a{width:28px;height:28px;display:grid;place-items:center;border-radius:7px;color:var(--dim)}
+.soc a:hover{color:var(--cyan);background:rgba(0,229,255,.06)}
+.soc svg{width:14px;height:14px}
+.prog{position:absolute;left:0;bottom:-1px;height:2px;width:0;background:linear-gradient(90deg,var(--purple),var(--cyan),var(--pink))}
+
+header.nb{position:fixed;top:0;left:0;right:0;z-index:100}
+header.nb[hidden]{display:none}
+
+/* ── A · CLASSIC SPLIT (current, refined) ── */
+.A{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px var(--pad);background:rgba(10,13,20,.6);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);transition:background .3s,padding .3s}
+.A .links{position:absolute;left:50%;transform:translateX(-50%)}
+.A .links a.on::after{content:'';position:absolute;left:14px;right:14px;bottom:2px;height:2px;border-radius:2px;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+.A .r{display:flex;align-items:center;gap:10px}
+.scrolled .A{background:rgba(8,11,17,.92);padding-top:8px;padding-bottom:8px;box-shadow:0 10px 40px rgba(0,0,0,.4)}
+
+/* ── B · LEFT CLUSTER + SLIDING PILL ── */
+.B{display:flex;align-items:center;gap:28px;padding:12px var(--pad);background:rgba(10,13,20,.6);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.B .tabs{position:relative;display:flex;gap:2px;padding:4px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid var(--line)}
+.B .tabs a{position:relative;z-index:1;font-size:.84rem;color:var(--dim);padding:7px 14px;border-radius:9px;transition:color .25s}
+.B .tabs a.on{color:#001318;font-weight:700}
+.B .tabs .pill{position:absolute;top:4px;bottom:4px;left:0;width:0;border-radius:9px;background:var(--cyan);box-shadow:0 0 18px rgba(0,229,255,.35);transition:left .45s var(--ease),width .45s var(--ease),opacity .3s}
+.B .r{margin-left:auto;display:flex;align-items:center;gap:10px}
+.scrolled .B{background:rgba(8,11,17,.92)}
+
+/* ── C · TWO-TIER (info strip + main bar) ── */
+.C .strip{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:6px var(--pad);font-family:var(--mono);font-size:.68rem;letter-spacing:.06em;color:var(--dim);background:#05070b;border-bottom:1px solid var(--line);max-height:44px;overflow:hidden;transition:max-height .35s var(--ease),padding .35s,opacity .3s}
+.C .strip .l{display:flex;align-items:center;gap:16px}
+.C .strip .l span{display:flex;align-items:center;gap:8px}
+.C .strip .l a:hover{color:var(--cyan)}
+.C .strip .r{display:flex;align-items:center;gap:12px}
+.C .main{position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px var(--pad);background:rgba(10,13,20,.7);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.C .links a.on{color:var(--cyan)}
+.C .links a.on::before{content:'›';position:absolute;left:3px;color:var(--pink)}
+.scrolled .C .strip{max-height:0;padding-top:0;padding-bottom:0;opacity:0;border-bottom-color:transparent}
+.scrolled .C .main{background:rgba(8,11,17,.94)}
+
+/* ── D · CENTERED BRAND ── */
+.D{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:20px;padding:14px var(--pad);background:rgba(10,13,20,.6);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.D .side{display:flex;align-items:center;gap:4px}
+.D .side.r{justify-content:flex-end}
+.D .brand{flex-direction:column;gap:4px;text-align:center}
+.D .brand img{display:none}
+.D .brand .nm{font-size:1.05rem;letter-spacing:.22em}
+.D .brand .tag{font-size:.62rem;letter-spacing:.3em;color:var(--dim);font-weight:500}
+.D .brand .tag b{color:var(--cyan)}
+.D .links a{font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase}
+.D .links a.on{color:var(--cyan)}
+.D .extra{display:flex;align-items:center;gap:10px;margin-left:10px}
+.scrolled .D{background:rgba(8,11,17,.92);padding-top:9px;padding-bottom:9px}
+.scrolled .D .brand .tag{display:none}
+
+/* ── E · MINIMAL + FULLSCREEN MENU ── */
+.E{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px var(--pad);transition:background .3s,padding .3s}
+.scrolled .E{background:rgba(8,11,17,.85);backdrop-filter:blur(14px);padding-top:10px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.E .r{display:flex;align-items:center;gap:10px}
+.E .menu-btn{display:inline-flex;align-items:center;gap:10px;padding:8px 14px;border-radius:10px;border:1px solid var(--line2);font-family:var(--mono);font-size:.74rem;letter-spacing:.14em;color:var(--bright)}
+.E .menu-btn i{display:grid;gap:4px}.E .menu-btn i::before,.E .menu-btn i::after{content:'';display:block;width:16px;height:2px;background:var(--bright);border-radius:2px;transition:transform .35s var(--ease)}
+.E.open .menu-btn i::before{transform:translateY(3px) rotate(45deg)}.E.open .menu-btn i::after{transform:translateY(-3px) rotate(-45deg)}
+.E .sheet{position:fixed;inset:0;z-index:-1;background:#05070b;display:grid;grid-template-columns:1.4fr 1fr;gap:40px;align-items:center;padding:110px var(--pad) 60px;clip-path:circle(0 at calc(100% - 80px) 36px);transition:clip-path .7s var(--ease);visibility:hidden}
+.E.open .sheet{clip-path:circle(150% at calc(100% - 80px) 36px);visibility:visible}
+.E .sheet ol{list-style:none;counter-reset:n}
+.E .sheet li a{display:flex;align-items:baseline;gap:18px;font-size:clamp(2.2rem,6vw,4.6rem);font-weight:900;color:var(--bright);letter-spacing:-.03em;line-height:1.15;transition:color .2s,padding .4s var(--ease)}
+.E .sheet li a::before{counter-increment:n;content:'0' counter(n);font-family:var(--mono);font-size:.8rem;color:var(--pink);font-weight:500;letter-spacing:.1em}
+.E .sheet li a:hover{color:var(--cyan);padding-left:14px}
+.E .sheet .aside{display:grid;gap:18px;font-family:var(--mono);font-size:.78rem;color:var(--dim)}
+.E .sheet .aside b{display:block;color:var(--bright);font-family:var(--font);font-size:1rem;margin-top:4px}
+
+/* page content */
+.wrap{max-width:1160px;margin:0 auto;padding:0 clamp(16px,4vw,40px)}
+section{min-height:80vh;padding:150px 0 40px;border-bottom:1px dashed var(--line)}
+section .k{font-family:var(--mono);font-size:.72rem;color:var(--pink);letter-spacing:.2em;margin-bottom:12px}
+section h2{font-size:clamp(2.2rem,5vw,3.6rem);font-weight:900;color:var(--bright);letter-spacing:-.03em;line-height:1.05}
+section p{max-width:560px;margin-top:14px}
+
+/* picker */
+.picker{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:200;display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:center;padding:8px;border-radius:14px;background:rgba(14,19,29,.95);border:1px solid var(--line2);box-shadow:0 20px 60px rgba(0,0,0,.5);max-width:calc(100vw - 24px)}
+.picker b{font-family:var(--mono);font-size:.7rem;color:var(--gold);padding:0 8px}
+.picker button{font-size:.8rem;font-weight:600;padding:8px 12px;border-radius:9px;color:var(--dim)}
+.picker button.on{background:var(--cyan);color:#001318}
+.desc{position:fixed;left:50%;bottom:78px;transform:translateX(-50%);z-index:200;font-size:.8rem;color:var(--text);background:rgba(7,9,15,.9);border:1px solid var(--line);padding:8px 14px;border-radius:10px;text-align:center;max-width:min(760px,92vw)}
+
+@media (max-width:900px){
+  .A .links,.B .tabs,.C .links,.D .side .links,.C .strip .l span:nth-child(n+2){display:none}
+  .burger{display:flex}
+  .D{grid-template-columns:auto 1fr auto}.D .brand{align-items:flex-start;text-align:left}
+  .E .sheet{grid-template-columns:1fr}.E .sheet .aside{display:none}
+}
+@media (max-width:560px){
+  .brand .nm,.brand .sp{display:none}
+  .cta{display:none}
+  .C .strip .r .soc{display:none}
+  .D .brand .nm{font-size:.9rem;letter-spacing:.12em}.D .brand .nm{display:inline}
+}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+
+<!-- A -->
+<header class="nb" data-nb="A"><div class="A">
+  <a class="brand" href="#top"><img src="../assets/images/avt.jpg" alt=""><span class="nm">TRAN VAN TIEN</span><span class="sp">-</span><span><b>[</b>NIX<b>]</b></span></a>
+  <ul class="links"><li><a href="#work">Projects</a></li><li><a href="#skills">Skills</a></li><li><a href="#experience">Experience</a></li><li><a href="#contact">Contact</a></li></ul>
+  <div class="r"><div class="lang"><span class="on">EN</span><span>VI</span></div><a class="cta" href="#contact">Hire me</a><button class="burger"><i></i><i></i><i></i></button></div>
+  <i class="prog"></i>
+</div></header>
+
+<!-- B -->
+<header class="nb" data-nb="B" hidden><div class="B">
+  <a class="brand" href="#top"><img src="../assets/images/avt.jpg" alt=""><span class="nm">TRAN VAN TIEN</span><span class="sp">-</span><span><b>[</b>NIX<b>]</b></span></a>
+  <nav class="tabs"><i class="pill"></i><a href="#work">Projects</a><a href="#skills">Skills</a><a href="#experience">Experience</a><a href="#contact">Contact</a></nav>
+  <div class="r"><div class="lang"><span class="on">EN</span><span>VI</span></div><a class="cta" href="#contact">Hire me</a><button class="burger"><i></i><i></i><i></i></button></div>
+  <i class="prog"></i>
+</div></header>
+
+<!-- C -->
+<header class="nb" data-nb="C" hidden><div class="C">
+  <div class="strip">
+    <div class="l"><span><i class="dot"></i>AVAILABLE FOR WORK</span><span>HA NOI, VN · GMT+7</span><span><a href="mailto:tientv.0702@gmail.com">tientv.0702@gmail.com</a></span></div>
+    <div class="r"><div class="soc">
+      <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.4 20.5h-3.5v-5.6c0-1.3 0-3-1.9-3s-2.1 1.4-2.1 2.9v5.7H9.4V9h3.4v1.6c.5-.9 1.6-1.9 3.4-1.9 3.6 0 4.3 2.4 4.3 5.5v6.3zM5.3 7.4a2.1 2.1 0 1 1 0-4.1 2.1 2.1 0 0 1 0 4.1zM7.1 20.5H3.6V9h3.5v11.5z"/></svg></a>
+      <a href="#" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.4-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.4-1.1.6-1.3-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.6 0 0 .8-.3 2.8 1a9.6 9.6 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.6.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.9v2.7c0 .3.2.6.7.5A10 10 0 0 0 12 2z"/></svg></a>
+      <a href="#" aria-label="Blog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></a>
+    </div><div class="lang"><span class="on">EN</span><span>VI</span></div></div>
+  </div>
+  <div class="main">
+    <a class="brand" href="#top"><img src="../assets/images/avt.jpg" alt=""><span class="nm">TRAN VAN TIEN</span><span class="sp">-</span><span><b>[</b>NIX<b>]</b></span></a>
+    <ul class="links"><li><a href="#work">Projects</a></li><li><a href="#skills">Skills</a></li><li><a href="#experience">Experience</a></li><li><a href="#contact">Contact</a></li></ul>
+    <div style="display:flex;gap:10px;align-items:center"><a class="ghost" href="#">⬇ CV</a><a class="cta" href="#contact">Hire me</a><button class="burger"><i></i><i></i><i></i></button></div>
+    <i class="prog"></i>
+  </div>
+</div></header>
+
+<!-- D -->
+<header class="nb" data-nb="D" hidden><div class="D">
+  <div class="side"><ul class="links"><li><a href="#work">Projects</a></li><li><a href="#skills">Skills</a></li></ul></div>
+  <a class="brand" href="#top"><span class="nm">TRAN VAN TIEN</span><span class="tag"><b>[</b>NIX<b>]</b> · PORTFOLIO</span></a>
+  <div class="side r"><ul class="links"><li><a href="#experience">Experience</a></li><li><a href="#contact">Contact</a></li></ul><div class="extra"><div class="lang"><span class="on">EN</span><span>VI</span></div><button class="burger"><i></i><i></i><i></i></button></div></div>
+  <i class="prog"></i>
+</div></header>
+
+<!-- E -->
+<header class="nb" data-nb="E" hidden><div class="E">
+  <a class="brand" href="#top"><img src="../assets/images/avt.jpg" alt=""><span class="nm">TRAN VAN TIEN</span><span class="sp">-</span><span><b>[</b>NIX<b>]</b></span></a>
+  <div class="r"><div class="lang"><span class="on">EN</span><span>VI</span></div><a class="cta" href="#contact">Hire me</a><button class="menu-btn" type="button"><i></i>MENU</button></div>
+  <div class="sheet">
+    <ol><li><a href="#work">Projects</a></li><li><a href="#skills">Skills</a></li><li><a href="#experience">Experience</a></li><li><a href="#contact">Contact</a></li></ol>
+    <div class="aside"><div>AVAILABLE FOR WORK<b>Ha Noi, Vietnam</b></div><div>EMAIL<b>tientv.0702@gmail.com</b></div><div>ELSEWHERE<b>LinkedIn · GitHub · Blog · itch.io</b></div></div>
+  </div>
+  <i class="prog"></i>
+</div></header>
+
+<main>
+  <section id="top"><div class="wrap"><div class="k">// HERO</div><h2>TRAN VAN TIEN</h2><p>Nội dung giả lập để cuộn thử. Chọn phương án ở thanh dưới, rồi cuộn xuống để xem trạng thái khi đã cuộn và mục đang xem được đánh dấu. Thu nhỏ cửa sổ trình duyệt để xem bản mobile.</p></div></section>
+  <section id="work"><div class="wrap"><div class="k">01 // PROJECTS</div><h2>Games in players' hands</h2></div></section>
+  <section id="skills"><div class="wrap"><div class="k">02 // SKILL TREE</div><h2>What I bring to a team</h2></div></section>
+  <section id="experience"><div class="wrap"><div class="k">03 // EXPERIENCE</div><h2>Quest log</h2></div></section>
+  <section id="contact"><div class="wrap"><div class="k">// CONTACT</div><h2>Let's build something</h2></div></section>
+</main>
+
+<div class="desc" id="desc"></div>
+<div class="picker">
+  <b>TOPBAR</b>
+  <button type="button" data-v="A">A · Classic</button>
+  <button type="button" data-v="B">B · Pill tabs</button>
+  <button type="button" data-v="C">C · Two-tier</button>
+  <button type="button" data-v="D">D · Centered</button>
+  <button type="button" data-v="E">E · Minimal</button>
+</div>
+
+<script>
+(function () {
+  var DESC = {
+    A: 'A · Classic — tên trái, menu chính giữa, ngôn ngữ + nút Hire me bên phải. Gọn lại khi cuộn; vạch cyan dưới mục đang xem. (Giống hiện tại, tinh chỉnh)',
+    B: 'B · Pill tabs — tên + menu gom về bên trái, menu dạng nhóm tab với "viên thuốc" cyan trượt theo mục đang xem. Hiện đại, kiểu Vercel/Linear.',
+    C: 'C · Two-tier — dải thông tin mỏng trên cùng (trạng thái, vị trí, email, mạng xã hội, ngôn ngữ) + thanh chính có nút CV/Hire me. Dải trên tự thu lại khi cuộn.',
+    D: 'D · Centered — tên ở giữa kiểu thương hiệu (TRAN VAN TIEN / [NIX] · PORTFOLIO), menu chia hai bên. Trang trọng, cân đối.',
+    E: 'E · Minimal — chỉ tên + Hire me + nút MENU; bấm MENU mở menu toàn màn hình chữ lớn kèm thông tin liên hệ. Tối giản, kiểu editorial.'
+  };
+  var cur = 'A';
+  function show(v) {
+    cur = v;
+    document.querySelectorAll('header.nb').forEach(function (h) { h.hidden = h.dataset.nb !== v; });
+    document.querySelectorAll('[data-v]').forEach(function (b) { b.classList.toggle('on', b.dataset.v === v); });
+    document.getElementById('desc').textContent = DESC[v];
+    document.querySelectorAll('.E').forEach(function (e) { e.classList.remove('open'); });
+    spy();
+  }
+  document.querySelectorAll('[data-v]').forEach(function (b) { b.onclick = function () { show(b.dataset.v); }; });
+  document.querySelectorAll('.menu-btn').forEach(function (b) { b.onclick = function () { b.closest('.E').classList.toggle('open'); }; });
+  document.querySelectorAll('.E .sheet a').forEach(function (a) { a.addEventListener('click', function () { a.closest('.E').classList.remove('open'); }); });
+  document.querySelectorAll('.lang span').forEach(function (s) { s.onclick = function () { s.parentNode.querySelectorAll('span').forEach(function (x) { x.classList.toggle('on', x === s); }); }; });
+
+  function spy() {
+    var y = scrollY, h = document.documentElement.scrollHeight - innerHeight;
+    document.body.classList.toggle('scrolled', y > 20);
+    var on = null;
+    ['work', 'skills', 'experience', 'contact'].forEach(function (id) { if (document.getElementById(id).getBoundingClientRect().top < innerHeight * 0.4) on = id; });
+    var hd = document.querySelector('header.nb[data-nb="' + cur + '"]');
+    hd.querySelectorAll('a[href^="#"]').forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + on); });
+    hd.querySelectorAll('.prog').forEach(function (p) { p.style.width = (h > 0 ? y / h * 100 : 0) + '%'; });
+    var pill = hd.querySelector('.pill');
+    if (pill) {
+      var a = hd.querySelector('.tabs a.on');
+      if (a) { pill.style.opacity = 1; pill.style.left = a.offsetLeft + 'px'; pill.style.width = a.offsetWidth + 'px'; } else pill.style.opacity = 0;
+    }
+  }
+  addEventListener('scroll', spy, { passive: true }); addEventListener('resize', spy);
+  document.body.classList.toggle('scrolled', false);
+  show('A');
+})();
+</script>
+</body>
+</html>

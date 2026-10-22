@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Star Cursor — Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+:root{--bg:#07090f;--card:#0e131d;--card2:#121927;--line:#1e2636;--line2:#2c3750;--text:#b3bccf;--dim:#6b7690;--bright:#eef2f8;--cyan:#00e5ff;--pink:#ff2d75;--purple:#7c4dff;--gold:#ffd54f}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro',sans-serif;min-height:100vh;overflow-x:hidden}
+.bg{position:fixed;inset:0;z-index:-1;background-image:linear-gradient(rgba(0,229,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.035) 1px,transparent 1px);background-size:56px 56px}
+.wrap{max-width:1000px;margin:0 auto;padding:60px 24px 160px}
+h1{font-size:clamp(2.2rem,5vw,3.6rem);font-weight:900;color:var(--bright);letter-spacing:-.03em;line-height:1.05}
+h1 span{background:linear-gradient(100deg,var(--cyan),var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+p.lead{margin:16px 0 28px;max-width:600px}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border-radius:10px;font-weight:700;font-size:.9rem;border:1px solid var(--line2);color:var(--bright);background:none;text-decoration:none;font-family:inherit}
+.btn.pri{background:var(--cyan);color:#001318;border-color:transparent}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:40px}
+.card{padding:22px;border-radius:16px;background:var(--card);border:1px solid var(--line)}
+.card.clickable{cursor:pointer}
+.card h3{color:var(--bright);margin-bottom:6px}
+.card p{font-size:.85rem;color:var(--dim)}
+input{width:100%;max-width:420px;padding:12px 14px;border-radius:10px;border:1px solid var(--line2);background:#0a0e16;color:var(--bright);font:inherit}
+.k{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--pink);letter-spacing:.16em;margin-bottom:12px}
+
+/* picker */
+.picker{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:100;display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:center;padding:8px;border-radius:14px;background:rgba(14,19,29,.92);border:1px solid var(--line2);backdrop-filter:blur(10px);box-shadow:0 20px 60px rgba(0,0,0,.5);max-width:calc(100vw - 24px)}
+.picker b{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--gold);padding:0 8px}
+.picker button{font:inherit;font-size:.8rem;font-weight:600;padding:8px 12px;border-radius:9px;border:1px solid transparent;background:none;color:var(--dim)}
+.picker button.on{background:var(--cyan);color:#001318}
+.picker .sep{width:1px;height:24px;background:var(--line2);margin:0 4px}
+.picker label{font-size:.72rem;color:var(--dim);display:flex;align-items:center;gap:6px;padding:0 6px}
+.picker input[type=range]{width:90px;padding:0;accent-color:var(--cyan)}
+.desc{position:fixed;left:50%;bottom:78px;transform:translateX(-50%);z-index:100;font-size:.78rem;color:var(--text);background:rgba(7,9,15,.8);padding:6px 12px;border-radius:8px;white-space:nowrap}
+
+/* ── star cursor (the part that would ship) ── */
+html.star-cursor, html.star-cursor *{cursor:none!important}
+html.star-cursor input, html.star-cursor textarea, html.star-cursor [contenteditable]{cursor:text!important}
+#starfx{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9999}
+@media (max-width:700px){.grid{grid-template-columns:1fr}.desc{white-space:normal;width:90vw;text-align:center}}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="wrap">
+  <div class="k">// CURSOR PREVIEW</div>
+  <h1>Di chuột để xem<br><span>hiệu ứng ngôi sao</span></h1>
+  <p class="lead">Chọn kiểu ở thanh dưới cùng. Rê lên nút / thẻ để thấy trạng thái hover, click để thấy hiệu ứng bùng nổ. Ô nhập chữ vẫn giữ con trỏ chữ I.</p>
+  <div class="row">
+    <a class="btn pri" href="#">View my projects →</a>
+    <button class="btn" type="button">Contact me</button>
+    <a class="btn" href="#">▶ Google Play</a>
+  </div>
+  <div class="k">// HOVER CARDS</div>
+  <div class="grid">
+    <div class="card clickable"><h3>Jelly Master</h3><p>Card bấm được — con trỏ sẽ phóng to + đổi màu.</p></div>
+    <div class="card clickable"><h3>Style Star</h3><p>Rê qua lại nhanh để thấy vệt hạt.</p></div>
+    <div class="card"><h3>Text block</h3><p>Vùng không bấm được — con trỏ giữ trạng thái thường.</p></div>
+  </div>
+  <div class="k">// INPUT</div>
+  <input type="text" placeholder="Click vào đây — con trỏ chữ I bình thường">
+  <p style="margin-top:40px;color:var(--dim);font-size:.85rem;max-width:620px">Trên điện thoại/tablet hiệu ứng tự tắt (dùng chạm như bình thường). Nếu máy bật "giảm chuyển động" thì chỉ hiện ngôi sao, không có hạt.</p>
+</div>
+
+<div class="desc" id="desc"></div>
+<div class="picker">
+  <b>STYLE</b>
+  <button type="button" data-v="twinkle">1 · Twinkle</button>
+  <button type="button" data-v="comet">2 · Comet</button>
+  <button type="button" data-v="stardust">3 · Stardust</button>
+  <button type="button" data-v="constellation">4 · Constellation</button>
+  <span class="sep"></span>
+  <b>MÀU</b>
+  <button type="button" data-c="site">Site</button>
+  <button type="button" data-c="gold">Vàng</button>
+  <button type="button" data-c="rainbow">Cầu vồng</button>
+  <span class="sep"></span>
+  <label>Mật độ <input type="range" id="density" min="0.3" max="2" step="0.1" value="1"></label>
+</div>
+
+<canvas id="starfx" aria-hidden="true"></canvas>
+
+<script>
+/* ══════════════════════════════════════════
+   Star cursor + particle trail (canvas, one rAF loop, idles when nothing to draw)
+   ══════════════════════════════════════════ */
+(function () {
+  'use strict';
+  var fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!fine) { document.getElementById('desc').textContent = 'Thiết bị cảm ứng — hiệu ứng con trỏ được tắt.'; return; }
+
+  var PALETTES = {
+    site: ['#00e5ff', '#7c4dff', '#ff2d75', '#ffd54f'],
+    gold: ['#ffd54f', '#ffe9a3', '#ffb84d', '#fff6d6'],
+    rainbow: ['#ff5a5a', '#ffb84d', '#ffd54f', '#69ff47', '#00e5ff', '#7c4dff', '#ff2d75']
+  };
+  var DESC = {
+    twinkle: 'Twinkle — sao nhỏ lấp lánh rơi nhẹ rồi tắt dần (bụi kim tuyến).',
+    comet: 'Comet — vệt sáng thon phía sau như sao chổi, kèm hạt bụi.',
+    stardust: 'Stardust — hạt sao bung toả ra xung quanh rồi thu nhỏ, không rơi.',
+    constellation: 'Constellation — các điểm sao nối nhau bằng đường mảnh như chòm sao.'
+  };
+  var S = { style: 'twinkle', palette: 'site', density: 1 };
+
+  var cv = document.getElementById('starfx'), ctx = cv.getContext('2d'), dpr = 1, W = 0, H = 0;
+  function resize() { dpr = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); }
+  resize(); addEventListener('resize', resize);
+
+  var mouse = { x: -100, y: -100, px: -100, py: -100, seen: false, down: false };
+  var head = { x: -100, y: -100, rot: 0, scale: 1, hover: 0 };
+  var parts = [], trail = [], nodes = [], travelled = 0, MAX = 260;
+  var hoverEl = false, running = false;
+
+  function pick() { var p = PALETTES[S.palette]; return p[(Math.random() * p.length) | 0]; }
+  function headColor() { return hoverEl ? '#ffd54f' : PALETTES[S.palette][0]; }
+
+  // 4- or 5-point star path
+  function star(x, y, r, rot, points, inner) {
+    points = points || 4; inner = inner || 0.38;
+    ctx.beginPath();
+    for (var i = 0; i < points * 2; i++) {
+      var a = rot + i * Math.PI / points, rr = i % 2 ? r * inner : r;
+      ctx.lineTo(x + Math.cos(a) * rr, y + Math.sin(a) * rr);
+    }
+    ctx.closePath();
+  }
+
+  function spawn(x, y, o) {
+    if (parts.length >= MAX) parts.shift();
+    parts.push({
+      x: x, y: y, vx: o.vx || 0, vy: o.vy || 0, g: o.g || 0, drag: o.drag || 0.98,
+      life: 0, max: o.max || 60, size: o.size || 3, rot: Math.random() * 6.28, vr: (Math.random() - 0.5) * 0.2,
+      color: o.color || pick(), shape: o.shape || 'star', twinkle: o.twinkle !== false
+    });
+  }
+
+  function onMove(x, y) {
+    var dx = x - mouse.x, dy = y - mouse.y, d = Math.hypot(dx, dy);
+    mouse.px = mouse.x; mouse.py = mouse.y; mouse.x = x; mouse.y = y;
+    if (!mouse.seen) { mouse.seen = true; head.x = x; head.y = y; wake(); return; }
+    if (reduced) return;
+    var dens = S.density, n;
+    if (S.style === 'twinkle') {
+      n = Math.min(6, d / 9 * dens);
+      for (var i = 0; i < n; i++) spawn(x + (Math.random() - 0.5) * 8, y + (Math.random() - 0.5) * 8,
+        { vx: (Math.random() - 0.5) * 1.2 - dx * 0.03, vy: (Math.random() - 0.7) * 1.1 - dy * 0.03, g: 0.045, max: 45 + Math.random() * 35, size: 2 + Math.random() * 3.5 });
+    } else if (S.style === 'comet') {
+      if (Math.random() < 0.35 * dens) spawn(x, y, { vx: (Math.random() - 0.5) * 0.8, vy: (Math.random() - 0.5) * 0.8, max: 30 + Math.random() * 25, size: 1 + Math.random() * 1.8, shape: 'dot' });
+    } else if (S.style === 'stardust') {
+      n = Math.min(5, d / 12 * dens);
+      for (var j = 0; j < n; j++) { var a = Math.random() * 6.28, s = 0.6 + Math.random() * 1.8;
+        spawn(x, y, { vx: Math.cos(a) * s, vy: Math.sin(a) * s, drag: 0.94, max: 40 + Math.random() * 30, size: 2.5 + Math.random() * 3 }); }
+    } else if (S.style === 'constellation') {
+      travelled += d;
+      if (travelled > 46 / dens) {
+        travelled = 0;
+        if (nodes.length > 22) nodes.shift();
+        nodes.push({ x: x + (Math.random() - 0.5) * 18, y: y + (Math.random() - 0.5) * 18, life: 0, max: 80 + Math.random() * 40, color: pick(), size: 1.8 + Math.random() * 2.2 });
+      }
+    }
+    wake();
+  }
+  function burst(x, y) {
+    if (reduced) return;
+    var n = Math.round(20 * S.density);
+    for (var i = 0; i < n; i++) { var a = (i / n) * 6.28 + Math.random() * 0.3, s = 2 + Math.random() * 3.5;
+      spawn(x, y, { vx: Math.cos(a) * s, vy: Math.sin(a) * s, g: S.style === 'twinkle' ? 0.06 : 0, drag: 0.93, max: 45 + Math.random() * 30, size: 2.5 + Math.random() * 4, shape: Math.random() < 0.3 ? 'star5' : 'star' }); }
+    head.scale = 0.6; wake();
+  }
+
+  function frame() {
+    ctx.clearRect(0, 0, W, H);
+    // head follows the pointer (slight smoothing only for comet, for a nicer streak)
+    var k = S.style === 'comet' ? 0.45 : 1;
+    head.x += (mouse.x - head.x) * k; head.y += (mouse.y - head.y) * k;
+    head.hover += ((hoverEl ? 1 : 0) - head.hover) * 0.18;
+    head.scale += (1 - head.scale) * 0.15;
+    head.rot += 0.02 + head.hover * 0.06;
+
+    ctx.globalCompositeOperation = 'lighter';
+
+    // comet streak
+    if (S.style === 'comet' && !reduced) {
+      trail.push({ x: head.x, y: head.y }); if (trail.length > 22) trail.shift();
+      for (var t = 1; t < trail.length; t++) {
+        var f = t / trail.length;
+        ctx.strokeStyle = headColor(); ctx.globalAlpha = f * 0.55; ctx.lineWidth = f * 7; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(trail[t - 1].x, trail[t - 1].y); ctx.lineTo(trail[t].x, trail[t].y); ctx.stroke();
+      }
+      var still = trail.length && Math.hypot(trail[0].x - head.x, trail[0].y - head.y) < 0.5;
+      if (still) trail.length = 0;
+    } else trail.length = 0;
+
+    // constellation
+    if (nodes.length) {
+      for (var c = 0; c < nodes.length; c++) {
+        var nd = nodes[c]; nd.life++;
+        var al = 1 - nd.life / nd.max;
+        if (al <= 0) { nodes.splice(c--, 1); continue; }
+        var nx = nodes[c + 1] || (c === nodes.length - 1 ? { x: head.x, y: head.y } : null);
+        if (nx) { ctx.globalAlpha = al * 0.45; ctx.strokeStyle = nd.color; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(nd.x, nd.y); ctx.lineTo(nx.x, nx.y); ctx.stroke(); }
+        ctx.globalAlpha = al * (0.6 + 0.4 * Math.sin(nd.life * 0.25));
+        ctx.fillStyle = nd.color; star(nd.x, nd.y, nd.size * 1.6, nd.life * 0.03, 4, 0.35); ctx.fill();
+      }
+    }
+
+    // particles
+    for (var i = 0; i < parts.length; i++) {
+      var p = parts[i]; p.life++;
+      if (p.life >= p.max) { parts.splice(i--, 1); continue; }
+      p.vx *= p.drag; p.vy = p.vy * p.drag + p.g; p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+      var lf = 1 - p.life / p.max, a2 = lf * (p.twinkle ? 0.65 + 0.35 * Math.sin(p.life * 0.5 + p.rot * 3) : 1);
+      var sz = S.style === 'stardust' ? p.size * lf : p.size * (0.4 + 0.6 * lf);
+      ctx.globalAlpha = Math.max(0, a2); ctx.fillStyle = p.color;
+      if (p.shape === 'dot') { ctx.beginPath(); ctx.arc(p.x, p.y, sz, 0, 6.28); ctx.fill(); }
+      else { star(p.x, p.y, sz * 1.5, p.rot, p.shape === 'star5' ? 5 : 4, p.shape === 'star5' ? 0.45 : 0.36); ctx.fill(); }
+    }
+
+    // head star (glow + core)
+    ctx.globalCompositeOperation = 'source-over';
+    if (mouse.seen) {
+      var r = (9 + head.hover * 6) * head.scale, col = headColor();
+      ctx.globalAlpha = 0.25 + head.hover * 0.15;
+      var g = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, r * 2.6);
+      g.addColorStop(0, col); g.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(head.x, head.y, r * 2.6, 0, 6.28); ctx.fill();
+      ctx.globalAlpha = 1; ctx.fillStyle = col;
+      star(head.x, head.y, r, head.rot, 4, 0.32); ctx.fill();
+      ctx.fillStyle = '#fff'; star(head.x, head.y, r * 0.45, head.rot, 4, 0.4); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+
+    // keep the head star spinning while the pointer is on the page; stop when it leaves
+    if (mouse.seen) requestAnimationFrame(frame); else running = false;
+  }
+  function wake() { if (!running) { running = true; requestAnimationFrame(frame); } }
+
+  addEventListener('pointermove', function (e) { if (e.pointerType === 'mouse') onMove(e.clientX, e.clientY); }, { passive: true });
+  addEventListener('pointerdown', function (e) { if (e.pointerType === 'mouse') burst(e.clientX, e.clientY); });
+  document.addEventListener('pointerover', function (e) { hoverEl = !!(e.target.closest && e.target.closest('a,button,[role="button"],.clickable,[data-open],label,select')); });
+  document.documentElement.addEventListener('mouseleave', function () { mouse.seen = false; ctx.clearRect(0, 0, W, H); });
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) wake(); });
+  document.documentElement.classList.add('star-cursor');
+
+  // ── picker (preview only) ──
+  function sync() {
+    document.querySelectorAll('[data-v]').forEach(function (b) { b.classList.toggle('on', b.dataset.v === S.style); });
+    document.querySelectorAll('[data-c]').forEach(function (b) { b.classList.toggle('on', b.dataset.c === S.palette); });
+    document.getElementById('desc').textContent = DESC[S.style] + (reduced ? ' (máy đang bật giảm chuyển động — không có hạt)' : '');
+    parts.length = 0; nodes.length = 0; trail.length = 0;
+  }
+  document.querySelectorAll('[data-v]').forEach(function (b) { b.onclick = function () { S.style = b.dataset.v; sync(); }; });
+  document.querySelectorAll('[data-c]').forEach(function (b) { b.onclick = function () { S.palette = b.dataset.c; sync(); }; });
+  document.getElementById('density').oninput = function () { S.density = +this.value; };
+  sync(); wake();
+})();
+</script>
+</body>
+</html>

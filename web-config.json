@@ -3,18 +3,19 @@
     "name": "Trần Tiến - [NIX]",
     "brand": "TRAN VAN TIEN - [NIX]",
     "title": {
-      "en": "Game Developer, Unity Trainer, Team Leader",
-      "vi": "Game Developer, Unity Trainer, Team Leader"
+      "en": "Game Developer, Game Development Instructor, Team Leader",
+      "vi": "Game Developer, Game Development Instructor, Team Leader"
     },
     "location": "Ha Noi City, VN",
+    "timezone": "Asia/Ho_Chi_Minh",
     "status": "available",
     "statusLabel": {
       "en": "Available",
       "vi": "Available"
     },
     "bio": {
-      "en": "2D mobile game developer, focusing on quality and player feeling.",
-      "vi": "Mobile game | Feeling | Chất lượng."
+      "en": "Game Development | Game Feel | Instruction.",
+      "vi": "Game Development | Game Feel | Instruction."
     },
     "avatar": "assets/images/avt.jpg",
     "stats": [
@@ -46,11 +47,47 @@
       "blog": "https://tien0702.github.io/nix-blog/",
       "itchio": "https://tiennix.itch.io/"
     },
-    "cv": "https://drive.google.com/drive/folders/1DzDeKy8Mhjfpp6RXvTxVrB44fruPhYPI?usp=sharing"
+    "cv": "https://drive.google.com/drive/folders/1DzDeKy8Mhjfpp6RXvTxVrB44fruPhYPI?usp=sharing",
+    "now": [
+      {
+        "label": {
+          "en": "Role",
+          "vi": "Vị trí"
+        },
+        "value": {
+          "en": "Team Leader · Game Developer",
+          "vi": "Team Leader · Game Developer"
+        }
+      },
+      {
+        "label": {
+          "en": "Teaching",
+          "vi": "Giảng dạy"
+        },
+        "value": {
+          "en": "Game Development Instructor",
+          "vi": "Game Development Instructor"
+        }
+      },
+      {
+        "label": {
+          "en": "Open to",
+          "vi": "Sẵn sàng"
+        },
+        "value": {
+          "en": "Unity Developer · Freelancer · Trainer",
+          "vi": "Unity Developer · Freelancer · Trainer"
+        }
+      }
+    ]
+  },
+  "sections": {
+    "skills": true,
+    "experience": true
   },
   "experience": [
     {
-      "current": true,
+      "current": false,
       "period": {
         "en": "2025 — 2026",
         "vi": "2025 — 2026"
@@ -61,8 +98,8 @@
       },
       "org": "Champion Game Studio",
       "desc": {
-        "en": "Lead a Unity team shipping casual titles; own architecture, code review and the shared package ecosystem.",
-        "vi": "Dẫn dắt team Unity phát triển game casual; chịu trách nhiệm kiến trúc, code review và hệ sinh thái package dùng chung."
+        "en": "Led cross-functional teams of 4 to 10+ members developing casual game projects.",
+        "vi": "Dẫn dắt team gồm nhiều bộ phận với team size từ 4 đến 10+ thành viên phát triển các dự án game casual."
       },
       "tags": [
         "Unity",
@@ -76,13 +113,13 @@
         "vi": "2022 — Nay"
       },
       "role": {
-        "en": "Unity Trainer",
-        "vi": "Unity Trainer"
+        "en": "Game Development Instructor",
+        "vi": "Game Development Instructor"
       },
       "org": "VTC Academy",
       "desc": {
-        "en": "Mentored new developers on game development knowledge from Cocos2dx to Unity, from project architecture to specialized game knowledge.",
-        "vi": "Đào tạo lập trình viên mới về kiến thức phát triển game từ Cocos2dx đến Unity, từ kiến trúc dự án cho tới các kiến thức chuyên ngành game."
+        "en": "Game development instructor at VTC Academy. Teach classes of 10 to 20 students, covering game industry fundamentals and guiding hands-on practice with engines such as Cocos2dx and Unity.",
+        "vi": "Giảng viên chuyên ngành game tại VTC Academy. Đứng các lớp từ 10 đến 20 học viên, giảng dạy các kiến thức về ngành game và hướng dẫn các học viên thực hành với các engine như Cocos2dx, Unity."
       },
       "tags": [
         "Mentoring",
@@ -91,8 +128,8 @@
     },
     {
       "period": {
-        "en": "2024 — 2026",
-        "vi": "2024 — 2026"
+        "en": "2022 — 2025",
+        "vi": "2022 — 2025"
       },
       "role": {
         "en": "Game Developer",
@@ -100,8 +137,8 @@
       },
       "org": "Champion Game Studio",
       "desc": {
-        "en": "Developed mobile products reaching 70M+ and 10M+ downloads.",
-        "vi": "Phát triển các sản phẩm mobile đạt 70M+ và 10M+ lượt tải."
+        "en": "Developed casual/puzzle mobile games, trained freshers, built reusable packages (localization, save/load system, monetization) and ran game live ops.",
+        "vi": "Code các dự án game mobile casual/puzzle, training fresher, đóng gói package (localization, save/load system, monetization), liveops game."
       },
       "tags": [
         "Gameplay",
@@ -117,30 +154,28 @@
       "nav_experience": "Experience",
       "nav_skills": "Skills",
       "nav_contact": "Contact",
-      "hire": "Hire me",
+      "hire": "Contact me",
       "view_work": "View my projects",
       "download_cv": "Download CV",
       "contact_me": "Contact me",
-      "h1": "I build games<br>played by <span class=\"grad\">{n}</span> people.",
-      "installs": "installs",
-      "shipped": "{n} games shipped",
-      "available": "Available",
+      "h1": "TRAN VAN TIEN [NIX] - Portfolio",
+      "available": "Available for freelance & training",
       "skills_k": "SKILL TREE",
-      "skills_t": "What I bring to a team",
-      "skills_p": "Ranked like a game character — click a skill to inspect it.",
+      "skills_t": "My skills",
+      "skills_p": "Click a skill to see details.",
       "also": "Also worked with",
       "also_p": "Low-level background that shapes how I think about memory and rendering.",
       "lead_t": "Leadership & Training",
-      "lead_p": "Leading a dev team, mentoring juniors, and building shared frameworks so every new project starts ahead.",
+      "lead_p": "Team leadership, training freshers and building reusable packages.",
       "proficiency": "Proficiency",
       "skill": "Skill",
       "exp_k": "EXPERIENCE",
       "exp_t": "Quest log",
-      "exp_p": "Roles I've played — and what I brought to each team.",
+      "exp_p": "Roles I've taken on.",
       "now": "NOW",
-      "work_k": "PROJECTS",
-      "work_t": "Games in players' hands",
-      "work_p": "Every game I shipped and the roles I played — open one to see my responsibilities and what I learned.",
+      "work_k": "Projects",
+      "work_t": "Projects",
+      "work_p": "Products and roles",
       "read_more": "Read more",
       "google_play": "Google Play",
       "app_store": "App Store",
@@ -158,7 +193,7 @@
       "all_projects": "All projects",
       "watch": "Watch with sound",
       "overview": "Overview",
-      "resp": "Responsibilities",
+      "resp": "Roles",
       "roles_n": "{n} roles",
       "what_learned": "What I learned",
       "gallery": "Screenshots",
@@ -177,15 +212,18 @@
       "mute": "Mute",
       "live": "PLAYING",
       "contact_t": "Let's build something<br>players will love.",
-      "contact_p": "Open to new roles, collaborations and Unity training.",
+      "contact_p": "Open to work as a freelancer or trainer.",
       "copy": "Copy",
       "copied": "Email copied to clipboard",
       "send": "Send",
-      "term": "// OPEN TO OPPORTUNITIES",
+      "term": "// AVAILABLE FOR FREELANCE & TRAINING",
       "built": "Built with ☕ in {city}",
       "sample": "sample data",
       "err": "Could not load data files.",
-      "download_apk": "Download APK"
+      "download_apk": "Download APK",
+      "now_k": "Right now",
+      "now_status": "Available for freelance & training",
+      "draft_note": "Draft — hidden on the site"
     },
     "vi": {
       "skip": "Bỏ qua tới nội dung",
@@ -198,25 +236,23 @@
       "download_cv": "Tải CV",
       "contact_me": "Liên hệ",
       "h1": "TRAN VAN TIEN [NIX] - Portfolio",
-      "installs": "lượt tải",
-      "shipped": "{n} game đã ra mắt",
-      "available": "Sẵn sàng nhận việc",
+      "available": "Available for freelance & training",
       "skills_k": "CÂY KỸ NĂNG",
       "skills_t": "Kỹ năng của tôi",
       "skills_p": "Bấm vào kỹ năng để xem chi tiết.",
       "also": "Từng làm việc với",
       "also_p": "Nền tảng low-level giúp tôi hiểu sâu về bộ nhớ và rendering.",
-      "lead_t": "Dẫn dắt & Đào tạo",
-      "lead_p": "Dẫn dắt team, kèm cặp junior và xây framework dùng chung để mỗi dự án mới khởi đầu nhanh hơn.",
+      "lead_t": "Leadership & Training",
+      "lead_p": "Team leader, training fresher và đóng gói package.",
       "proficiency": "Mức độ",
       "skill": "Kỹ năng",
       "exp_k": "KINH NGHIỆM",
       "exp_t": "Nhật ký hành trình",
-      "exp_p": "Những vai trò tôi đã đảm nhận — và những gì tôi mang đến.",
+      "exp_p": "Những vai trò tôi đã đảm nhận.",
       "now": "HIỆN TẠI",
-      "work_k": "DỰ ÁN",
-      "work_t": "Game trong tay người chơi",
-      "work_p": "Sản phẩm và vai trò — mở từng dự án để xem chi tiết.",
+      "work_k": "Projects",
+      "work_t": "Projects",
+      "work_p": "Sản phẩm và vai trò",
       "read_more": "Xem chi tiết",
       "google_play": "Google Play",
       "app_store": "App Store",
@@ -253,15 +289,18 @@
       "mute": "Tắt tiếng",
       "live": "ĐANG PHÁT",
       "contact_t": "Cùng làm một game<br>người chơi yêu thích.",
-      "contact_p": "Sẵn sàng cho vị trí mới, hợp tác và giảng dạy Unity.",
+      "contact_p": "Sẵn sàng cho công việc: freelancer, trainer.",
       "copy": "Sao chép",
       "copied": "Đã sao chép email",
       "send": "Gửi",
-      "term": "// SẴN SÀNG CHO CƠ HỘI MỚI",
+      "term": "// AVAILABLE FOR FREELANCE & TRAINING",
       "built": "Làm với ☕ tại {city}",
       "sample": "dữ liệu mẫu",
       "err": "Không tải được dữ liệu.",
-      "download_apk": "Tải APK"
+      "download_apk": "Tải APK",
+      "now_k": "Ngay lúc này",
+      "now_status": "Available for freelance & training",
+      "draft_note": "Bản nháp — đang ẩn trên site"
     }
   }
 }

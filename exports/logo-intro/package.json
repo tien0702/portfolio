@@ -1,0 +1,11 @@
+{
+  "name": "logo-intro",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "render": "node render.mjs logo-intro.html"
+  },
+  "dependencies": {
+    "puppeteer-core": "23.11.1"
+  }
+}

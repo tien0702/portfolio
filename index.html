@@ -15,6 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="assets/logo/NIX-02.svg" />
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body data-page="home">
@@ -23,7 +24,7 @@
   <!-- LOADER -->
   <div id="loader" aria-hidden="true">
     <canvas id="ldWarp"></canvas>
-    <div class="ld-c"><div class="ld-logo"><b>[</b>NIX<b>]</b></div><div class="ld-pct" id="ldPct">0%</div></div>
+    <div class="ld-c"><img class="ld-img" src="assets/logo/NIX-02.svg" alt="" /><div class="ld-pct" id="ldPct">0%</div></div>
     <div class="ld-flash"></div>
   </div>
   <script>try { var n = performance.getEntriesByType('navigation')[0]; if (sessionStorage.getItem('nix-warp') || (n && n.type === 'back_forward')) document.getElementById('loader').classList.add('nav'); } catch (e) {}</script>
@@ -78,17 +79,12 @@
       </div>
 
       <div class="card-wrap rv">
-        <div class="pcard" id="pcard">
-          <div class="pc-top"><span>PLAYER // NIX</span><span class="lv" id="pcLv"></span></div>
-          <div class="pc-img">
-            <img id="pcImg" src="" alt="" />
-            <i class="corner c1"></i><i class="corner c2"></i><i class="corner c3"></i><i class="corner c4"></i>
-            <div class="pc-name"><b id="pcName"></b><span id="pcClass"></span></div>
-          </div>
-          <div class="pc-stats" id="pcStats"></div>
+        <div class="pcard now-card" id="pcard">
+          <div class="now-who"><img id="pcImg" src="" alt="" /><div><b id="pcName"></b><span data-i18n="now_k">Right now</span></div></div>
+          <div class="now-clock"><b id="pcClock">--:--</b><span id="pcPlace"></span></div>
+          <div class="now-st" id="pcStatus"><i></i><span></span></div>
+          <div class="now-rows" id="pcRows"></div>
         </div>
-        <div class="float f1" id="float1"></div>
-        <div class="float f2" id="float2"></div>
       </div>
     </div>
 

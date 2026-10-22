@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="assets/logo/NIX-02.svg" />
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body data-page="project">
@@ -17,7 +18,7 @@
 
   <div id="loader" aria-hidden="true">
     <canvas id="ldWarp"></canvas>
-    <div class="ld-c"><div class="ld-logo"><b>[</b>NIX<b>]</b></div><div class="ld-pct" id="ldPct">0%</div></div>
+    <div class="ld-c"><img class="ld-img" src="assets/logo/NIX-02.svg" alt="" /><div class="ld-pct" id="ldPct">0%</div></div>
     <div class="ld-flash"></div>
   </div>
   <script>try { var n = performance.getEntriesByType('navigation')[0]; if (sessionStorage.getItem('nix-warp') || (n && n.type === 'back_forward')) document.getElementById('loader').classList.add('nav'); } catch (e) {}</script>

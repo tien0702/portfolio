@@ -10,6 +10,7 @@ import fs from 'node:fs';
 import fsp from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFile } from 'node:child_process';
 
 const PORT = Number(process.env.PORT) || 4000;
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -24,6 +25,24 @@ const MIME = {
   '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp',
   '.gif': 'image/gif', '.ico': 'image/x-icon', '.mp4': 'video/mp4', '.webm': 'video/webm', '.mov': 'video/quicktime'
 };
+
+// Run git in the repo (no shell). Resolves { ok, out } instead of throwing so the Studio can show git's message.
+const git = (...args) => new Promise(resolve => execFile('git', ['-c', 'core.quotePath=false', ...args], { cwd: ROOT, timeout: 120000 },
+  (err, stdout, stderr) => resolve({ ok: !err, out: (stdout + stderr).trimEnd() })));
+const GIT_SCOPE = 'Database/Projects';
+// Changed files under GIT_SCOPE, with size (0 for deleted files).
+async function gitChanges() {
+  const st = await git('status', '--porcelain', '-z', '-uall', '--', GIT_SCOPE);
+  if (!st.ok) throw new HttpError(500, st.out || 'git status failed');
+  const out = [], rows = st.out.split('\0').filter(Boolean);
+  for (let i = 0; i < rows.length; i++) {
+    const status = rows[i].slice(0, 2).trim(), rel = rows[i].slice(3);
+    if (status[0] === 'R' || status[0] === 'C') i++; // -z puts the rename source in the next field
+    const s = await fsp.stat(path.join(ROOT, rel)).catch(() => null);
+    out.push({ status, path: rel, size: s && s.isFile() ? s.size : 0 });
+  }
+  return out;
+}
 
 class HttpError extends Error { constructor(status, msg) { super(msg); this.status = status; } }
 
@@ -143,6 +162,31 @@ async function api(req, res, url) {
       await fsp.rm(file, { force: true });
       return send(res, 200, { deleted: rel });
     }
+  }
+
+  if (parts[0] === 'git' && m === 'GET') {
+    const ahead = await git('rev-list', '--count', '@{u}..HEAD');
+    return send(res, 200, { files: await gitChanges(), ahead: ahead.ok ? +ahead.out : 0 });
+  }
+
+  if (parts[0] === 'git' && m === 'POST') {
+    const message = String((await readJSON(req)).message || '').trim();
+    if (!message) throw new HttpError(400, 'Commit message is required');
+    const big = (await gitChanges()).filter(f => f.size > MAX_UPLOAD).map(f => f.path);
+    if (big.length) throw new HttpError(400, 'GitHub rejects files over 100 MB — move or delete them first: ' + big.join(', '));
+    const add = await git('add', '-A', '--', GIT_SCOPE);
+    if (!add.ok) throw new HttpError(500, add.out);
+    // Commit only the project data, even if other files are staged.
+    const staged = await git('diff', '--cached', '--quiet', '--', GIT_SCOPE);
+    let committed = false;
+    if (!staged.ok) {
+      const c = await git('commit', '-m', message, '--', GIT_SCOPE);
+      if (!c.ok) throw new HttpError(500, c.out);
+      committed = true;
+    }
+    const push = await git('push');
+    if (!push.ok) throw new HttpError(500, (committed ? 'Committed, but push failed: ' : 'Push failed: ') + push.out);
+    return send(res, 200, { committed, out: push.out });
   }
 
   if (parts[0] === 'order' && m === 'PUT') {

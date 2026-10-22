@@ -1,0 +1,7 @@
+/* Star cursor — hides the system pointer only once star-cursor.js has started
+   (it adds .star-cursor to <html>), so touch devices / no-JS keep the normal cursor. */
+html.star-cursor, html.star-cursor *{cursor:none!important}
+/* keep the text caret where people type */
+html.star-cursor input, html.star-cursor textarea, html.star-cursor [contenteditable]{cursor:text!important}
+/* full-screen canvas that never blocks clicks; sits above modals/overlays */
+#starfx{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9999}

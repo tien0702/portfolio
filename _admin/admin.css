@@ -52,6 +52,7 @@ main{max-width:1500px;margin:0 auto;padding:28px 24px 120px}
 .prow.drag{opacity:.4}
 .prow.over{border-color:var(--cyan);background:rgba(0,229,255,.05)}
 .prow.broken{border-color:rgba(255,90,90,.4)}
+.prow.hidden .thumb,.prow.hidden .t{opacity:.45}
 .handle{cursor:grab;color:var(--dim);font-size:1.1rem;text-align:center;user-select:none}
 .handle:active{cursor:grabbing}
 .num{font-family:var(--mono);font-size:.75rem;color:var(--pink)}
@@ -126,8 +127,16 @@ input[type=color]{width:42px;height:36px;border:1px solid var(--line2);border-ra
 .item-h b{font-family:var(--mono);font-size:.7rem;color:var(--pink);flex:1}
 .item-b{padding:12px;display:grid;gap:10px}
 .bullets{display:grid;gap:6px}
-.bullet{display:grid;grid-template-columns:14px 1fr 1fr auto;gap:6px;align-items:start}
-.bullet::before{content:'▸';color:var(--cyan);padding-top:8px}
+.bullet{position:relative;display:grid;grid-template-columns:16px 18px 1fr 1fr auto auto;gap:6px;align-items:start;border-radius:8px}
+.bullet .grip{cursor:grab;color:var(--dim);padding-top:7px;text-align:center;user-select:none;line-height:1.2}
+.bullet .grip:hover{color:var(--cyan)}
+.bullet .bnum{font-family:var(--mono);font-size:.62rem;color:var(--cyan);padding-top:10px;text-align:right}
+.bullet .bmv{display:flex;gap:2px}
+.bullet .bmv .icon-btn{width:26px}
+.bullet .icon-btn:disabled{opacity:.25;cursor:default}
+.bullet.drag{opacity:.4}
+.bullet.over-top::before,.bullet.over-bot::after{content:'';position:absolute;left:0;right:0;height:2px;background:var(--cyan);box-shadow:0 0 8px var(--cyan);border-radius:2px}
+.bullet.over-top::before{top:-4px}.bullet.over-bot::after{bottom:-4px}
 .add{justify-self:start}
 
 /* drop zone + media */
@@ -182,8 +191,13 @@ input[type=color]{width:42px;height:36px;border:1px solid var(--line2);border-ra
 }
 @media (max-width:700px){
   .grid2,.grid3,.bi{grid-template-columns:1fr}
-  .bullet{grid-template-columns:14px 1fr auto}
-  .bullet>.vi{grid-column:2}
+  .bullet{grid-template-columns:16px 18px 1fr auto auto}
+  .bullet>.vi{grid-column:3}
   .prow{grid-template-columns:20px 44px 1fr auto}
   .prow .num,.prow .badges{display:none}
 }
+.git-files{list-style:none;font-family:var(--mono);font-size:.72rem;max-height:180px;overflow:auto;margin:0 0 12px;overflow-wrap:anywhere}
+
+.shot-tools{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.shot-tools code{font-family:var(--mono);font-size:.7rem;color:var(--cyan)}
+.shot-tools .hint{font-size:.72rem;color:var(--dim)}

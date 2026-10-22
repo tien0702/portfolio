@@ -10,7 +10,7 @@
 var PAGE = document.body.dataset.page;
 var PROJECTS_DIR = 'Database/Projects/';
 
-var CONFIG = null, SKILLS = [], PACKAGES = [], PROJECTS = [];
+var CONFIG = null, SKILLS = [], PACKAGES = [], PROJECTS = [], ALL_PROJECTS = []; // PROJECTS = published only
 var lang = 'en';
 var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -301,8 +301,12 @@ function renderAll() {
   var playing = VM.cur;
   if (playing) vmPause(playing);
   renderShell();
-  if (PAGE === 'home') { renderHero(); renderMarquee(); renderWork(); renderSkills(); renderExperience(); }
-  else renderProject();
+  if (PAGE === 'home') {
+    renderHero(); renderMarquee(); renderWork();
+    if (sectionOn('skills')) renderSkills();
+    if (sectionOn('experience')) renderExperience();
+  } else renderProject();
+  applySections();
   observeReveal();
   observeVideos();
 }
@@ -314,7 +318,6 @@ function renderHero() {
   var p = CONFIG.profile, dl = stat(/download/i) || { value: '' };
   var name = p.name.replace(/\s*-?\s*\[.*?\]\s*/, '').trim();
   var roles = loc(p.title).split(',').map(function (s) { return s.trim(); }).filter(Boolean);
-  var years = stat(/year|năm/i), shipped = stat(/project|shipped|dự án/i);
   $('heroStatus').textContent = (p.status === 'available' ? t('available') : loc(p.statusLabel)) + ' · ' + (p.location || '');
   var h1 = t('h1', { n: esc(dl.value) });
   $('heroH1').innerHTML = /<[a-z]/i.test(h1) ? h1 : headline(h1);
@@ -323,15 +326,7 @@ function renderHero() {
   $('cvBtn').hidden = !p.cv; if (p.cv) $('cvBtn').href = p.cv;
   $('ctaContact').hidden = !!p.cv;
   $('heroSoc').innerHTML = socialHTML();
-  $('pcImg').src = p.avatar; $('pcImg').alt = name;
-  $('pcName').textContent = name;
-  $('pcClass').textContent = roles.slice(0, 2).join(' · ');
-  $('pcLv').textContent = years ? '★ LV.' + years.value : '';
-  $('pcStats').innerHTML = skillsSorted().slice(0, 4).map(function (s) {
-    return '<div class="st"><span title="' + esc(s.name) + '">' + esc(s.name.split(/\s*[|]\s*/)[0]) + '</span>' + pips(s.level) + '<span>' + rankOf(s.level) + '</span></div>';
-  }).join('');
-  $('float1').innerHTML = '⬇ <b>' + esc(dl.value) + '</b> ' + t('installs');
-  $('float2').textContent = '🎮 ' + t('shipped', { n: shipped ? shipped.value : PROJECTS.length });
+  renderNowCard(p, name);
   $('strip').innerHTML = (p.stats || []).map(function (s) {
     var m = String(s.value).match(/^(\d+)(.*)$/);
     var val = m ? '<span data-to="' + m[1] + '">' + m[1] + '</span><em>' + esc(m[2]) + '</em>' : esc(s.value);
@@ -346,6 +341,36 @@ function headline(s) {
   return '<span class="h1-name">' + esc(name) + '</span>' +
     (tag || sub ? '<span class="h1-meta">' + (tag ? '<span class="h1-tag">' + esc(tag) + '</span>' : '') +
       (tag && sub ? '<i class="h1-sep" aria-hidden="true"></i>' : '') + (sub ? '<span class="h1-sub">' + esc(sub) + '</span>' : '') + '</span>' : '');
+}
+
+// Hero card "Now / Status": live local clock, availability, and what I do right now (profile.now).
+var clockTimer = null;
+function renderNowCard(p, name) {
+  var tz = p.timezone || 'Asia/Ho_Chi_Minh';
+  $('pcImg').src = p.avatar; $('pcImg').alt = name;
+  $('pcName').textContent = name;
+  var off = '';
+  try { off = new Intl.DateTimeFormat('en-GB', { timeZone: tz, timeZoneName: 'shortOffset' }).formatToParts(new Date()).filter(function (x) { return x.type === 'timeZoneName'; })[0].value; } catch (e) {}
+  $('pcPlace').innerHTML = esc((p.location || '').toUpperCase()) + (off ? '<br>' + esc(off) : '');
+  clearTimeout(clockTimer);
+  (function tick() {
+    var hm = new Date().toLocaleTimeString('en-GB', { timeZone: tz, hour: '2-digit', minute: '2-digit' }).split(':');
+    $('pcClock').innerHTML = hm[0] + '<i>:</i>' + hm[1];
+    clockTimer = setTimeout(tick, 15000);
+  })();
+  $('pcStatus').hidden = p.status !== 'available';
+  $('pcStatus').lastChild.textContent = t('now_status');
+  $('pcRows').innerHTML = (p.now || []).map(function (r) { return '<div><span>' + esc(loc(r.label)) + '</span><b>' + esc(loc(r.value)) + '</b></div>'; }).join('');
+}
+
+// Sections that can be switched off in web-config.json → "sections": { "skills": false, ... }
+function sectionOn(id) { return ((CONFIG && CONFIG.sections) || {})[id] !== false; }
+function applySections() {
+  ['skills', 'experience'].forEach(function (id) {
+    var on = sectionOn(id), sec = $(id);
+    if (sec && !on) sec.hidden = true;
+    document.querySelectorAll('a[href="#' + id + '"], a[href="index.html#' + id + '"]').forEach(function (a) { if (!on) a.parentNode.hidden = true; });
+  });
 }
 
 function renderMarquee() {
@@ -432,8 +457,10 @@ function renderExperience() {
 // ══════════════════════════════
 var GALLERY = [];
 function currentProject() {
-  var id = new URLSearchParams(location.search).get('p');
+  var q = new URLSearchParams(location.search), id = q.get('p');
   for (var i = 0; i < PROJECTS.length; i++) if (PROJECTS[i].id === id) return { p: PROJECTS[i], i: i };
+  // hidden projects are only reachable as a draft preview (Studio's "open page" link adds &draft)
+  if (q.has('draft')) for (var j = 0; j < ALL_PROJECTS.length; j++) if (ALL_PROJECTS[j].id === id) return { p: ALL_PROJECTS[j], i: -1, draft: true };
   return null;
 }
 function renderProject() {
@@ -456,6 +483,7 @@ function renderProject() {
   var info =
     '<div class="pj-info">' +
       '<a class="back" href="index.html#work">← ' + t('all_projects') + '</a>' +
+      (cur.draft ? ' <span class="sample draft">' + t('draft_note') + '</span>' : '') +
       '<div class="pj-title rv in"><div class="pj-icon">' + iconHTML(p) + '</div><div>' +
         '<div class="sh-k" style="margin-bottom:8px">' + esc(p.studio) + '</div><h1>' + esc(p.title) + '</h1></div></div>' +
       '<p class="tagline">' + (tagline ? esc(tagline) + sample(ph) : '<span class="muted">' + t('no_desc') + '</span>') + '</p>' +
@@ -529,7 +557,7 @@ function renderProject() {
   }
 
   var L = PROJECTS, prev = L[(cur.i - 1 + L.length) % L.length], next = L[(cur.i + 1) % L.length];
-  if (L.length > 1) h += '<div class="pager" role="navigation">' +
+  if (cur.i >= 0 && L.length > 1) h += '<div class="pager" role="navigation">' +
     '<a class="spot rv" href="' + projectURL(prev) + '"><div class="pg-ic">' + iconHTML(prev) + '</div><div><small>← ' + t('prev_p') + '</small><b>' + esc(prev.title) + '</b></div></a>' +
     '<a class="spot nx rv" href="' + projectURL(next) + '"><div class="pg-ic">' + iconHTML(next) + '</div><div><small>' + t('next_p') + ' →</small><b>' + esc(next.title) + '</b></div></a></div>';
   $('pjBody').innerHTML = h;
@@ -794,7 +822,15 @@ function toggleDrawer(open) {
 // LOADER — "Warp": stars streak toward the viewer, speeding up with progress;
 // on finish it jumps to max speed, flashes, and reveals the page.
 // ══════════════════════════════
+// transition timings (ms) — also drive the matching CSS durations via --ld-* variables
+var LD_TIME = {
+  cover: 150,   // loader fades in over the current page before navigating away
+  boost: 80,    // stars jump to max speed before the reveal starts
+  reveal: 250,  // loader fades out
+  pageIn: 400   // page content scales/fades in
+};
 function warpLoader(ld) {
+  Object.keys(LD_TIME).forEach(function (k) { document.documentElement.style.setProperty('--ld-' + k, LD_TIME[k] + 'ms'); });
   var cv = $('ldWarp'), ctx = cv.getContext('2d'), pct = $('ldPct');
   var W = 0, H = 0, stars = [], speed = 0, target = 2, raf = 0, running = false;
   var fromNav = ld.classList.contains('nav'); // arrived from another page of this site → no intro
@@ -805,7 +841,7 @@ function warpLoader(ld) {
   }
   function loop() {
     speed += (target - speed) * 0.05;
-    ctx.fillStyle = 'rgba(0,0,0,0.35)'; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = 'rgba(7,9,15,0.35)'; ctx.fillRect(0, 0, W, H); // trails fade into --bg (#07090f), same as the page
     var cx = W / 2, cy = H / 2, f = Math.max(W, H) * 0.25;
     for (var i = 0; i < stars.length; i++) {
       var s = stars[i], pz = s.z;
@@ -833,9 +869,9 @@ function warpLoader(ld) {
     exit: function (onDone) {
       if (REDUCED) { ld.className = 'done'; stop(); if (onDone) onDone(); return; }
       target = 40; ld.classList.add('boost');
-      setTimeout(function () { ld.classList.add('out'); document.body.classList.add('page-in'); }, 300);
-      setTimeout(function () { ld.className = 'done'; stop(); if (onDone) onDone(); }, 1000);
-      setTimeout(function () { document.body.classList.remove('page-in'); }, 1400);
+      setTimeout(function () { ld.classList.add('out'); document.body.classList.add('page-in'); }, LD_TIME.boost);
+      setTimeout(function () { ld.className = 'done'; stop(); if (onDone) onDone(); }, LD_TIME.boost + LD_TIME.reveal);
+      setTimeout(function () { document.body.classList.remove('page-in'); }, LD_TIME.boost + LD_TIME.pageIn + 100);
     },
     // cover the current page before navigating to another page of the site
     cover: function (go) {
@@ -843,7 +879,7 @@ function warpLoader(ld) {
       try { sessionStorage.setItem('nix-warp', '1'); sessionStorage.setItem('nix-scroll:' + location.pathname + location.search, String(Math.round(scrollY))); } catch (e) {}
       ld.className = 'cover-pre'; void ld.offsetWidth; ld.className = 'cover';
       start(4, 14);
-      setTimeout(go, 420);
+      setTimeout(go, LD_TIME.cover + 20);
     },
     // page restored from the back/forward cache while covered: keep the stars moving and reveal normally
     resume: function () {
@@ -899,7 +935,8 @@ function boot() {
     get('Database/packages.md').catch(function () { return ''; }),
     loadProjects()
   ]).then(function (res) {
-    CONFIG = res[0]; SKILLS = parseSkills(res[1]); PACKAGES = parsePackages(res[2]); PROJECTS = res[3];
+    CONFIG = res[0]; SKILLS = parseSkills(res[1]); PACKAGES = parsePackages(res[2]);
+    ALL_PROJECTS = res[3]; PROJECTS = ALL_PROJECTS.filter(function (p) { return p.publish !== false; }); // "publish": false hides a project
     renderAll();
     bindStatic();
     booted = true;
@@ -912,7 +949,7 @@ function boot() {
     else if (location.hash) { var target = document.getElementById(decodeURIComponent(location.hash.slice(1))); if (target) target.scrollIntoView({ behavior: 'instant' }); }
     // let layout/paint settle (two frames) before starting the reveal, then allow video autoplay
     // minimum time on screen: enough for the intro on a fresh visit, and a short beat when arriving from another page
-    var wait = Math.max(0, (ld.classList.contains('nav') ? 550 : PAGE === 'home' ? 900 : 700) - (Date.now() - t0));
+    var wait = Math.max(0, (ld.classList.contains('nav') ? 200 : 400) - (Date.now() - t0));
     setTimeout(function () {
       requestAnimationFrame(function () { requestAnimationFrame(function () {
         warp.exit(function () { VM.hold = false; observeVideos(); });

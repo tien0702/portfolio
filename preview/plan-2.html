@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Trần Tiến — Plan 2 · Editorial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..800;1,9..144,300..800&family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --paper:#f3efe6; --paper2:#ebe5d8; --ink:#16140f; --ink2:#4a463d; --mute:#8a8475; --rule:#d6cfbf;
+  --hot:#ff4a1c; --serif:'Fraunces',serif; --sans:'Be Vietnam Pro',sans-serif; --mono:'JetBrains Mono',monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--hot);color:var(--paper)}
+.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,48px)}
+.mono{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
+
+/* paper grain */
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:100;opacity:.35;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* top bar */
+.top{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:20px 0;border-bottom:1px solid var(--ink)}
+.top .brand{font-family:var(--serif);font-size:1.25rem;font-weight:600}
+.top .brand i{color:var(--hot)}
+.top nav{display:flex;gap:26px}
+.top nav a{position:relative}
+.top nav a::after{content:'';position:absolute;left:0;right:100%;bottom:-2px;height:1px;background:var(--ink);transition:right .4s var(--ease)}
+.top nav a:hover::after{right:0}
+.top .r{display:flex;justify-content:flex-end;gap:18px;align-items:center}
+.clock b{color:var(--ink);font-weight:500}
+.lang span{padding:2px 4px;color:var(--mute)}.lang .on{color:var(--ink);text-decoration:underline}
+
+/* hero */
+.hero{padding:clamp(48px,9vw,120px) 0 50px}
+.hero .kick{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:28px;color:var(--ink2)}
+.hero .kick .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#1fae4b;margin-right:8px;vertical-align:middle}
+h1{font-family:var(--serif);font-weight:350;font-size:clamp(2.6rem,8.6vw,8.2rem);line-height:.95;letter-spacing:-.035em;font-variation-settings:'opsz' 144}
+h1 em{font-style:italic;font-weight:300;color:var(--hot)}
+h1 .ava{display:inline-block;width:.82em;height:.82em;border-radius:50%;overflow:hidden;vertical-align:-.08em;margin:0 .06em;border:2px solid var(--ink);transform:rotate(-6deg);transition:transform .5s var(--ease)}
+h1 .ava:hover{transform:rotate(8deg) scale(1.08)}
+h1 .ava img{width:100%;height:100%;object-fit:cover;background:#fff}
+.hero-foot{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;margin-top:56px;align-items:end}
+.hero-foot p{font-size:1.15rem;color:var(--ink2);max-width:560px}
+.hero-foot p b{color:var(--ink);font-weight:600}
+.btns{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+.b{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:999px;border:1px solid var(--ink);font-weight:600;font-size:.92rem;transition:.3s var(--ease)}
+.b.solid{background:var(--ink);color:var(--paper)}
+.b.solid:hover{background:var(--hot);border-color:var(--hot)}
+.b:not(.solid):hover{background:var(--ink);color:var(--paper)}
+
+/* numbers */
+.nums{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.nums div{padding:28px 22px 22px;border-right:1px solid var(--rule)}
+.nums div:last-child{border-right:0}
+.nums b{display:block;font-family:var(--serif);font-weight:400;font-size:clamp(2.6rem,5.5vw,4.6rem);line-height:1;letter-spacing:-.04em}
+.nums b sup{font-size:.4em;color:var(--hot);vertical-align:top;margin-left:2px}
+.nums span{color:var(--mute)}
+
+/* section */
+section{padding:clamp(70px,10vw,130px) 0 0}
+.sec-h{display:grid;grid-template-columns:160px 1fr;gap:24px;margin-bottom:40px;align-items:baseline}
+.sec-h .mono{color:var(--hot)}
+.sec-h h2{font-family:var(--serif);font-weight:350;font-size:clamp(2rem,4.6vw,3.6rem);letter-spacing:-.03em;line-height:1}
+.sec-h h2 em{font-style:italic}
+
+/* work index */
+.idx{list-style:none;border-top:1px solid var(--ink)}
+.idx li{border-bottom:1px solid var(--rule)}
+.idx a{display:grid;grid-template-columns:60px 1.6fr 1fr 1fr 110px;gap:16px;align-items:center;padding:26px 6px;transition:padding .45s var(--ease),background .3s}
+.idx a:hover{padding-left:22px;background:var(--paper2)}
+.idx .n{font-family:var(--mono);font-size:.75rem;color:var(--mute)}
+.idx h3{font-family:var(--serif);font-weight:400;font-size:clamp(1.4rem,2.8vw,2.3rem);letter-spacing:-.02em;line-height:1.05}
+.idx a:hover h3{font-style:italic;color:var(--hot)}
+.idx .c{color:var(--ink2);font-size:.9rem}
+.idx .dl{font-family:var(--serif);font-size:1.6rem;text-align:right}
+.idx .dl small{display:block;font-family:var(--mono);font-size:.62rem;color:var(--mute);letter-spacing:.08em}
+.todo{font-family:var(--mono);font-size:.6rem;color:#b07a00;border:1px dashed #d9a400;border-radius:4px;padding:1px 5px;white-space:nowrap}
+.peek{position:fixed;top:0;left:0;width:320px;aspect-ratio:4/3;pointer-events:none;z-index:50;border-radius:6px;overflow:hidden;
+  opacity:0;transform:translate(-50%,-50%) scale(.8) rotate(-4deg);transition:opacity .3s,transform .5s var(--ease);box-shadow:0 30px 60px rgba(0,0,0,.25)}
+.peek.on{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(-3deg)}
+.peek img,.peek div{width:100%;height:100%;object-fit:cover;display:grid;place-items:center;font-family:var(--serif);font-size:6rem;color:#fff}
+
+/* about */
+.about{display:grid;grid-template-columns:160px 1fr 1fr;gap:24px}
+.about .lead{font-family:var(--serif);font-size:clamp(1.4rem,2.4vw,2rem);line-height:1.25;font-weight:350;letter-spacing:-.01em}
+.about .lead em{color:var(--hot)}
+.about .body p{color:var(--ink2);margin-bottom:16px}
+.tl{list-style:none;margin-top:10px;border-top:1px solid var(--ink)}
+.tl li{display:grid;grid-template-columns:110px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--rule)}
+.tl li b{font-weight:600}
+.tl li span{color:var(--mute);font-size:.88rem}
+
+/* capabilities */
+.caps{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--ink)}
+.cap{padding:28px 24px 30px 0;border-right:1px solid var(--rule)}
+.cap+.cap{padding-left:24px}
+.cap:last-child{border-right:0}
+.cap .mono{color:var(--mute);margin-bottom:16px;display:block}
+.cap ul{list-style:none}
+.cap li{font-family:var(--serif);font-size:1.5rem;line-height:1.45;letter-spacing:-.01em}
+.cap li small{font-family:var(--sans);font-size:.8rem;color:var(--mute);margin-left:8px}
+
+/* packages table */
+.pk{width:100%;border-collapse:collapse;border-top:1px solid var(--ink)}
+.pk td{padding:18px 8px;border-bottom:1px solid var(--rule);vertical-align:top}
+.pk tr{transition:background .2s}
+.pk tr:hover{background:var(--paper2)}
+.pk td:first-child{font-family:var(--serif);font-size:1.3rem;white-space:nowrap;width:28%}
+.pk td:nth-child(2){color:var(--ink2);font-size:.92rem}
+.pk td:last-child{text-align:right;white-space:nowrap}
+.pk .core td:first-child{color:var(--hot);font-style:italic}
+
+/* contact */
+.contact{padding:clamp(80px,12vw,160px) 0 40px;text-align:center}
+.contact .mono{color:var(--mute)}
+.contact a.mail{display:inline-block;font-family:var(--serif);font-weight:300;font-size:clamp(2rem,7.4vw,6.6rem);letter-spacing:-.04em;line-height:1.05;margin:24px 0 36px;position:relative;word-break:break-word}
+.contact a.mail::after{content:'';position:absolute;left:0;right:0;bottom:.04em;height:.06em;background:var(--hot);transform:scaleX(0);transform-origin:left;transition:transform .6s var(--ease)}
+.contact a.mail:hover{font-style:italic}
+.contact a.mail:hover::after{transform:scaleX(1)}
+.soc{display:flex;justify-content:center;gap:28px;flex-wrap:wrap}
+.soc a:hover{color:var(--hot)}
+footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:26px 0 80px;border-top:1px solid var(--ink);margin-top:60px;color:var(--mute)}
+
+.rv{opacity:0;transform:translateY(30px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.rv.in{opacity:1;transform:none}
+
+.pv{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:999;display:flex;gap:3px;align-items:center;font:700 11px 'JetBrains Mono',monospace;padding:5px 5px 5px 12px;border-radius:10px;background:#ffd54f;color:#1a1300;box-shadow:0 10px 30px rgba(0,0,0,.25);white-space:nowrap}
+.pv a{padding:4px 8px;border-radius:6px;color:#1a1300}
+.pv a.on{background:#1a1300;color:#ffd54f}
+
+@media (max-width:900px){
+  .top{grid-template-columns:1fr auto}.top nav{display:none}
+  .hero-foot,.about{grid-template-columns:1fr}.btns{justify-content:flex-start}
+  .nums{grid-template-columns:1fr 1fr}.nums div:nth-child(2){border-right:0}.nums div:nth-child(-n+2){border-bottom:1px solid var(--rule)}
+  .sec-h{grid-template-columns:1fr;gap:8px}
+  .idx a{grid-template-columns:40px 1fr auto;row-gap:4px}
+  .idx .c{grid-column:2/3}.idx .c.role{display:none}
+  .idx .dl{grid-column:3;grid-row:1}
+  .caps{grid-template-columns:1fr}.cap{border-right:0;border-bottom:1px solid var(--rule);padding:24px 0}.cap+.cap{padding-left:0}
+  .peek{display:none}
+  .pk td:nth-child(3){display:none}
+  .pk td:first-child{white-space:normal}
+}
+@media (max-width:560px){.top .clock{display:none}.pk td:last-child{display:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#">Trần Tiến <i>[NIX]</i></a>
+    <nav class="mono"><a href="#work">Work</a><a href="#about">About</a><a href="#capabilities">Capabilities</a><a href="#contact">Contact</a></nav>
+    <div class="r mono"><span class="clock">Ha Noi <b id="clock">--:--</b></span><span class="lang"><span class="on">EN</span>/<span>VI</span></span></div>
+  </header>
+
+  <section class="hero" style="padding-top:clamp(48px,9vw,120px)">
+    <div class="kick mono rv"><span><i class="dot"></i>Available for new projects</span><span>Game Developer · Team Leader · Unity Trainer</span></div>
+    <h1 class="rv">I make <em>mobile games</em> <span class="ava"><img src="../assets/images/avt.jpg" alt="Trần Tiến"></span> that <em>80 million</em> people have downloaded.</h1>
+    <div class="hero-foot rv">
+      <p>Unity developer from Ha Noi focused on <b>casual &amp; mobile games</b> — tight gameplay loops, polished feel, and the reusable tooling that lets a whole team ship faster.</p>
+      <div class="btns"><a class="b solid" href="#work">Selected work ↓</a><a class="b" href="#">Download CV</a></div>
+    </div>
+  </section>
+
+  <div class="nums rv">
+    <div><b><span class="count" data-to="80">0</span><sup>M+</sup></b><span class="mono">Downloads</span></div>
+    <div><b><span class="count" data-to="12">0</span></b><span class="mono">Games shipped</span></div>
+    <div><b><span class="count" data-to="3">0</span><sup>+</sup></b><span class="mono">Years in Unity</span></div>
+    <div><b><span class="count" data-to="8">0</span></b><span class="mono">In-house packages</span></div>
+  </div>
+
+  <section id="work">
+    <div class="sec-h rv"><span class="mono">(01) Work</span><h2>Selected <em>games</em></h2></div>
+    <ul class="idx">
+      <li class="rv"><a href="https://play.google.com/store/apps/details?id=com.fc.p.cp.jelly.mukbang.asmr.live.diy" data-img="https://img.youtube.com/vi/Yd7vDterctQ/hqdefault.jpg">
+        <span class="n">01</span><h3>Jelly Master: Mukbang ASMR</h3><span class="c">Champion Game Studio</span><span class="c role">Main Developer</span><span class="dl">70M+<small>DOWNLOADS</small></span></a></li>
+      <li class="rv"><a href="https://play.google.com/store/apps/details?id=com.left.right.girl.dressup.game" data-color="#b46fc4" data-letter="S">
+        <span class="n">02</span><h3>Style Star: Left Right Fashion</h3><span class="c">Champion Game Studio</span><span class="c role">Main Developer</span><span class="dl">10M+<small>DOWNLOADS</small></span></a></li>
+      <li class="rv"><a href="https://play.google.com/store/apps/details?id=com.fc.p.cp.transform.game.tricky.puzzle" data-color="#1f9e8f" data-letter="T">
+        <span class="n">03</span><h3>Tictac Transform: Mini Games</h3><span class="c">Champion Game Studio</span><span class="c role">Team Leader · Dev</span><span class="dl">—<small><span class="todo">điền thật</span></small></span></a></li>
+    </ul>
+  </section>
+
+  <section id="about">
+    <div class="about">
+      <span class="mono rv" style="color:var(--hot)">(02) About</span>
+      <p class="lead rv">I care about the <em>feel</em> of a game — the squish, the sound, the half-second of delay that makes a tap satisfying — and about the <em>systems</em> that let a team build that feel again and again.</p>
+      <div class="body rv">
+        <p>I started with C++, Cocos2d-x and SDL, which taught me how memory and rendering really work. Today I lead a Unity team, train junior developers, and maintain a set of in-house packages that every new project starts from.</p>
+        <ul class="tl">
+          <li><span class="mono">20XX — Now</span><div><b>Team Leader</b><br><span>Champion Game Studio</span></div></li>
+          <li><span class="mono">20XX — 20XX</span><div><b>Unity Trainer</b><br><span>— <span class="todo">điền thật</span></span></div></li>
+          <li><span class="mono">20XX — 20XX</span><div><b>Game Developer</b><br><span>Champion Game Studio</span></div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="capabilities">
+    <div class="sec-h rv"><span class="mono">(03) Capabilities</span><h2>What I <em>bring</em></h2></div>
+    <div class="caps rv">
+      <div class="cap"><span class="mono">Core</span><ul><li>Unity Engine</li><li>C#</li><li>UI/UX for mobile <small>notch, tablet</small></li><li>Optimization <small>profiling, Addressables</small></li></ul></div>
+      <div class="cap"><span class="mono">Craft</span><ul><li>Game feel <small>juice, haptics</small></li><li>Team leadership</li><li>Training &amp; mentoring</li><li>Tooling &amp; frameworks</li></ul></div>
+      <div class="cap"><span class="mono">Also</span><ul><li>C / C++</li><li>Cocos2d-x, SDL</li><li>Spine</li><li>Firebase, AppsFlyer, Adjust</li></ul></div>
+    </div>
+  </section>
+
+  <section id="toolkit">
+    <div class="sec-h rv"><span class="mono">(04) Toolkit</span><h2>Packages I <em>built</em></h2></div>
+    <table class="pk rv">
+      <tr class="core"><td>NIX Core</td><td>Shared foundation for every game — design patterns, extensions, utils. Required by all modules below.</td><td class="mono">v1.0.0</td><td class="mono"><a href="https://github.com/tien0702">GitHub ↗</a></td></tr>
+      <tr><td>Localization</td><td>Font size sync across languages, CJK font optimization, Google Sheets sync.</td><td class="mono">v1.0.0</td><td class="mono"><a href="https://github.com/tien0702">GitHub ↗</a></td></tr>
+      <tr><td>UI Framework</td><td>Popups, screens, transitions and UI animation for uGUI.</td><td class="mono">v1.0.0</td><td class="mono"><a href="https://github.com/tien0702">GitHub ↗</a></td></tr>
+      <tr><td>Monetization Kit</td><td>Swap Ads / IAP SDKs by changing a scripting define.</td><td class="mono">v1.0.0</td><td class="mono"><a href="https://github.com/tien0702">GitHub ↗</a></td></tr>
+      <tr><td>Tracking Service</td><td>One API for Firebase, AppsFlyer, Adjust with built-in casual events.</td><td class="mono">v1.0.0</td><td class="mono"><a href="https://github.com/tien0702">GitHub ↗</a></td></tr>
+      <tr><td>Audio Service</td><td>Data-driven audio events per clip.</td><td class="mono">v1.0.0</td><td class="mono"><a href="https://github.com/tien0702/com.cp.audio.service">GitHub ↗</a></td></tr>
+      <tr><td>Storage Service</td><td>ScriptableObject-based save/load, debuggable in the Inspector.</td><td class="mono">v1.0.0</td><td class="mono"><a href="https://github.com/tien-champion/com.cp.storage.service">GitHub ↗</a></td></tr>
+      <tr><td>Skeleton Extend</td><td>Preview multiple Spine skins &amp; animations in the editor.</td><td class="mono">v1.0.0</td><td class="mono"><a href="https://github.com/tien0702">GitHub ↗</a></td></tr>
+    </table>
+  </section>
+
+  <div class="contact" id="contact">
+    <span class="mono rv">(05) Let's talk — open to roles, collaborations &amp; training</span><br>
+    <a class="mail rv" href="mailto:tientv.0702@gmail.com">tientv.0702@gmail.com</a>
+    <div class="soc mono rv">
+      <a href="https://www.linkedin.com/in/ti%E1%BA%BFn-tr%E1%BA%A7n-a675a8223/">LinkedIn ↗</a>
+      <a href="https://github.com/tien0702">GitHub ↗</a>
+      <a href="https://tien0702.github.io/nix-blog/">Blog ↗</a>
+      <a href="https://tiennix.itch.io/">itch.io ↗</a>
+    </div>
+  </div>
+
+  <footer class="mono"><span>© 2026 Trần Tiến</span><span>Built with ☕ in Ha Noi</span></footer>
+</div>
+
+<div class="peek" id="peek"></div>
+<div class="pv">PLAN <a href="plan-1.html">1</a><a href="plan-2.html" class="on">2</a><a href="plan-3.html">3</a><a href="plan-4.html">4</a><a href="plan-5.html">5</a><a href="plan-6.html">6</a><a href="plan-7.html">7</a><a href="plan-8.html">8</a><a href="plan-9.html">9</a></div>
+
+<script>
+// Ha Noi clock
+(function c(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-GB',{timeZone:'Asia/Ho_Chi_Minh',hour:'2-digit',minute:'2-digit'});setTimeout(c,15000);})();
+// reveal + counters
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;e.target.classList.add('in');
+  e.target.querySelectorAll('.count').forEach(function(el){var to=+el.dataset.to,t0=null;(function s(t){if(!t0)t0=t;var p=Math.min((t-t0)/1400,1);el.textContent=Math.round((1-Math.pow(1-p,4))*to);if(p<1)requestAnimationFrame(s);})(performance.now());});
+  io.unobserve(e.target);});},{threshold:.15});
+document.querySelectorAll('.rv').forEach(function(el){io.observe(el)});
+// hover image preview following cursor
+var peek=document.getElementById('peek'),px=0,py=0,tx=0,ty=0;
+document.querySelectorAll('.idx a').forEach(function(a){
+  a.addEventListener('pointerenter',function(){
+    peek.innerHTML=a.dataset.img?'<img src="'+a.dataset.img+'" alt="">':'<div style="background:'+a.dataset.color+'">'+a.dataset.letter+'</div>';
+    peek.classList.add('on');});
+  a.addEventListener('pointerleave',function(){peek.classList.remove('on')});
+});
+document.addEventListener('pointermove',function(e){tx=e.clientX+180;ty=e.clientY;});
+(function loop(){px+=(tx-px)*.15;py+=(ty-py)*.15;peek.style.left=px+'px';peek.style.top=py+'px';requestAnimationFrame(loop);})();
+</script>
+</body>
+</html>

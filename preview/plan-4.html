@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>[NIX] — Plan 4 · Unity Editor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bar:#191919; --win:#282828; --pnl:#383838; --tab:#3c3c3c; --hdr:#3e3e3e; --hov:#454545;
+  --field:#2a2a2a; --fline:#212121; --line:#1d1d1d;
+  --txt:#d2d2d2; --dim:#9a9a9a; --sel:#2c5d87; --blue:#3a79bb; --orange:#f5a623;
+  --x:#e0503c; --y:#7ccf3e; --z:#3d7fe0; --warn:#e6c229;
+  --f:'Inter',sans-serif; --m:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--bar);color:var(--txt);font-family:var(--f);font-size:12px;overflow:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+.app{display:grid;height:100vh;grid-template-rows:28px 34px 1fr;}
+/* menu bar */
+.menu{display:flex;align-items:center;gap:2px;padding:0 8px;background:var(--bar);border-bottom:1px solid #000}
+.menu .logo{font-weight:800;margin-right:10px;font-family:var(--m)}
+.menu .logo b{color:#4fc3f7}
+.menu span.mi{padding:4px 8px;border-radius:3px;color:var(--txt);cursor:default}
+.menu span.mi:hover{background:var(--hov)}
+.menu .sp{flex:1}
+.menu .acct{color:var(--dim);display:flex;gap:10px;align-items:center}
+.menu .acct .on{color:#fff;background:var(--blue);padding:1px 6px;border-radius:3px}
+/* toolbar */
+.toolbar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 8px;background:var(--win);border-bottom:1px solid #000}
+.tools{display:flex;gap:2px}
+.tools i{width:26px;height:22px;display:grid;place-items:center;background:var(--tab);border-radius:3px;font-style:normal;color:var(--dim);font-size:13px}
+.tools i.on{background:#4a4a4a;color:#fff}
+.play{display:flex;gap:1px}
+.play button{width:32px;height:24px;background:var(--tab);display:grid;place-items:center;color:var(--txt)}
+.play button:first-child{border-radius:3px 0 0 3px}.play button:last-child{border-radius:0 3px 3px 0}
+.play button:hover{background:var(--hov)}
+.play button.on{background:var(--blue);color:#fff}
+.tb-r{display:flex;justify-content:flex-end;gap:8px;align-items:center}
+.pill{background:var(--tab);padding:3px 10px;border-radius:3px;color:var(--txt)}
+.hire{background:var(--blue);color:#fff;padding:4px 12px;border-radius:3px;font-weight:600}
+.hire:hover{background:#4b8ad0}
+
+/* workspace */
+.ws{display:grid;grid-template-columns:250px 1fr 330px;grid-template-rows:1fr 190px;gap:2px;background:#000;min-height:0;
+  grid-template-areas:"hier scene insp" "con con insp"}
+.panel{background:var(--pnl);display:flex;flex-direction:column;min-height:0;min-width:0;position:relative}
+.ptabs{display:flex;background:var(--win);height:24px;flex-shrink:0}
+.ptab{padding:0 12px;display:flex;align-items:center;gap:6px;color:var(--dim);border-top:2px solid transparent}
+.ptab.on{background:var(--pnl);color:var(--txt);border-top-color:var(--blue)}
+.pbody{flex:1;overflow:auto;min-height:0}
+.pbody::-webkit-scrollbar{width:10px;height:10px}.pbody::-webkit-scrollbar-thumb{background:#5a5a5a;border:3px solid var(--pnl);border-radius:6px}
+body.playing .panel::after{content:'';position:absolute;inset:0;background:rgba(58,121,187,.13);pointer-events:none}
+
+/* hierarchy */
+.hier{grid-area:hier}
+.search{margin:4px 6px;background:var(--field);border:1px solid var(--fline);border-radius:3px;padding:3px 8px;color:var(--dim)}
+.tree{list-style:none;padding:2px 0}
+.tree li{list-style:none}
+.row{display:flex;align-items:center;gap:5px;height:20px;padding-right:8px;cursor:pointer;white-space:nowrap;color:var(--txt)}
+.row:hover{background:var(--hov)}
+.row.sel{background:var(--sel);color:#fff}
+.row .car{width:12px;color:var(--dim);font-size:9px;text-align:center}
+.row .ic{width:14px;text-align:center;font-size:11px;opacity:.9}
+.row.root{font-weight:600;background:#323232}
+.row.prefab{color:#7fb4f5}.row.prefab.sel{color:#fff}
+
+/* scene */
+.scene{grid-area:scene}
+.stb{display:flex;gap:6px;align-items:center;padding:3px 6px;background:var(--pnl);border-bottom:1px solid var(--line);color:var(--dim);flex-shrink:0}
+.stb span{background:var(--tab);padding:2px 8px;border-radius:3px}
+.stb .sp{flex:1;background:none}
+.view{flex:1;position:relative;overflow:auto;min-height:0;
+  background-color:#2b2b2b;background-image:linear-gradient(#ffffff0d 1px,transparent 1px),linear-gradient(90deg,#ffffff0d 1px,transparent 1px),linear-gradient(#ffffff06 1px,transparent 1px),linear-gradient(90deg,#ffffff06 1px,transparent 1px);
+  background-size:100px 100px,100px 100px,20px 20px,20px 20px}
+.stage{min-height:100%;display:grid;place-items:center;padding:56px 40px}
+.obj{position:relative;outline:2px solid var(--orange);outline-offset:6px;animation:pop .35s cubic-bezier(.16,1,.3,1)}
+@keyframes pop{from{opacity:0;transform:scale(.96)}}
+.gizmo{position:absolute;left:-6px;bottom:-6px;width:0;height:0;pointer-events:none}
+.gizmo .gx{position:absolute;left:0;bottom:-1px;width:70px;height:3px;background:var(--x)}
+.gizmo .gx::after{content:'';position:absolute;right:-8px;top:-5px;border:6px solid transparent;border-left:10px solid var(--x);border-right:0}
+.gizmo .gy{position:absolute;left:-1px;bottom:0;width:3px;height:70px;background:var(--y)}
+.gizmo .gy::after{content:'';position:absolute;top:-8px;left:-5px;border:6px solid transparent;border-bottom:10px solid var(--y);border-top:0}
+.gizmo .gz{position:absolute;left:4px;bottom:4px;width:16px;height:16px;background:rgba(61,127,224,.6);border:1px solid var(--z)}
+.orient{position:absolute;top:10px;right:14px;font-family:var(--m);font-size:10px;color:var(--dim);text-align:center;line-height:1.3}
+.orient b{display:block;width:44px;height:44px;border-radius:50%;border:1px solid #555;margin-bottom:4px;position:relative}
+.orient b::before{content:'';position:absolute;left:50%;top:6px;bottom:50%;width:2px;background:var(--y)}
+.orient b::after{content:'';position:absolute;top:50%;left:50%;right:6px;height:2px;background:var(--x)}
+
+/* scene content cards */
+.card{background:#1e1e1e;border:1px solid #111;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.45);color:#eee}
+.hero-c{width:min(640px,100%);display:grid;grid-template-columns:180px 1fr;gap:26px;padding:26px;align-items:center}
+.hero-c img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;background:#fff}
+.hero-c .k{font-family:var(--m);font-size:10px;color:#4fc3f7;letter-spacing:.14em}
+.hero-c h1{font-size:30px;font-weight:900;letter-spacing:-.02em;line-height:1.1;margin:6px 0}
+.hero-c h1 b{color:#4fc3f7}
+.hero-c p{color:#aaa;font-size:13px;line-height:1.55}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}
+.kpis div{background:#262626;border-radius:6px;padding:8px}
+.kpis b{display:block;font-size:20px;font-weight:900;color:#fff}
+.kpis span{font-size:9.5px;color:var(--dim);font-family:var(--m)}
+.game-c{width:min(620px,100%);overflow:hidden}
+.game-c .media{aspect-ratio:16/8;background:#000;position:relative;display:grid;place-items:center;font-size:80px;font-weight:900;color:#fff}
+.game-c .media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.9}
+.game-c .media .pl{position:relative;width:60px;height:60px;border-radius:50%;background:#ff2d75;display:grid;place-items:center;box-shadow:0 0 0 8px #ff2d7533}
+.game-c .bd{padding:20px 22px}
+.game-c h2{font-size:22px;font-weight:800}
+.game-c .meta{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 14px}
+.chip{font-family:var(--m);font-size:10px;padding:2px 8px;border-radius:10px;background:#2c2c2c;color:#bbb}
+.chip.c{background:#173246;color:#7fc8f0}
+.game-c .big{display:flex;align-items:baseline;gap:8px}
+.game-c .big b{font-size:40px;font-weight:900;color:#69ff47;letter-spacing:-.03em}
+.game-c .big span{font-family:var(--m);color:var(--dim);font-size:10px}
+.btn{display:inline-flex;gap:6px;align-items:center;padding:7px 14px;border-radius:5px;background:var(--blue);color:#fff;font-weight:600;margin-top:12px}
+.btn.g{background:#444}
+.todo{font-family:var(--m);font-size:9px;color:var(--warn);border:1px dashed var(--warn);border-radius:3px;padding:0 4px;margin-left:4px}
+.grid-c{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;width:min(720px,100%)}
+.mini{padding:14px;cursor:pointer;transition:transform .2s}
+.mini:hover{transform:translateY(-3px);outline:1px solid #4fc3f7}
+.mini b{display:block;font-size:13px;margin:6px 0 2px}
+.mini span{font-size:11px;color:var(--dim)}
+.mini .sw{height:70px;border-radius:6px;display:grid;place-items:center;font-size:30px;font-weight:900;color:#fff;background-size:cover;background-position:center}
+.list-c{width:min(560px,100%);padding:22px}
+.list-c h2{font-size:18px;font-weight:800;margin-bottom:14px}
+.sk{display:grid;grid-template-columns:130px 1fr 34px;gap:10px;align-items:center;margin:9px 0;font-size:12px}
+.sk .t{height:6px;background:#333;border-radius:3px;overflow:hidden}
+.sk .t i{display:block;height:100%;background:linear-gradient(90deg,#7c4dff,#4fc3f7);border-radius:3px}
+.sk b{text-align:right;font-family:var(--m);color:#4fc3f7}
+.tl{border-left:2px solid #4fc3f7;padding-left:18px;margin-left:6px}
+.tl div{position:relative;margin-bottom:16px}
+.tl div::before{content:'';position:absolute;left:-25px;top:3px;width:10px;height:10px;border-radius:50%;background:#1e1e1e;border:2px solid #4fc3f7}
+.tl b{font-size:13px}.tl small{display:block;font-family:var(--m);color:var(--dim);font-size:10px}
+.tl p{color:#aaa;font-size:12px;margin-top:3px}
+.contact-c{width:min(520px,100%);padding:34px;text-align:center}
+.contact-c h2{font-size:28px;font-weight:900;letter-spacing:-.02em;line-height:1.15;margin:10px 0}
+.contact-c p{color:#aaa}
+.links{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:16px}
+.links a{padding:6px 12px;border-radius:5px;background:#2c2c2c}
+.links a:hover{background:#3a3a3a;color:#4fc3f7}
+.dep svg{width:100%;max-width:520px;display:block;margin:0 auto}
+.dep text{font-family:var(--m);font-size:11px;fill:#ddd}
+.dep .e{stroke:#555;stroke-width:1.5;stroke-dasharray:4 4}
+.dep rect{fill:#262626;stroke:#444}
+.dep .hl rect{fill:#173246;stroke:#4fc3f7}
+
+/* game view (play mode) */
+.gameview{position:absolute;inset:0;display:none;place-items:center;text-align:center;padding:30px;
+  background:radial-gradient(600px 300px at 50% 30%,#0b3a52,transparent),radial-gradient(500px 300px at 50% 100%,#3b0b2c,transparent),#06080d;z-index:3}
+body.playing .gameview{display:grid}
+.gameview .tt{font-family:var(--m);color:#4fc3f7;letter-spacing:.3em;font-size:11px}
+.gameview h1{font-size:clamp(32px,6vw,64px);font-weight:900;letter-spacing:-.03em;color:#fff;line-height:1;margin:14px 0}
+.gameview h1 b{background:linear-gradient(90deg,#4fc3f7,#7c4dff,#ff2d75);-webkit-background-clip:text;background-clip:text;color:transparent}
+.gameview p{color:#9aa;max-width:460px;margin:0 auto 22px;font-size:14px}
+.gameview .press{display:block;margin-top:24px;font-family:var(--m);color:#fff;animation:bl 1s steps(2) infinite}
+@keyframes bl{50%{opacity:0}}
+.gameview .fps{position:absolute;top:8px;left:10px;font-family:var(--m);color:#69ff47;font-size:10px;text-align:left}
+
+/* inspector */
+.insp{grid-area:insp}
+.ih{display:flex;align-items:center;gap:8px;padding:8px;border-bottom:1px solid var(--line);background:var(--hdr)}
+.ih .cube{width:30px;height:30px;display:grid;place-items:center;background:#2a2a2a;border-radius:3px;font-size:16px}
+.ih .nm{flex:1;background:var(--field);border:1px solid var(--fline);border-radius:3px;padding:3px 6px;font-weight:600;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cb{width:13px;height:13px;border-radius:2px;background:var(--field);border:1px solid #555;display:inline-grid;place-items:center;font-size:9px;color:#fff;flex-shrink:0}
+.cb.on{background:var(--blue);border-color:var(--blue)}
+.tagrow{display:grid;grid-template-columns:auto 1fr auto 1fr;gap:6px;align-items:center;padding:6px 8px;border-bottom:1px solid var(--line);color:var(--dim)}
+.dd{background:var(--tab);border-radius:3px;padding:2px 6px;color:var(--txt);display:flex;justify-content:space-between}
+.dd::after{content:'▾';color:var(--dim)}
+.comp{border-bottom:1px solid var(--line)}
+.ch{display:flex;align-items:center;gap:6px;padding:5px 6px;background:var(--hdr);font-weight:600;cursor:pointer;user-select:none}
+.ch .car{font-size:9px;color:var(--dim);width:10px}
+.ch .ci{font-size:12px}
+.ch .dots{margin-left:auto;color:var(--dim)}
+.comp.closed .cb2{display:none}
+.comp.closed .car{transform:rotate(-90deg)}
+.cb2{padding:6px 8px 8px}
+.f{display:grid;grid-template-columns:110px 1fr;gap:6px;align-items:center;min-height:22px;margin:2px 0}
+.f>label{color:var(--txt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.in{background:var(--field);border:1px solid var(--fline);border-radius:3px;padding:2px 6px;min-height:20px;color:var(--txt);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.in.ta{white-space:normal;line-height:1.45;padding:4px 6px}
+.v3{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.v3 span{display:flex;gap:4px;align-items:center}
+.v3 em{font-style:normal;color:var(--dim);width:8px}
+.sl{display:grid;grid-template-columns:1fr 42px;gap:6px;align-items:center}
+.sl .tr{height:3px;background:#5a5a5a;border-radius:2px;position:relative}
+.sl .tr i{position:absolute;top:50%;width:10px;height:10px;border-radius:50%;background:#bbb;transform:translate(-50%,-50%)}
+.obf{display:flex;gap:4px;align-items:center}
+.obf .in{flex:1;color:#8fc4f0}
+.obf .in:hover{border-color:#4fc3f7}
+.obf .pk{width:18px;height:18px;border-radius:50%;border:1px solid #666;display:grid;place-items:center;font-size:8px;color:var(--dim)}
+.addc{margin:14px auto;display:block;background:var(--tab);padding:5px 30px;border-radius:3px;border:1px solid var(--fline)}
+
+/* console */
+.con{grid-area:con}
+.cbar{display:flex;gap:4px;align-items:center;padding:2px 6px;border-bottom:1px solid var(--line);color:var(--dim);flex-shrink:0}
+.cbar button{padding:1px 8px;background:var(--tab);border-radius:2px}
+.cbar .sp{flex:1}
+.cbar .cnt{display:flex;gap:8px}
+.log{display:flex;gap:8px;padding:4px 8px;border-bottom:1px solid #333;font-family:var(--m);font-size:11px;align-items:flex-start;animation:pop .3s}
+.log:nth-child(even){background:#3b3b3b}
+.log .li{width:16px;text-align:center;flex-shrink:0}
+.log small{display:block;color:var(--dim);font-size:10px}
+.log.w .li{color:var(--warn)}.log.e .li{color:var(--x)}.log.i .li{color:#bbb}
+.log a{color:#8fc4f0;text-decoration:underline}
+
+.pv{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:999;display:flex;gap:3px;align-items:center;font:700 11px 'JetBrains Mono',monospace;padding:5px 5px 5px 12px;border-radius:10px;background:#ffd54f;color:#1a1300;box-shadow:0 10px 30px rgba(0,0,0,.4);white-space:nowrap}
+.pv a{padding:4px 8px;border-radius:6px;color:#1a1300}
+.pv a.on{background:#1a1300;color:#ffd54f}
+
+@media (max-width:1000px){
+  body{overflow:auto}
+  .app{height:auto;grid-template-rows:28px auto auto}
+  .menu span.mi{display:none}
+  .toolbar{grid-template-columns:1fr auto;gap:6px;padding:5px 8px}.tools{display:none}
+  .ws{grid-template-columns:1fr;grid-template-rows:auto;grid-template-areas:"hier" "scene" "insp" "con"}
+  .hier .pbody{max-height:190px;flex:none}
+  .scene{min-height:560px}
+  .con .pbody{max-height:220px}
+  .con{padding-bottom:60px}
+}
+@media (max-width:560px){
+  .tb-r .pill{display:none}
+  .hero-c{grid-template-columns:1fr}.hero-c img{max-width:160px}
+  .kpis{grid-template-columns:1fr 1fr}
+  .stage{padding:40px 18px}
+  .sk{grid-template-columns:96px 1fr 30px}
+  .orient{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="menu">
+    <span class="logo"><b>[</b>NIX<b>]</b></span>
+    <span class="mi">File</span><span class="mi">Edit</span><span class="mi">Assets</span><span class="mi">GameObject</span><span class="mi">Component</span><span class="mi">Window</span><span class="mi">Help</span>
+    <span class="sp"></span>
+    <span class="acct"><span>Portfolio - Ha Noi - Android</span><span><span class="on">EN</span> VI</span></span>
+  </div>
+  <div class="toolbar">
+    <div class="tools"><i>✋</i><i class="on">✥</i><i>⟳</i><i>⤢</i><i>▭</i></div>
+    <div class="play">
+      <button id="btnPlay" title="Play">▶</button><button title="Pause">❚❚</button><button title="Step">▶❚</button>
+    </div>
+    <div class="tb-r"><span class="pill">Layers ▾</span><span class="pill">Layout ▾</span><a class="hire" href="#" data-go="contact">Hire me</a></div>
+  </div>
+
+  <div class="ws">
+    <div class="panel hier">
+      <div class="ptabs"><div class="ptab on">☰ Hierarchy</div></div>
+      <div class="search">🔍 Search…</div>
+      <div class="pbody"><ul class="tree" id="tree"></ul></div>
+    </div>
+
+    <div class="panel scene">
+      <div class="ptabs"><div class="ptab on" id="tabScene"># Scene</div><div class="ptab" id="tabGame">🎮 Game</div></div>
+      <div class="stb"><span>Shaded ▾</span><span>2D</span><span>💡</span><span>🔊</span><span class="sp"></span><span>Gizmos ▾</span></div>
+      <div class="view">
+        <div class="orient"><b></b>Persp</div>
+        <div class="stage" id="stage"></div>
+        <div class="gameview">
+          <div class="fps">FPS 60.0<br>Batches 12</div>
+          <div>
+            <div class="tt">CHAMPION GAME STUDIO · PRESENTS</div>
+            <h1>Trần Tiến<br><b>80M+ downloads</b></h1>
+            <p>Game Developer · Team Leader · Unity Trainer. I build mobile games that feel good to play.</p>
+            <a class="btn" href="#" data-go="games">View my games</a> <a class="btn g" href="#">Download CV</a>
+            <span class="press">PRESS ▶ AGAIN TO RETURN TO EDITOR</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel insp">
+      <div class="ptabs"><div class="ptab on">ⓘ Inspector</div><div class="ptab">Lighting</div></div>
+      <div class="pbody" id="insp"></div>
+    </div>
+
+    <div class="panel con">
+      <div class="ptabs"><div class="ptab">📁 Project</div><div class="ptab on">≡ Console</div></div>
+      <div class="cbar"><button id="clr">Clear</button><button>Collapse</button><button>Error Pause</button><span class="sp"></span><span class="cnt"><span>ⓘ <b id="ci">0</b></span><span style="color:var(--warn)">⚠ <b id="cw">0</b></span><span style="color:var(--x)">⊘ 0</span></span></div>
+      <div class="pbody" id="console"></div>
+    </div>
+  </div>
+</div>
+
+<div class="pv">PLAN <a href="plan-1.html">1</a><a href="plan-2.html">2</a><a href="plan-3.html">3</a><a href="plan-4.html" class="on">4</a><a href="plan-5.html">5</a><a href="plan-6.html">6</a><a href="plan-7.html">7</a><a href="plan-8.html">8</a><a href="plan-9.html">9</a></div>
+
+<script>
+var YT='Yd7vDterctQ';
+var GAMES=[
+ {id:'jelly',name:'Jelly Master: Mukbang ASMR',role:'Main Dev',dl:'70M+',n:70,col:'#f48fb1',yt:YT,url:'https://play.google.com/store/apps/details?id=com.fc.p.cp.jelly.mukbang.asmr.live.diy'},
+ {id:'style',name:'Style Star: Left Right Fashion',role:'Main Dev',dl:'10M+',n:10,col:'#ce93d8',url:'https://play.google.com/store/apps/details?id=com.left.right.girl.dressup.game'},
+ {id:'tictac',name:'Tictac Transform: Mini Games',role:'Team Leader, Dev',dl:'—',n:0,col:'#4dd0e1',url:'https://play.google.com/store/apps/details?id=com.fc.p.cp.transform.game.tricky.puzzle'}
+];
+var PKGS=[
+ {id:'core',name:'NIX Core',d:'Shared foundation for every game: design patterns, extensions, utils. Required by all modules.'},
+ {id:'loc',name:'Localization',d:'Font size sync across languages, CJK font optimization, Google Sheets sync.'},
+ {id:'ui',name:'UI Framework',d:'Popups, screens, transitions and UI animation for uGUI.'},
+ {id:'mon',name:'Monetization Kit',d:'Swap Ads / IAP SDKs by changing a scripting define.'},
+ {id:'trk',name:'Tracking Service',d:'One API for Firebase, AppsFlyer, Adjust with built-in casual events.'},
+ {id:'aud',name:'Audio Service',d:'Data-driven audio events per clip.'},
+ {id:'sto',name:'Storage Service',d:'ScriptableObject-based save/load, debuggable in the Inspector.'},
+ {id:'ske',name:'Skeleton Extend',d:'Preview multiple Spine skins & animations in the editor.'}
+];
+var SKILLS=[['Unity Engine',80],['C# / C / C++',88],['UI/UX',80],['Optimization',78],['Game Feel',65],['Cocos2d-x',40],['SDL',40],['Game Design',30]];
+
+var TREE=[
+ {id:'player',label:'Player (Trần Tiến)',ic:'👤',prefab:1},
+ {id:'games',label:'Games',ic:'🎮',kids:GAMES.map(function(g){return {id:g.id,label:g.name.split(':')[0],ic:'▣',prefab:1}})},
+ {id:'packages',label:'Packages',ic:'📦',kids:PKGS.map(function(p){return {id:p.id,label:p.name,ic:'⬡'}})},
+ {id:'skills',label:'Skills',ic:'⚙'},
+ {id:'exp',label:'Experience',ic:'⏱'},
+ {id:'contact',label:'Contact',ic:'✉'}
+];
+var cur='player';
+
+function renderTree(){
+  var h='<li><div class="row root"><span class="car">▼</span><span class="ic">◈</span>Portfolio.unity</div></li>';
+  TREE.forEach(function(n){
+    h+=row(n,1,n.kids?'▼':'');
+    (n.kids||[]).forEach(function(k){h+=row(k,2,'');});
+  });
+  document.getElementById('tree').innerHTML=h;
+  document.querySelectorAll('.row[data-id]').forEach(function(r){r.onclick=function(){select(r.dataset.id)}});
+}
+function row(n,d,car){return '<li><div class="row'+(n.prefab?' prefab':'')+(n.id===cur?' sel':'')+'" data-id="'+n.id+'" style="padding-left:'+(d*14+4)+'px"><span class="car">'+car+'</span><span class="ic">'+n.ic+'</span>'+n.label+'</div></li>';}
+
+/* ---------- scene ---------- */
+var GZ='<div class="gizmo"><i class="gx"></i><i class="gy"></i><i class="gz"></i></div>';
+function sceneFor(id){
+  var g=GAMES.find(function(x){return x.id===id}),p=PKGS.find(function(x){return x.id===id});
+  if(id==='player') return '<div class="card obj hero-c">'+GZ+'<img src="../assets/images/avt.jpg" alt=""><div><div class="k">GAME DEVELOPER · TEAM LEADER · UNITY TRAINER</div><h1>Trần Tiến <b>[NIX]</b></h1><p>I build mobile &amp; casual games that feel good to play — tight loops, polished feel, and reusable tooling that lets a team ship faster.</p><div class="kpis"><div><b>80M+</b><span>DOWNLOADS</span></div><div><b>12</b><span>SHIPPED</span></div><div><b>3+</b><span>YRS UNITY</span></div><div><b>8</b><span>PACKAGES</span></div></div></div></div>';
+  if(g) return '<div class="card obj game-c">'+GZ+'<div class="media" style="background:linear-gradient(135deg,'+g.col+',#222)">'+(g.yt?'<img src="https://img.youtube.com/vi/'+g.yt+'/hqdefault.jpg" alt=""><div class="pl">▶</div>':g.name[0])+'</div><div class="bd"><h2>'+g.name+'</h2><div class="meta"><span class="chip c">'+g.role+'</span><span class="chip">Champion Game Studio</span><span class="chip">Android · iOS</span></div><div class="big"><b>'+g.dl+'</b><span>DOWNLOADS</span>'+(g.n?'':'<span class="todo">điền thật</span>')+'</div><p style="color:#aaa;margin-top:8px">What I built &amp; the impact <span class="todo">điền thật</span></p><a class="btn" href="'+g.url+'" target="_blank">▶ Google Play</a></div></div>';
+  if(id==='games') return '<div class="grid-c obj">'+GZ+GAMES.map(function(g){return '<div class="card mini" data-go="'+g.id+'"><div class="sw" style="background:'+(g.yt?'url(https://img.youtube.com/vi/'+g.yt+'/mqdefault.jpg)':'linear-gradient(135deg,'+g.col+',#333)')+';background-size:cover">'+(g.yt?'':g.name[0])+'</div><b>'+g.name+'</b><span>'+g.role+' · '+g.dl+'</span></div>'}).join('')+'</div>';
+  if(id==='packages'||p) return depGraph(p?p.id:null);
+  if(id==='skills') return '<div class="card obj list-c">'+GZ+'<h2>Skill Set</h2>'+SKILLS.map(function(s){return '<div class="sk"><span>'+s[0]+'</span><div class="t"><i style="width:'+s[1]+'%"></i></div><b>'+s[1]+'</b></div>'}).join('')+'</div>';
+  if(id==='exp') return '<div class="card obj list-c">'+GZ+'<h2>Experience <span class="todo">mốc thời gian mẫu</span></h2><div class="tl"><div><b>Team Leader · Champion Game Studio</b><small>20XX — NOW</small><p>Lead a Unity team; own architecture, code review and the shared package ecosystem.</p></div><div><b>Unity Trainer</b><small>20XX — 20XX</small><p>Train junior devs on Unity, clean architecture, mobile optimization.</p></div><div><b>Game Developer · Champion Game Studio</b><small>20XX — 20XX</small><p>Main developer on 70M+ and 10M+ download titles.</p></div></div></div>';
+  if(id==='contact') return '<div class="card obj contact-c">'+GZ+'<div style="font-family:var(--m);color:#69ff47;font-size:11px">● AVAILABLE · HA NOI, VN</div><h2>Let\'s build something players will love.</h2><p>Open to new roles, collaborations and Unity training.</p><a class="btn" href="mailto:tientv.0702@gmail.com">✉ tientv.0702@gmail.com</a><div class="links"><a href="https://www.linkedin.com/in/ti%E1%BA%BFn-tr%E1%BA%A7n-a675a8223/">LinkedIn</a><a href="https://github.com/tien0702">GitHub</a><a href="https://tien0702.github.io/nix-blog/">Blog</a><a href="https://tiennix.itch.io/">itch.io</a></div></div>';
+  return '';
+}
+function depGraph(hl){
+  var cx=260,cy=170,R=140,mods=PKGS.slice(1),s='';
+  mods.forEach(function(m,i){var a=-Math.PI/2+i*2*Math.PI/mods.length;m.x=cx+Math.cos(a)*R*1.35;m.y=cy+Math.sin(a)*R;s+='<line class="e" x1="'+cx+'" y1="'+cy+'" x2="'+m.x+'" y2="'+m.y+'"/>';});
+  mods.forEach(function(m){var w=m.name.length*7+20;s+='<g class="'+(hl===m.id?'hl':'')+'" data-go="'+m.id+'" style="cursor:pointer"><rect x="'+(m.x-w/2)+'" y="'+(m.y-13)+'" width="'+w+'" height="26" rx="5"/><text x="'+m.x+'" y="'+(m.y+4)+'" text-anchor="middle">'+m.name+'</text></g>';});
+  s+='<g class="'+(hl==='core'||!hl?'hl':'')+'" data-go="core" style="cursor:pointer"><rect x="'+(cx-55)+'" y="'+(cy-17)+'" width="110" height="34" rx="6"/><text x="'+cx+'" y="'+(cy+4)+'" text-anchor="middle" style="font-weight:700;fill:#4fc3f7">NIX Core</text></g>';
+  var p=PKGS.find(function(x){return x.id===hl});
+  return '<div class="card obj dep" style="width:min(640px,100%);padding:16px">'+GZ+'<svg viewBox="0 0 520 340">'+s+'</svg>'+(p?'<div style="padding:4px 8px 6px"><b style="font-size:15px">'+p.name+'</b><p style="color:#aaa;margin-top:4px">'+p.d+'</p></div>':'<p style="color:#aaa;text-align:center">8 in-house Unity packages · click a node</p>')+'</div>';
+}
+
+/* ---------- inspector ---------- */
+function F(l,v){return '<div class="f"><label>'+l+'</label>'+v+'</div>';}
+function T(v,ta){return '<div class="in'+(ta?' ta':'')+'">'+v+'</div>';}
+function S(v,max){max=max||100;return '<div class="sl"><div class="tr"><i style="left:'+(v/max*100)+'%"></i></div><div class="in">'+v+'</div></div>';}
+function O(v,href){return '<div class="obf"><a class="in" href="'+(href||'#')+'" target="_blank">◉ '+v+'</a><span class="pk">◎</span></div>';}
+function E(v){return '<div class="dd">'+v+'</div>';}
+function B(on){return '<span class="cb'+(on?' on':'')+'">'+(on?'✓':'')+'</span>';}
+function comp(icon,name,body){return '<div class="comp"><div class="ch"><span class="car">▼</span>'+B(1)+'<span class="ci">'+icon+'</span>'+name+'<span class="dots">⋮</span></div><div class="cb2">'+body+'</div></div>';}
+function inspFor(id){
+  var node=findNode(id),g=GAMES.find(function(x){return x.id===id}),p=PKGS.find(function(x){return x.id===id}),h='';
+  h+='<div class="ih">'+B(1)+'<div class="cube">'+node.ic+'</div><div class="nm">'+node.label+'</div><span style="color:var(--dim)">Static</span>'+B(0)+'</div>';
+  h+='<div class="tagrow"><span>Tag</span><span class="dd">'+(id==='player'?'Player':'Untagged')+'</span><span>Layer</span><span class="dd">Default</span></div>';
+  h+=comp('✥','Transform',F('Position','<div class="v3"><span><em>X</em>'+T('0')+'</span><span><em>Y</em>'+T('0')+'</span><span><em>Z</em>'+T('0')+'</span></div>')+F('Rotation','<div class="v3"><span><em>X</em>'+T('0')+'</span><span><em>Y</em>'+T('0')+'</span><span><em>Z</em>'+T('0')+'</span></div>')+F('Scale','<div class="v3"><span><em>X</em>'+T('1')+'</span><span><em>Y</em>'+T('1')+'</span><span><em>Z</em>'+T('1')+'</span></div>'));
+  if(id==='player') h+=comp('#','Player Profile (Script)',F('Full Name',T('Trần Tiến'))+F('Handle',T('[NIX]'))+F('Class',E('Game Developer'))+F('Location',T('Ha Noi, VN'))+F('Status',E('Available'))+F('Years In Unity',S(3,10))+F('Games Shipped',T('12'))+F('Total Downloads',T('80,000,000'))+F('CV',O('TranTien_CV.pdf'))+F('Bio',T('I build interactive experiences that feel good to play. Mobile &amp; casual, tight loops, polished feel.',1)));
+  else if(g) h+=comp('#','Game Project (Script)',F('Title',T(g.name))+F('Studio',T('Champion Game Studio'))+F('Role',E(g.role))+F('Downloads',T(g.dl))+F('Featured',B(g.id==='jelly'))+F('Accent Color','<div class="in" style="background:'+g.col+'"></div>')+F('Store Link',O('Google Play',g.url))+(g.yt?F('Trailer',O('YouTube · '+g.yt,'https://youtu.be/'+g.yt)):'')+F('Description',T('<span class="todo">điền thật</span>',1)));
+  else if(p) h+=comp('#','Package Info (Script)',F('Package',T(p.name))+F('Version',T('1.0.0'))+F('Dependencies',T(p.id==='core'?'—':'NIX Core'))+F('Repository',O('GitHub','https://github.com/tien0702'))+F('Description',T(p.d,1)));
+  else if(id==='skills') h+=comp('#','Skill Set (Script)',SKILLS.map(function(s){return F(s[0],S(s[1]))}).join(''));
+  else if(id==='contact') h+=comp('#','Contact Point (Script)',F('Email',O('tientv.0702@gmail.com','mailto:tientv.0702@gmail.com'))+F('LinkedIn',O('LinkedIn','https://www.linkedin.com/in/ti%E1%BA%BFn-tr%E1%BA%A7n-a675a8223/'))+F('Blog',O('nix-blog','https://tien0702.github.io/nix-blog/'))+F('Itch.io',O('tiennix','https://tiennix.itch.io/'))+F('Open To Work',B(1)));
+  else if(id==='games') h+=comp('#','Project List (Script)',F('Size',T(GAMES.length))+GAMES.map(function(g,i){return F('Element '+i,O(g.name))}).join(''));
+  else if(id==='packages') h+=comp('#','Package Registry (Script)',F('Size',T(PKGS.length))+PKGS.map(function(p,i){return F('Element '+i,O(p.name))}).join(''));
+  else if(id==='exp') h+=comp('#','Career Log (Script)',F('Current Role',E('Team Leader'))+F('Company',T('Champion Game Studio'))+F('Also',T('Unity Trainer')));
+  h+='<button class="addc">Add Component</button>';
+  return h;
+}
+function findNode(id){var r;TREE.forEach(function(n){if(n.id===id)r=n;(n.kids||[]).forEach(function(k){if(k.id===id)r=k;});});return r;}
+
+/* ---------- console ---------- */
+var ci=0,cw=0,con=document.getElementById('console');
+function log(type,msg,sub){var t=new Date().toLocaleTimeString('en-GB');var icon={i:'ⓘ',w:'⚠',e:'⊘'}[type];
+  con.insertAdjacentHTML('beforeend','<div class="log '+type+'"><span class="li">'+icon+'</span><div>['+t+'] '+msg+(sub?'<small>'+sub+'</small>':'')+'</div></div>');
+  if(type==='w')cw++;else ci++;document.getElementById('ci').textContent=ci;document.getElementById('cw').textContent=cw;con.scrollTop=con.scrollHeight;}
+document.getElementById('clr').onclick=function(){con.innerHTML='';ci=cw=0;document.getElementById('ci').textContent=0;document.getElementById('cw').textContent=0;};
+
+/* ---------- select / play ---------- */
+function select(id){
+  if(document.body.classList.contains('playing'))togglePlay();
+  cur=id;renderTree();
+  document.getElementById('stage').innerHTML=sceneFor(id);
+  document.getElementById('insp').innerHTML=inspFor(id);
+  bindGo();
+  var n=findNode(id);log('i','Selected <b>'+n.label+'</b>','UnityEditor.Selection:set_activeObject');
+}
+function bindGo(){document.querySelectorAll('[data-go]').forEach(function(el){el.onclick=function(e){e.preventDefault();select(el.dataset.go)}});
+  document.querySelectorAll('.ch').forEach(function(h){h.onclick=function(){h.parentNode.classList.toggle('closed')}});}
+function togglePlay(){
+  var on=document.body.classList.toggle('playing');
+  document.getElementById('btnPlay').classList.toggle('on',on);
+  document.getElementById('tabGame').classList.toggle('on',on);document.getElementById('tabScene').classList.toggle('on',!on);
+  log('i',on?'Entering Play Mode…':'Exiting Play Mode',on?'Domain reload: 0.0s — this portfolio compiles fast':'');
+}
+document.getElementById('btnPlay').onclick=togglePlay;
+document.getElementById('tabGame').onclick=function(){if(!document.body.classList.contains('playing'))togglePlay()};
+document.getElementById('tabScene').onclick=function(){if(document.body.classList.contains('playing'))togglePlay()};
+
+log('i','Portfolio.unity loaded — 12 projects, 8 packages, 80M+ downloads','NIX.Portfolio.Boot:Start()');
+log('w','Coffee level low ☕ — consider refilling before next sprint','NIX.Developer:Update()');
+log('i','Tip: click objects in the <b>Hierarchy</b> or press <b>▶ Play</b> to see the game view');
+select('player');
+</script>
+</body>
+</html>

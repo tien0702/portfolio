@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Loading Scenes — Preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+:root{--bg:#07090f;--card:#0e131d;--line:#1e2636;--line2:#2c3750;--text:#b3bccf;--dim:#6b7690;--bright:#eef2f8;--cyan:#00e5ff;--pink:#ff2d75;--purple:#7c4dff;--gold:#ffd54f;--green:#69ff47;--mono:'JetBrains Mono',monospace;--ease:cubic-bezier(.16,1,.3,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Be Vietnam Pro',sans-serif;min-height:100vh;overflow:hidden}
+
+/* fake page behind the loader */
+.page{position:fixed;inset:0;padding:110px 8vw;background-image:linear-gradient(rgba(0,229,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.035) 1px,transparent 1px);background-size:56px 56px}
+.page .eb{font-family:var(--mono);font-size:.75rem;letter-spacing:.2em;color:var(--cyan);margin-bottom:20px}
+.page h1{font-size:clamp(2.4rem,6vw,4.4rem);font-weight:900;color:var(--bright);line-height:1.04;letter-spacing:-.035em}
+.page h1 span{background:linear-gradient(100deg,var(--cyan),var(--purple),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.page p{margin-top:18px;max-width:520px}
+
+/* loader host */
+#ld{position:fixed;inset:0;z-index:50;overflow:hidden}
+#ld.gone{display:none}
+.pct{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* ── 1 · STAR FORGE ── */
+.forge{position:absolute;inset:0;background:var(--bg);display:grid;place-items:center;transition:opacity .6s,transform .8s var(--ease)}
+.forge canvas{position:absolute;inset:0;width:100%;height:100%}
+.forge .c{position:relative;text-align:center;margin-top:200px}
+.forge .c b{font-family:var(--mono);font-size:1.6rem;color:var(--bright);letter-spacing:.06em}
+.forge .c b i{color:var(--gold);font-style:normal}
+.forge .c div{font-family:var(--mono);font-size:.68rem;letter-spacing:.3em;color:var(--dim);margin-top:8px}
+.forge.out{opacity:0;transform:scale(1.15)}
+
+/* ── 2 · BOOT TERMINAL ── */
+.boot{position:absolute;inset:0;background:#05070b;display:flex;align-items:center;justify-content:center;transition:clip-path .7s var(--ease)}
+.boot .box{width:min(620px,88vw);font-family:var(--mono);font-size:.82rem;line-height:1.9;color:var(--text)}
+.boot .hd{color:var(--bright);font-weight:700;margin-bottom:14px;font-size:1rem}
+.boot .hd i{color:var(--cyan);font-style:normal}
+.boot .ln{white-space:nowrap;overflow:hidden}
+.boot .ok{color:var(--green)} .boot .dm{color:var(--dim)}
+.boot .seg{display:flex;gap:4px;margin:18px 0 6px}
+.boot .seg i{flex:1;height:12px;background:var(--line);border-radius:2px;transition:background .15s}
+.boot .seg i.on{background:var(--cyan);box-shadow:0 0 8px rgba(0,229,255,.6)}
+.boot .ready{color:var(--gold);font-weight:700;opacity:0}
+.boot .ready.show{opacity:1;animation:blink .5s steps(2) 3}
+@keyframes blink{50%{opacity:0}}
+.boot .cur::after{content:'█';color:var(--cyan);animation:blink 1s steps(2) infinite;margin-left:2px}
+.boot.out{clip-path:inset(50% 0 50% 0)}
+.boot{clip-path:inset(0 0 0 0)}
+
+/* ── 3 · ORBIT ── */
+.orbit{position:absolute;inset:0;background:radial-gradient(600px 400px at 50% 50%,#0d1626,var(--bg));display:grid;place-items:center;transition:opacity .5s .2s}
+.orbit .sys{position:relative;width:260px;height:260px;display:grid;place-items:center}
+.orbit svg{position:absolute;inset:0;transform:rotate(-90deg)}
+.orbit .trk{fill:none;stroke:var(--line);stroke-width:2}
+.orbit .arc{fill:none;stroke:url(#og);stroke-width:3;stroke-linecap:round;stroke-dasharray:754;stroke-dashoffset:754;transition:stroke-dashoffset .2s linear}
+.orbit .ring{position:absolute;border-radius:50%;border:1px dashed rgba(124,77,255,.25)}
+.orbit .ring.r1{inset:30px;animation:spin 6s linear infinite}
+.orbit .ring.r2{inset:60px;animation:spin 4s linear infinite reverse;border-color:rgba(0,229,255,.25)}
+.orbit .ring i{position:absolute;top:-5px;left:50%;width:10px;height:10px;margin-left:-5px;border-radius:50%}
+.orbit .r1 i{background:var(--purple);box-shadow:0 0 12px var(--purple)}
+.orbit .r2 i{background:var(--cyan);box-shadow:0 0 12px var(--cyan)}
+.orbit .ring.r3{inset:0;animation:spin 9s linear infinite;border:0}
+.orbit .r3 i{background:var(--pink);box-shadow:0 0 12px var(--pink);width:8px;height:8px;margin-left:-4px;top:-4px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.orbit .core{text-align:center;z-index:1}
+.orbit .core b{display:block;font-family:var(--mono);font-size:1.5rem;color:var(--bright)}
+.orbit .core b i{color:var(--cyan);font-style:normal}
+.orbit .core .pct{font-size:.8rem;color:var(--dim)}
+.orbit.out{opacity:0}
+.orbit.out .sys{transform:scale(3);opacity:0;transition:transform .7s var(--ease),opacity .5s}
+
+/* ── 4 · LEVEL LOAD ── */
+.level{position:absolute;inset:0;background:linear-gradient(160deg,#0b1020,#07090f 60%);display:flex;flex-direction:column;justify-content:flex-end;padding:7vh 8vw;transition:transform .8s var(--ease)}
+.level .ava{position:absolute;top:12vh;right:8vw;width:min(300px,34vw);aspect-ratio:3/4;border-radius:20px;overflow:hidden;border:1px solid var(--line2);background:linear-gradient(160deg,#1a2240,#0e131d);display:grid;place-items:center;transform:rotate(4deg)}
+.level .ava b{font-size:6rem;font-weight:900;background:linear-gradient(160deg,var(--gold),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.level .ava span{position:absolute;bottom:14px;left:16px;font-family:var(--mono);font-size:.62rem;color:var(--gold);letter-spacing:.2em}
+.level .k{font-family:var(--mono);font-size:.72rem;letter-spacing:.3em;color:var(--pink)}
+.level h2{font-size:clamp(2.4rem,7vw,5rem);font-weight:900;color:var(--bright);letter-spacing:-.04em;line-height:1;margin:10px 0 22px}
+.level .tip{font-size:.92rem;min-height:1.5em;color:var(--text);margin-bottom:22px;transition:opacity .3s}
+.level .tip b{color:var(--gold);font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;margin-right:8px}
+.level .bar{height:14px;border-radius:7px;background:#05070b;border:1px solid var(--line2);padding:3px;max-width:720px}
+.level .bar i{display:block;height:100%;width:0;border-radius:4px;background:repeating-linear-gradient(-45deg,var(--gold) 0 10px,#ffb84d 10px 20px);background-size:28px 28px;animation:stripes .6s linear infinite;transition:width .2s linear}
+@keyframes stripes{to{background-position:28px 0}}
+.level .row{display:flex;justify-content:space-between;max-width:720px;margin-top:8px;font-family:var(--mono);font-size:.7rem;color:var(--dim)}
+.level.out{transform:translateY(-100%)}
+
+/* ── 5 · WARP ── */
+.warp{position:absolute;inset:0;background:#000;transition:opacity .6s}
+.warp canvas{position:absolute;inset:0;width:100%;height:100%}
+.warp .c{position:absolute;inset:0;display:grid;place-items:center;text-align:center;pointer-events:none}
+.warp .c b{font-family:var(--mono);font-size:2rem;color:#fff;letter-spacing:.08em;text-shadow:0 0 30px rgba(0,229,255,.6)}
+.warp .c b i{color:var(--cyan);font-style:normal}
+.warp .c div{font-family:var(--mono);font-size:.7rem;letter-spacing:.3em;color:rgba(255,255,255,.6);margin-top:10px}
+.warp .flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;transition:opacity .25s}
+.warp.out{opacity:0}
+.warp.out .flash{opacity:.85}
+
+/* picker */
+.picker{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:100;display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:center;padding:8px;border-radius:14px;background:rgba(14,19,29,.94);border:1px solid var(--line2);backdrop-filter:blur(10px);box-shadow:0 20px 60px rgba(0,0,0,.5);max-width:calc(100vw - 24px)}
+.picker b{font-family:var(--mono);font-size:.7rem;color:var(--gold);padding:0 8px}
+.picker button{font:inherit;font-size:.8rem;font-weight:600;padding:8px 12px;border-radius:9px;border:0;background:none;color:var(--dim);cursor:pointer}
+.picker button.on{background:var(--cyan);color:#001318}
+.picker .sep{width:1px;height:24px;background:var(--line2);margin:0 4px}
+.picker .rp{border:1px solid var(--line2);color:var(--bright)}
+.desc{position:fixed;left:50%;top:16px;transform:translateX(-50%);z-index:100;font-size:.8rem;color:var(--text);background:rgba(7,9,15,.85);padding:6px 12px;border-radius:8px;text-align:center;max-width:90vw}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="eb">● AVAILABLE · HA NOI, VN</div>
+  <h1>I build games<br>played by <span>80M+</span> people.</h1>
+  <p>(Trang giả lập phía sau — để xem hiệu ứng loader biến mất.)</p>
+</div>
+
+<div id="ld"></div>
+
+<div class="desc" id="desc"></div>
+<div class="picker">
+  <b>LOADER</b>
+  <button type="button" data-v="forge">1 · Star Forge</button>
+  <button type="button" data-v="boot">2 · Boot</button>
+  <button type="button" data-v="orbit">3 · Orbit</button>
+  <button type="button" data-v="level">4 · Level Load</button>
+  <button type="button" data-v="warp">5 · Warp</button>
+  <span class="sep"></span>
+  <b>MẠNG</b>
+  <button type="button" data-s="1500">Nhanh</button>
+  <button type="button" data-s="4500">Chậm</button>
+  <span class="sep"></span>
+  <button type="button" class="rp" id="replay">⟳ Phát lại</button>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var ld = document.getElementById('ld');
+  var DESC = {
+    forge: 'Star Forge — hạt sao vàng hội tụ thành ngôi sao lớn, % ở dưới. Biến mất: phóng to + mờ dần.',
+    boot: 'Boot — terminal khởi động kiểu console game, thanh tiến trình chia ô. Biến mất: khép lại từ hai cạnh.',
+    orbit: 'Orbit — logo [NIX] ở tâm, các hành tinh quay quanh + vòng tiến trình gradient. Biến mất: phóng xuyên qua.',
+    level: 'Level Load — màn chờ kiểu game: "LEVEL 01", tip thay đổi, thanh sọc vàng. Biến mất: trượt lên trên.',
+    warp: 'Warp — bay xuyên không gian (sao kéo vệt), tăng tốc theo tiến trình. Biến mất: loé sáng.'
+  };
+  var TIPS = ['Click a project to see my responsibilities & what I learned.', 'Videos play automatically when you scroll to a project.', 'Switch EN / VI anytime in the top-right corner.', '80M+ players have downloaded my games.'];
+  var cur = 'forge', dur = 1500, raf = 0, timers = [];
+  function later(fn, ms) { timers.push(setTimeout(fn, ms)); }
+  function stopAll() { cancelAnimationFrame(raf); timers.forEach(clearTimeout); timers = []; }
+
+  // Each loader: build(el) → { progress(p 0..1), exit(done) }
+  var L = {};
+
+  L.forge = function (el) {
+    el.innerHTML = '<div class="forge"><canvas></canvas><div class="c"><b><i>[</i>NIX<i>]</i></b><div class="pct">LOADING 0%</div></div></div>';
+    var root = el.firstChild, cv = root.querySelector('canvas'), ctx = cv.getContext('2d'), pct = root.querySelector('.pct');
+    var W, H, dpr = Math.min(devicePixelRatio || 1, 2), parts = [], p = 0;
+    function rs() { W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); } rs();
+    for (var i = 0; i < 160; i++) { var a = Math.random() * 6.28, r = 300 + Math.random() * 500; parts.push({ a: a, r: r, r0: r, s: 1 + Math.random() * 2.5, sp: 0.002 + Math.random() * 0.01, c: ['#ffd54f', '#ffe9a3', '#ffb84d'][i % 3] }); }
+    function star(x, y, r, rot) { ctx.beginPath(); for (var i = 0; i < 8; i++) { var a = rot + i * Math.PI / 4, rr = i % 2 ? r * 0.32 : r; ctx.lineTo(x + Math.cos(a) * rr, y + Math.sin(a) * rr); } ctx.closePath(); }
+    var t = 0;
+    (function loop() {
+      t++; ctx.clearRect(0, 0, W, H); var cx = W / 2, cy = H / 2 - 30;
+      ctx.globalCompositeOperation = 'lighter';
+      parts.forEach(function (q) { q.a += q.sp; var tr = q.r0 * (1 - p) + 20 + Math.sin(t * 0.05 + q.a) * 6; q.r += (tr - q.r) * 0.06;
+        ctx.globalAlpha = 0.5 + 0.5 * Math.sin(t * 0.1 + q.a * 5); ctx.fillStyle = q.c; star(cx + Math.cos(q.a) * q.r, cy + Math.sin(q.a) * q.r, q.s * 1.6, t * 0.02); ctx.fill(); });
+      ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+      var R = 18 + p * 46, g = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 3); g.addColorStop(0, 'rgba(255,213,79,.55)'); g.addColorStop(1, 'rgba(255,213,79,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, R * 3, 0, 6.28); ctx.fill();
+      ctx.fillStyle = '#ffd54f'; star(cx, cy, R, t * 0.015); ctx.fill(); ctx.fillStyle = '#fff'; star(cx, cy, R * 0.42, t * 0.015); ctx.fill();
+      raf = requestAnimationFrame(loop);
+    })();
+    return { progress: function (v) { p = v; pct.textContent = 'LOADING ' + Math.round(v * 100) + '%'; }, exit: function (done) { root.classList.add('out'); later(done, 800); } };
+  };
+
+  L.boot = function (el) {
+    var lines = [['> mount web-config.json', 0.12], ['> load Database/skills.md', 0.3], ['> load Database/Projects/index.json', 0.48], ['> load 7 projects', 0.7], ['> warm up video player', 0.86], ['> spawn star cursor', 0.96]];
+    el.innerHTML = '<div class="boot"><div class="box"><div class="hd"><i>[</i>NIX<i>]</i> PORTFOLIO OS v2.0</div><div id="bl"></div><div class="seg">' + new Array(24).join('<i></i>') + '<i></i></div><div class="dm pct">0%</div><div class="ready">PRESS START ▶</div></div></div>';
+    var root = el.firstChild, bl = root.querySelector('#bl'), segs = root.querySelectorAll('.seg i'), pct = root.querySelector('.pct'), shown = 0;
+    return {
+      progress: function (v) {
+        while (shown < lines.length && v >= lines[shown][1]) {
+          var prev = bl.querySelector('.cur'); if (prev) { prev.classList.remove('cur'); prev.innerHTML += ' <span class="ok">OK</span>'; }
+          var d = document.createElement('div'); d.className = 'ln cur'; d.textContent = lines[shown][0]; bl.appendChild(d); shown++;
+        }
+        var n = Math.round(v * segs.length); segs.forEach(function (s, i) { s.classList.toggle('on', i < n); });
+        pct.textContent = Math.round(v * 100) + '%';
+      },
+      exit: function (done) {
+        var c = bl.querySelector('.cur'); if (c) { c.classList.remove('cur'); c.innerHTML += ' <span class="ok">OK</span>'; }
+        root.querySelector('.ready').classList.add('show');
+        later(function () { root.classList.add('out'); }, 650); later(done, 1400);
+      }
+    };
+  };
+
+  L.orbit = function (el) {
+    el.innerHTML = '<div class="orbit"><div class="sys"><svg viewBox="0 0 260 260"><defs><linearGradient id="og" x1="0" x2="1"><stop offset="0" stop-color="#7c4dff"/><stop offset="1" stop-color="#00e5ff"/></linearGradient></defs><circle class="trk" cx="130" cy="130" r="120"/><circle class="arc" cx="130" cy="130" r="120"/></svg>' +
+      '<div class="ring r3"><i></i></div><div class="ring r1"><i></i></div><div class="ring r2"><i></i></div><div class="core"><b><i>[</i>NIX<i>]</i></b><span class="pct">0%</span></div></div></div>';
+    var root = el.firstChild, arc = root.querySelector('.arc'), pct = root.querySelector('.pct');
+    return { progress: function (v) { arc.style.strokeDashoffset = 754 * (1 - v); pct.textContent = Math.round(v * 100) + '%'; }, exit: function (done) { root.classList.add('out'); later(done, 900); } };
+  };
+
+  L.level = function (el) {
+    el.innerHTML = '<div class="level"><div class="ava"><b>NIX</b><span>PLAYER 01 · READY</span></div><div class="k">LEVEL 01 / PORTFOLIO</div><h2>Trần Tiến</h2><div class="tip"><b>TIP</b><span></span></div>' +
+      '<div class="bar"><i></i></div><div class="row"><span>Loading assets…</span><span class="pct">0%</span></div></div>';
+    var root = el.firstChild, bar = root.querySelector('.bar i'), pct = root.querySelector('.pct'), tip = root.querySelector('.tip'), ti = 0;
+    function nextTip() { tip.style.opacity = 0; later(function () { tip.querySelector('span').textContent = TIPS[ti++ % TIPS.length]; tip.style.opacity = 1; }, 250); later(nextTip, 1600); }
+    tip.querySelector('span').textContent = TIPS[ti++]; later(nextTip, 1600);
+    return { progress: function (v) { bar.style.width = (v * 100) + '%'; pct.textContent = Math.round(v * 100) + '%'; }, exit: function (done) { root.classList.add('out'); later(done, 850); } };
+  };
+
+  L.warp = function (el) {
+    el.innerHTML = '<div class="warp"><canvas></canvas><div class="c"><div><b><i>[</i>NIX<i>]</i></b><div class="pct">0%</div></div></div><div class="flash"></div></div>';
+    var root = el.firstChild, cv = root.querySelector('canvas'), ctx = cv.getContext('2d'), pct = root.querySelector('.pct');
+    var W, H, dpr = Math.min(devicePixelRatio || 1, 2), stars = [], speed = 2, target = 2;
+    function rs() { W = innerWidth; H = innerHeight; cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0); } rs();
+    for (var i = 0; i < 420; i++) stars.push({ x: (Math.random() - 0.5) * 2, y: (Math.random() - 0.5) * 2, z: Math.random() });
+    (function loop() {
+      speed += (target - speed) * 0.05;
+      ctx.fillStyle = 'rgba(0,0,0,0.35)'; ctx.fillRect(0, 0, W, H);
+      var cx = W / 2, cy = H / 2, f = Math.max(W, H) * 0.5;
+      stars.forEach(function (s) {
+        var pz = s.z; s.z -= 0.0025 * speed;
+        if (s.z <= 0.02) { s.x = (Math.random() - 0.5) * 2; s.y = (Math.random() - 0.5) * 2; s.z = 1; pz = 1; }
+        var x = cx + s.x / s.z * f * 0.5, y = cy + s.y / s.z * f * 0.5, px = cx + s.x / pz * f * 0.5, py = cy + s.y / pz * f * 0.5;
+        var b = 1 - s.z; ctx.strokeStyle = b > 0.7 ? '#bff8ff' : 'rgba(0,229,255,' + b + ')'; ctx.lineWidth = b * 2.4;
+        ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(x, y); ctx.stroke();
+      });
+      raf = requestAnimationFrame(loop);
+    })();
+    return { progress: function (v) { target = 2 + v * 14; pct.textContent = Math.round(v * 100) + '%'; }, exit: function (done) { target = 40; later(function () { root.classList.add('out'); }, 350); later(done, 1000); } };
+  };
+
+  function play() {
+    stopAll(); ld.className = ''; ld.innerHTML = '';
+    var api = L[cur](ld), t0 = performance.now();
+    // fake network: progress eases toward 100% over `dur`, with small stalls like real fetches
+    (function tick(now) {
+      var x = Math.min((now - t0) / dur, 1), v = x < 1 ? Math.min(0.97, 1 - Math.pow(1 - x, 2.2) + Math.sin(x * 20) * 0.01) : 1;
+      api.progress(Math.max(0, v));
+      if (x < 1) timers.push(setTimeout(function () { tick(performance.now()); }, 40));
+      else later(function () { api.exit(function () { stopAll(); ld.className = 'gone'; ld.innerHTML = ''; }); }, 250);
+    })(t0);
+  }
+  function sync() {
+    document.querySelectorAll('[data-v]').forEach(function (b) { b.classList.toggle('on', b.dataset.v === cur); });
+    document.querySelectorAll('[data-s]').forEach(function (b) { b.classList.toggle('on', +b.dataset.s === dur); });
+    document.getElementById('desc').textContent = DESC[cur];
+  }
+  document.querySelectorAll('[data-v]').forEach(function (b) { b.onclick = function () { cur = b.dataset.v; sync(); play(); }; });
+  document.querySelectorAll('[data-s]').forEach(function (b) { b.onclick = function () { dur = +b.dataset.s; sync(); play(); }; });
+  document.getElementById('replay').onclick = play;
+  addEventListener('resize', play);
+  sync(); play();
+})();
+</script>
+</body>
+</html>
