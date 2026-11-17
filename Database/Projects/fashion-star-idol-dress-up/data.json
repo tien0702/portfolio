@@ -13,43 +13,46 @@
   "poster": "images/poster.png",
   "icon": "images/icon.png",
   "tagline": {
-    "en": "",
-    "vi": "Dự án đầu tiên khi tham gia vào môi trường doanh nghiệp, solo programmer và học quy trình phát triển sản phẩm, trao đổi với GD để hiểu rõ ý tưởng, làm việc với Artist và Animator để thực hiện."
+    "en": "Dress up, battle and livestream to become the top fashion idol.",
+    "vi": "Phối đồ, battle và livestream để trở thành idol thời trang."
   },
   "team": 4,
   "teamDetail": {
-    "en": "",
+    "en": "1 Dev, 1 Anim, 1 Art, 1 GD",
     "vi": "1 Dev, 1 Anim, 1 Art, 1 GD"
   },
   "duration": {
-    "en": "",
-    "vi": "3 Tháng"
+    "en": "3 months",
+    "vi": "3 tháng"
   },
   "status": {
-    "en": "",
+    "en": "Unpublished",
     "vi": "Dừng phát hành"
   },
   "engine": "Unity C#",
   "year": "2024",
   "overview": {
-    "en": "",
-    "vi": "Game thời trang, tham gia battle/livestream để kiếm Ruby mua sắm đồ và leo rank."
+    "en": "A fashion game where players join battles and livestreams to earn Ruby, buy outfits and climb the ranks. My first project in a studio, as the solo programmer: I learned the product development process, worked with the GD to understand the ideas, and with artists and animators to build them. It didn't bring revenue, but it brought the company a promising publisher partner and laid the groundwork for later games.",
+    "vi": "Game thời trang, tham gia battle/livestream để kiếm Ruby mua sắm đồ và leo rank. Dự án đầu tiên của tôi ở môi trường doanh nghiệp, với vai trò solo programmer: học quy trình phát triển sản phẩm, trao đổi với GD để hiểu rõ ý tưởng, làm việc với Artist và Animator để thực hiện. Game không mang lại kết quả về doanh thu nhưng đem đến cho công ty một đối tác publisher tiềm năng và là nền tảng cho những sản phẩm sau này."
   },
   "roles": [
     {
       "name": {
         "en": "Programmer",
-        "vi": "Programmer"
+        "vi": "Lập trình viên"
       },
       "summary": {
-        "en": "",
+        "en": "Built the game from the GDD, learned the development process and took on the core responsibilities of a programmer.",
         "vi": "Triển khai dự án theo GDD, làm quen với quy trình phát triển dự án, nắm bắt trách nhiệm chính từ vai trò của một Programmer."
       },
       "did": {
-        "en": [],
+        "en": [
+          "Played and analyzed the game feel of competitor titles, then brought those improvements into our game.",
+          "Designed the systems based on the GDD."
+        ],
         "vi": [
-          "Triển khai hệ thống hoạt động được như yêu cầu của GD",
-          "Nghiên cứu và áp dụng các khái niệm feeling vào sản phẩm"
+          "Trải nghiệm và phân tích feeling từ game đối thủ và cải thiện cho game.",
+          "Thiết kế hệ thống theo GDD."
         ]
       }
     }
@@ -57,11 +60,18 @@
   "learned": [
     {
       "title": {
-        "en": "",
-        "vi": "Là một Programmer, tôi đã học được..."
+        "en": "Programmer",
+        "vi": "Lập trình viên"
       },
       "text": {
-        "en": [],
+        "en": [
+          "The real game production process; communicating with the GD to capture the ideas in the GDD",
+          "Running a project with Scrum, and what dailies and sprints are for",
+          "How to manage UI, and the limits of a system that depends on Singletons",
+          "How much game feel matters, through taking and fixing feedback from the team",
+          "Choosing the right easing, haptics, spring effects, etc.",
+          "Multi-screen support and 2D packages such as Spine."
+        ],
         "vi": [
           "Quy trình làm game thực tế, giao tiếp và trao đổi với GD để nắm bắt được ý tưởng của GD trong GDD",
           "Quản lý dự án bằng Scrum. Hiểu ý nghĩa của việc Daily, Sprint",
@@ -70,15 +80,6 @@
           "Cách chọn ease phù hợp, vibration, spring effect,...",
           "Đa màn hình và các package cho game 2D như Spine."
         ]
-      }
-    }
-  ],
-  "results": [
-    {
-      "value": "",
-      "label": {
-        "en": "",
-        "vi": "Sản phầm đầu tiên làm ở doanh nghiệp, tuy không mang lại kết quả về doanh thu nhưng lại mang đến cho công ty một đối tác publisher tiềm năng và là nền tảng cho những sản phẩm sau này."
       }
     }
   ],

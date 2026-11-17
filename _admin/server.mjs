@@ -3,7 +3,8 @@
    [NIX] Project Studio — local server (no dependencies)
    Run:  node _admin/server.mjs        → http://localhost:4000/_admin/
    Serves the whole site (for live preview) and a small API that
-   reads/writes Database/Projects/. Listens on 127.0.0.1 only.
+   reads/writes Database/Projects/, web-config.json, Database/skills.md,
+   Database/packages.md and the avatar. Listens on 127.0.0.1 only.
    ══════════════════════════════════════════ */
 import http from 'node:http';
 import fs from 'node:fs';
@@ -16,6 +17,8 @@ const PORT = Number(process.env.PORT) || 4000;
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PROJ = path.join(ROOT, 'Database', 'Projects');
 const INDEX = path.join(PROJ, 'index.json');
+const SITE = { config: path.join(ROOT, 'web-config.json'), skills: path.join(ROOT, 'Database', 'skills.md'), packages: path.join(ROOT, 'Database', 'packages.md') };
+const AVATAR = path.join(ROOT, 'assets', 'images', 'avt.jpg'); // also referenced by og:image in index.html
 const ID_RE = /^[a-z0-9][a-z0-9-]{0,79}$/;
 const UPLOAD_EXT = new Set(['.jpg', '.jpeg', '.png', '.webp', '.gif', '.mp4', '.webm', '.mov']);
 const MAX_UPLOAD = 100 * 1024 * 1024; // GitHub rejects files over 100 MB
@@ -29,10 +32,11 @@ const MIME = {
 // Run git in the repo (no shell). Resolves { ok, out } instead of throwing so the Studio can show git's message.
 const git = (...args) => new Promise(resolve => execFile('git', ['-c', 'core.quotePath=false', ...args], { cwd: ROOT, timeout: 120000 },
   (err, stdout, stderr) => resolve({ ok: !err, out: (stdout + stderr).trimEnd() })));
-const GIT_SCOPE = 'Database/Projects';
+// Everything the Studio can edit.
+const GIT_SCOPE = ['Database', 'web-config.json', 'assets/images'];
 // Changed files under GIT_SCOPE, with size (0 for deleted files).
 async function gitChanges() {
-  const st = await git('status', '--porcelain', '-z', '-uall', '--', GIT_SCOPE);
+  const st = await git('status', '--porcelain', '-z', '-uall', '--', ...GIT_SCOPE);
   if (!st.ok) throw new HttpError(500, st.out || 'git status failed');
   const out = [], rows = st.out.split('\0').filter(Boolean);
   for (let i = 0; i < rows.length; i++) {
@@ -174,19 +178,42 @@ async function api(req, res, url) {
     if (!message) throw new HttpError(400, 'Commit message is required');
     const big = (await gitChanges()).filter(f => f.size > MAX_UPLOAD).map(f => f.path);
     if (big.length) throw new HttpError(400, 'GitHub rejects files over 100 MB — move or delete them first: ' + big.join(', '));
-    const add = await git('add', '-A', '--', GIT_SCOPE);
+    const add = await git('add', '-A', '--', ...GIT_SCOPE);
     if (!add.ok) throw new HttpError(500, add.out);
-    // Commit only the project data, even if other files are staged.
-    const staged = await git('diff', '--cached', '--quiet', '--', GIT_SCOPE);
+    // Commit only the Studio's files, even if other files are staged.
+    const staged = await git('diff', '--cached', '--quiet', '--', ...GIT_SCOPE);
     let committed = false;
     if (!staged.ok) {
-      const c = await git('commit', '-m', message, '--', GIT_SCOPE);
+      const c = await git('commit', '-m', message, '--', ...GIT_SCOPE);
       if (!c.ok) throw new HttpError(500, c.out);
       committed = true;
     }
     const push = await git('push');
     if (!push.ok) throw new HttpError(500, (committed ? 'Committed, but push failed: ' : 'Push failed: ') + push.out);
     return send(res, 200, { committed, out: push.out });
+  }
+
+  // ── site-wide info: web-config.json + skills.md + packages.md (markdown is parsed/written by the Studio page) ──
+  if (parts[0] === 'site' && parts.length === 1 && m === 'GET') {
+    const read = p => fsp.readFile(p, 'utf8').catch(e => { if (e.code === 'ENOENT') return ''; throw e; });
+    let config;
+    try { config = JSON.parse(await read(SITE.config)); } catch (e) { throw new HttpError(500, 'web-config.json is not valid JSON: ' + e.message); }
+    return send(res, 200, { config, skills: await read(SITE.skills), packages: await read(SITE.packages) });
+  }
+  if (parts[0] === 'site' && parts.length === 1 && m === 'PUT') {
+    const { config, skills, packages } = await readJSON(req);
+    if (!config || typeof config !== 'object' || !config.profile || !config.i18n) throw new HttpError(400, 'Invalid config');
+    if (typeof skills !== 'string' || typeof packages !== 'string') throw new HttpError(400, 'Invalid skills/packages');
+    await writeJSON(SITE.config, config);
+    await fsp.writeFile(SITE.skills, skills);
+    await fsp.writeFile(SITE.packages, packages);
+    return send(res, 200, { ok: true });
+  }
+  if (parts[0] === 'site' && parts[1] === 'avatar' && parts.length === 2 && m === 'POST') {
+    const buf = await readBody(req, 10 * 1024 * 1024);
+    if (buf[0] !== 0xff || buf[1] !== 0xd8) throw new HttpError(400, 'Avatar must be a JPG');
+    await fsp.writeFile(AVATAR, buf);
+    return send(res, 201, { path: 'assets/images/avt.jpg', size: buf.length });
   }
 
   if (parts[0] === 'order' && m === 'PUT') {

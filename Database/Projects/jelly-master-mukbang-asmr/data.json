@@ -14,12 +14,11 @@
   },
   "poster": "images/poster.png",
   "icon": "images/icon.png",
-  "tagline": {
-    "en": "Craft colorful jelly desserts and enjoy satisfying ASMR mukbang moments.",
-    "vi": "Tự tay làm những món thạch đầy màu sắc và tận hưởng khoảnh khắc mukbang ASMR đã tai."
-  },
   "team": 7,
-  "teamDetail": "1Dev, 2Art, 2GD, 1Anim, 1Tester",
+  "teamDetail": {
+    "en": "1Dev, 2Art, 2GD, 1Anim, 1Tester",
+    "vi": "1Dev, 2Art, 2GD, 1Anim, 1Tester"
+  },
   "duration": {
     "en": "2.5 months",
     "vi": "2.5 tháng"
@@ -32,68 +31,77 @@
   "engine": "Unity · C#",
   "year": "2024",
   "overview": {
-    "en": "Casual ASMR simulation game where players make jelly desserts step by step and enjoy them in a mukbang scene. The main challenge is to make every tap, pour, and bite feel satisfying for the player.",
+    "en": "Casual ASMR simulation game where players make jelly desserts step by step, then livestream a mukbang.",
     "vi": "Game mô phỏng ASMR casual, người chơi làm món thạch theo từng bước rồi livestream cảnh mukbang."
   },
   "roles": [
     {
       "name": {
         "en": "Programmer",
-        "vi": "Programmer"
+        "vi": "Lập trình viên"
       },
       "summary": {
         "en": "Owned gameplay programming from prototype to live ops.",
         "vi": "Phụ trách lập trình gameplay từ prototype đến liveops."
       },
       "did": {
-        "en": [],
+        "en": [
+          "Designed the core architecture: FSM, event system, data-driven content, asset pipeline, save/load.",
+          "Contributed game ideas.",
+          "Game feel: UI motion, spring, haptics, VFX.",
+          "Integrated Ads/IAP/Analytics SDKs.",
+          "Upgraded and swapped SDKs at the publisher's request.",
+          "Set asset rules for artists and animators, and managed resources (asset management & pooling).",
+          "Built a tool that links assets into the game database."
+        ],
         "vi": [
-          "Thiết kế kiến trúc hệ thống Core: State machine, event system, data-driven level pipeline, save/load, pool, particle, haptic, sound",
-          "Tích hợp SDK Ads/IAP/analytics",
-          "Đóng góp ý tưởng cho game",
-          "Đặt ra quy tắc cho asset từ Artist/Animator và quản lý tài nguyên (Asset Management & Pooling)",
-          "Tool liên kết asset vào database của game",
-          "Nâng cấp/thay đổi các SDK theo yêu cầu của đối tác"
+          "Thiết kế kiến trúc hệ thống Core: FSM, event system, data-driven, asset pipeline, save/load.",
+          "Đóng góp ý tưởng cho game.",
+          "Game feel: UIMotion, Spring, Haptic, VFX.",
+          "Tích hợp SDK Ads/IAP/Analytics.",
+          "Nâng cấp/thay đổi các SDK theo yêu cầu của đối tác.",
+          "Đặt ra quy tắc cho asset từ Artist/Animator và quản lý tài nguyên (Asset Management & Pooling).",
+          "Tool liên kết asset vào database của game."
         ]
       }
     },
     {
       "name": {
-        "en": "LiveOps PM",
-        "vi": "LiveOps PM"
+        "en": "LiveOps Project Manager",
+        "vi": "Quản lý dự án LiveOps"
       },
       "summary": {
-        "en": "Managed the project during the LiveOps phase.",
+        "en": "Managed the workflow during the LiveOps phase.",
         "vi": "Quản lý quy trình giai đoạn LiveOps."
       },
       "did": {
         "en": [
-          "Profiled and cut memory usage on low-end Android devices",
-          "Integrated Ads, IAP and analytics SDKs through the in-house Monetization Kit",
-          "Set up event tracking to support A/B testing of levels"
+          "Worked with the publisher on new events and content for LiveOps, then held team meetings and planned the rollout.",
+          "Defined working conventions (naming, folder structure) and a coordination process so the team's work didn't overlap or get disorganized.",
+          "Planned timelines for new features and limited-time events with the Lead Artist, Animator and Game Designer."
         ],
         "vi": [
+          "Trao đổi với đối tác publisher về các sự kiện và nội dung mới trong giai đoạn LiveOps, sau đó tổ chức họp với team và lên kế hoạch triển khai.",
           "Quy tắc làm việc (Naming convention, Folder structure): Đưa ra quy trình phối hợp để team không bị chồng chéo, rối loạn.",
-          "Trao đổi với đối tác publisher về các sự kiện và nội dung mới",
           "Làm việc với Lead Artist, Animator, Game Designer để lên lên timeline cho feature/limited event mới."
         ]
       }
     },
     {
       "name": {
-        "en": "LiveOps PO",
-        "vi": "LiveOps PO"
+        "en": "LiveOps Product Owner",
+        "vi": "Product Owner LiveOps"
       },
       "summary": {
-        "en": "Managed the project during the LiveOps phase.",
+        "en": "Owned the product during the LiveOps phase.",
         "vi": "Quản lý sản phẩm giai đoạn LiveOps."
       },
       "did": {
         "en": [
-          "Profiled and cut memory usage on low-end Android devices",
-          "Integrated Ads, IAP and analytics SDKs through the in-house Monetization Kit",
-          "Set up event tracking to support A/B testing of levels",
-          ""
+          "Managed Google Play: production and internal test builds, in-app products",
+          "Managed Firebase: Crashlytics, Remote Config, A/B Testing, Analytics",
+          "Set up event tracking and A/B tests for new features",
+          "Set up Remote Config to turn new features on/off without an app update"
         ],
         "vi": [
           "Quản lý Playstore: Build Production/Internal Test, gói purchase",
@@ -107,52 +115,49 @@
   "learned": [
     {
       "title": {
-        "en": "As a Programmer, I learned...",
-        "vi": "Là một Programmer, tôi đã học được..."
+        "en": "Programmer",
+        "vi": "Lập trình viên"
       },
       "text": {
         "en": [
-          "Designed an event system to let gameplay mechanics communicate with each other",
-          "Optimized the game using techniques: Pooling, Sprite Atlas, Texture Compression",
-          "Used StateMachine to manage Character states",
-          "Implemented feeling techniques: Spring, Juice, Easing, Haptic, Particle, Sound"
+          "Optimization techniques: Pooling, Sprite Atlas, Texture Compression",
+          "Game feel techniques: Spring, Juice, Easing, Haptics, Particles, Sound"
         ],
         "vi": [
-          "Thiết kế hệ thống event để các cơ chế gameplay có thể phối hợp với nhau",
           "Tối ưu game bằng các kỹ thuật: Pooling, Sprite Atlas, Texture Compression",
-          "Sử dụng StateMachine để quản lý trạng thái cho Character",
           "Các kỹ thuật feeling: Spring, Juice, Easing, Haptic, Particle, Sound"
         ]
       }
     },
     {
       "title": {
-        "en": "As a LiveOps PM, I learned...",
-        "vi": "Là một LiveOps PM, tôi đã học được..."
+        "en": "LiveOps Project Manager",
+        "vi": "Quản lý dự án LiveOps"
       },
       "text": {
-        "en": [],
+        "en": [
+          "How to set working rules (naming convention, folder structure) so assets are easy to find and manage.",
+          "How to prioritize work to hit deadlines, and coordinate with other departments toward a shared goal."
+        ],
         "vi": [
-          "Cách đặt ra quy tắc làm việc (nameing convention, folder structure) để tìm kiếm và quản lý tài nguyên hiệu quả.",
+          "Cách đặt ra quy tắc làm việc (naming convention, folder structure) để tìm kiếm và quản lý tài nguyên hiệu quả.",
           "Cách ưu tiên thứ tự công việc để đạt được deadline, và cách phối hợp với các bộ phận khác để đạt được mục tiêu chung."
         ]
       }
     },
     {
       "title": {
-        "en": "As a LiveOps PO, I learned...",
-        "vi": "Là một LiveOps PO, tôi đã học được..."
+        "en": "LiveOps Product Owner",
+        "vi": "Product Owner LiveOps"
       },
       "text": {
         "en": [
-          "How to create Internal Test and when to push to Production, how to rollout to a percentage of users, and when to push to 100% of users.",
-          "How to create purchase packages, subscriptions, and set prices for different countries.",
-          "How to set up event tracking, A/B testing, and remote config to enable/disable new features without updating the app."
+          "How to set up internal testing, when to promote a build to production, what percentage to start a staged rollout at, and when to go to 100%.",
+          "How to set up in-app products and subscriptions, and set prices per country."
         ],
         "vi": [
           "Cách tạo Internal Test và khi nào đẩy lên Production, đẩy lên Production thì rollout bao nhiêu % người dùng, khi nào thì đẩy lên 100% người dùng.",
-          "Cách tạo gói purchase, cách tạo subscription, đặt giá cho từng quốc gia.",
-          "Cách tạo event tracking, A/B testing, remote config để bật/tắt tính năng mới mà không cần update app."
+          "Cách tạo gói purchase, cách tạo subscription, đặt giá cho từng quốc gia."
         ]
       }
     }
@@ -160,25 +165,16 @@
   "challenges": [
     {
       "title": {
-        "en": "",
+        "en": "Localization for 12 countries",
         "vi": "Đa ngôn ngữ cho 12 nước."
       },
       "problem": {
-        "en": "",
+        "en": "Unity localization with TextMeshPro is limited: CJK fonts have tens of thousands of glyphs, which bloats the build and uses a lot of RAM/VRAM.",
         "vi": "Localization trong Unity có nhiều hạn chế khi sử dụng với TextMeshPro như các font CJK có chục nghìn ký tự nên build sẽ nặng, tốn Ram/VRam."
       },
       "solution": {
-        "en": "",
-        "vi": "Dùng dynamic atlas để glyph thêm vào lúc runtime (Có tính năng chat nên không dùng cách tạo Statick Atlas chỉ chứa các ký tự dùng đến).\nTạo các font fallback để localization được nhiều ngôn ngữ."
-      }
-    }
-  ],
-  "results": [
-    {
-      "value": "70M+",
-      "label": {
-        "en": "downloads on Google Play",
-        "vi": "Lượt tải trên Google Play"
+        "en": "Used dynamic atlases so glyphs are added at runtime (the game has chat, so a static atlas with only the used characters wasn't an option).\nAdded fallback fonts to support many languages.",
+        "vi": "Dùng dynamic atlas để glyph thêm vào lúc runtime (Có tính năng chat nên không dùng cách tạo Static Atlas chỉ chứa các ký tự dùng đến).\nTạo các font fallback để localization được nhiều ngôn ngữ."
       }
     }
   ],

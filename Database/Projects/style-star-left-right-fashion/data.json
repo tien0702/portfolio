@@ -15,14 +15,14 @@
   "poster": "images/poster.png",
   "icon": "images/icon.png",
   "tagline": {
-    "en": "Swipe left or right to style the perfect outfit and become a fashion star.",
-    "vi": "Vuốt trái hoặc phải để phối bộ đồ hoàn hảo và trở thành ngôi sao thời trang."
+    "en": "Pick left or right to choose your livestream outfit.",
+    "vi": "Chọn bên trái hoặc bên phải để chọn trang phục livestream."
   },
   "team": 5,
   "teamDetail": "1Dev - 2Art - 1GD - 1Anim",
   "duration": {
-    "en": "3 months",
-    "vi": "3 tháng"
+    "en": "1 month",
+    "vi": "1 tháng"
   },
   "status": {
     "en": "Live",
@@ -32,24 +32,24 @@
   "engine": "Unity · C#",
   "year": "2025",
   "overview": {
-    "en": "A casual dress-up game built around a simple left/right choice: each swipe picks an outfit piece, and the final look is scored against the theme. The goal was to make every choice fast, readable and fun to repeat.",
-    "vi": "Game dress-up casual xoay quanh lựa chọn trái/phải: mỗi lần vuốt chọn một món đồ, bộ trang phục cuối cùng được chấm điểm theo chủ đề. Mục tiêu là mỗi lựa chọn phải nhanh, dễ hiểu và vui khi chơi lại."
+    "en": "A casual dress-up game built around a simple left/right choice: each pick adds an outfit piece, and the final look is scored against the theme. The goal was to make every choice fast, easy to read and fun to replay.",
+    "vi": "Game dress-up casual xoay quanh lựa chọn trái/phải: mỗi lần chọn một món đồ, bộ trang phục cuối cùng được chấm điểm theo chủ đề. Mục tiêu là mỗi lựa chọn phải nhanh, dễ hiểu và vui khi chơi lại."
   },
   "roles": [
     {
       "name": {
-        "en": "Main Dev",
-        "vi": "Main Dev"
+        "en": "Main Developer",
+        "vi": "Lập trình viên chính"
       },
       "summary": {
-        "en": "Owned gameplay programming from prototype to release.",
-        "vi": "Phụ trách lập trình gameplay từ prototype đến khi phát hành."
+        "en": "Handled programming through to the game's release.",
+        "vi": "Phụ trách lập trình đến giai đoạn phát hành dự án."
       },
       "did": {
         "en": [
           "Built the left/right choice loop and outfit scoring system",
           "Character customization: layered outfits, colors and accessories",
-          "Data-driven level pipeline so designers can add themes and outfits",
+          "Data-driven level pipeline so GDs can add themes and outfits on their own",
           "Integrated Ads/IAP/analytics SDKs"
         ],
         "vi": [
@@ -64,8 +64,8 @@
   "learned": [
     {
       "title": {
-        "en": "As a Main Dev, I learned...",
-        "vi": "Là Main Dev, tôi đã học được..."
+        "en": "Main Developer",
+        "vi": "Lập trình viên chính"
       },
       "text": {
         "en": [

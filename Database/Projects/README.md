@@ -3,6 +3,8 @@
 **Easiest way to edit:** run the local Project Studio — `node _admin/server.mjs` → http://localhost:4000/_admin/
 (add / edit / reorder / delete projects, upload video & screenshots, live preview). Then commit as usual.
 `_admin/` is ignored by GitHub Pages, so it never goes public.
+The Studio's **Thông tin chung** page edits everything else on the site: hero, bio, avatar, stats, skills
+(`Database/skills.md`), packages (`Database/packages.md`), experience, contact links and all UI text (`web-config.json`).
 
 Each project lives in its own folder:
 

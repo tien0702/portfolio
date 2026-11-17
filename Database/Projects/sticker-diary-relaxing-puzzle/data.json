@@ -13,12 +13,12 @@
   "poster": "images/cover.jpg",
   "icon": "images/icon.png",
   "tagline": {
-    "en": "Peel, place and decorate — a cozy sticker puzzle to relax with.",
+    "en": "Peel stickers off the sheet and place them to complete a whole room.",
     "vi": "Bóc sticker từ bảng rồi dán thành một căn phòng hoàn chỉnh."
   },
   "team": 15,
   "teamDetail": {
-    "en": "",
+    "en": "1Dev, 2GD, 9Art, 2Anim, 1Tester (1 LeadArt, 1 LeadAnim)",
     "vi": "1Dev, 2GD, 9Art, 2Anim, 1Tester (1 LeadArt, 1 LeadAnim)"
   },
   "duration": {
@@ -33,46 +33,60 @@
   "engine": "Unity · C#",
   "year": "2026",
   "overview": {
-    "en": "A relaxing puzzle where players peel stickers and place them into the right spot to complete diary pages. The focus was on a calm pace and a satisfying peel-and-stick feel.",
+    "en": "A relaxing puzzle game: peel stickers and place them in the right spot, build a city, and collect stickers to fill your own room.",
     "vi": "Game puzzle thư giãn, người chơi bóc sticker và dán vào đúng vị trí, xây dựng thành phố, sưu tầm sticker để lấp vào phòng của mình."
   },
   "roles": [
     {
       "name": {
         "en": "Programmer",
-        "vi": "Programmer"
+        "vi": "Lập trình viên"
+      },
+      "summary": {
+        "en": "Designed the core systems, polished game feel, and optimized performance/memory with Addressables, Unity Profiler and Project Auditor.",
+        "vi": "Thiết kế hệ thống core, trau chuốt game feel, tối ưu performance/memory với: Addressable, Unity Profiler, Project Auditor."
       },
       "did": {
-        "en": [],
+        "en": [
+          "Integrated SDKs: Ads, IAP, Analytics, MMP (AppsFlyer, Adjust) and the publisher's own SDKs.",
+          "Optimized build performance and size (Addressables + Cloudflare R2) and content download time.",
+          "Built a tool that auto-generates levels from GD assets and data.",
+          "Built a Level Editor so GDs can lay out level data.",
+          "Designed a modular, extensible, reusable architecture for the core systems (Gameplay, City, CityRoom, UI)."
+        ],
         "vi": [
-          "Chủ động phối hợp với Artist và Animator, đề xuất asset và hiệu ứng (VFX, animation, feedback) để nâng cao game feel.",
-          "Trao đổi với Game Designer để tìm giải pháp khi phát sinh vấn đề thiết kế trong quá trình triển khai, đảm bảo tính khả thi kỹ thuật mà vẫn giữ đúng ý tưởng gameplay.",
-          "Tương tác bóc–dán sticker với kéo thả, snap , camera và feedback.",
-          "Xây tool tự động sinh resource từ asset và data của GD.",
-          "Xây tool LevelEditor hỗ trợ GD xếp data.",
-          "Tích hợp SDK Ads, Purchase, Firebase",
-          "Xây dựng kiến trúc cho các hệ thống core (Gameplay, City, CityRoom, UI) theo hướng module hóa, dễ mở rộng và tái sử dụng.",
+          "Tích hợp các SDK: Ads, IAP, Analytics, MMP (AppsFlyer, Adjust) và các SDK riêng của đối tác.",
           "Tối ưu build hiệu năng, giảm buildsize (Addressable + Cloudflare R2), tối ưu thời gian download content.",
-          "Thiết kế hệ thống UI tách biệt logic và hiển thị, quản lý màn hình qua UI Manager giúp thêm tính năng mới nhanh chóng."
+          "Xây tool tự động sinh level từ asset và data của GD.",
+          "Xây tool LevelEditor hỗ trợ GD xếp data.",
+          "Xây dựng kiến trúc cho các hệ thống core (Gameplay, City, CityRoom, UI) theo hướng module hóa, dễ mở rộng và tái sử dụng."
         ]
       }
     },
     {
       "name": {
-        "en": "Project Manager",
-        "vi": "Project Manager"
+        "en": "Product Manager",
+        "vi": "Quản lý sản phẩm"
       },
       "did": {
-        "en": [],
+        "en": [
+          "Worked directly with the publisher on features, mechanics and game feel, and turned feedback into improvement plans.",
+          "Designed and standardized the production pipeline for Art and Animation: naming, export formats and folder structure for assets; naming and bone structure in Spine for animation.",
+          "Managed the project with Scrum for a 15-person team (dev, art, design, QA), running ~20 sprints from prototype to soft launch.",
+          "Built a milestone roadmap, broke it into a backlog and planned sprints for each department.",
+          "Ran recurring meetings (Sprint Planning, Review, Retrospective) and lead syncs to assess risk, adjust scope and make quick decisions when the project got stuck.",
+          "Managed releases on Google Play Console: uploading builds, managing tracks (internal, closed, production) and setting up in-app purchases.",
+          "Set up Firebase Analytics events and used Remote Config and A/B testing to tune gameplay and revenue from data.",
+          "Built testing docs on Google Sheets (changelog, bug report, feedback) in a standard format the team could easily follow."
+        ],
         "vi": [
+          "Làm việc trực tiếp với Publisher để thảo luận về tính năng, mechanic và game feel, tiếp nhận feedback và chuyển hóa thành kế hoạch cải thiện game.",
           "Thiết kế và chuẩn hóa production pipeline cho team Art và Animation: quy tắc đặt tên, định dạng xuất file và cấu trúc thư mục cho asset; quy tắc đặt tên và cấu trúc bone trên Spine cho animation.",
           "Quản lý dự án game casual theo mô hình Scrum với team 15 người (dev, art, design, tester), vận hành ~20 sprint từ giai đoạn prototype đến soft launch.",
           "Xây dựng roadmap theo milestone, phân rã thành backlog và lên kế hoạch sprint cho từng bộ phận.",
           "Tổ chức và điều phối các cuộc họp định kỳ: Sprint Planning, Sprint Review, Retrospective và tổ chức họp với các lead để đánh giá rủi ro, điều chỉnh phạm vi và đưa ra quyết định kịp thời khi dự án gặp vướng mắc.",
           "Quản lý quy trình phát hành trên Google Play Console: upload bản build, quản lý các track (internal, closed, production) và thiết lập các gói In-app Purchase.",
           "Thiết lập tracking event trên Firebase Analytics, sử dụng Remote Config và A/B Testing để tối ưu gameplay và doanh thu dựa trên dữ liệu.",
-          "Làm việc trực tiếp với Publisher để thảo luận về tính năng, mechanic và game feel, tiếp nhận feedback và chuyển hóa thành kế hoạch cải thiện game.",
-          "Phối hợp với đối tác UA tích hợp MMP (AppsFlyer) và Ad Mediation, kiểm tra tracking và attribution trước khi chạy campaign.",
           "Xây dựng bộ tài liệu testing trên Google Sheets gồm Changelog, Bug Report và Feedback, chuẩn hóa định dạng để team dễ theo dõi và cập nhật."
         ]
       }
@@ -81,17 +95,19 @@
   "learned": [
     {
       "title": {
-        "en": "As a Dev, I learned...",
-        "vi": "Là Dev, tôi đã học được..."
+        "en": "Programmer",
+        "vi": "Lập trình viên"
       },
       "text": {
         "en": [
-          "Tuning drag & snap so placement feels precise but forgiving",
-          "Building editor tools that let designers iterate on levels quickly"
+          "Hands-on experience with 2D isometric.",
+          "Using a DI framework (Zenject).",
+          "Using the pub/sub pattern to decouple modules, UI and World."
         ],
         "vi": [
-          "Tinh chỉnh kéo thả & snap để đặt sticker chính xác nhưng dễ chịu",
-          "Làm tool editor giúp GD chỉnh sửa level nhanh"
+          "Kinh nghiệm làm việc với 2D Isometric.",
+          "Sử dụng DI Framework (Zenject)",
+          "Dùng pubsub pattern để tách module, UI và World."
         ]
       }
     }
