@@ -37,8 +37,8 @@
   "roles": [
     {
       "name": {
-        "en": "Programmer",
-        "vi": "Lập trình viên"
+        "en": "Main Developer",
+        "vi": "Lập trình viên chính"
       },
       "summary": {
         "en": "Owned gameplay programming from prototype to live ops.",
@@ -67,43 +67,27 @@
     },
     {
       "name": {
-        "en": "LiveOps Project Manager",
-        "vi": "Quản lý dự án LiveOps"
+        "en": "LiveOps PM",
+        "vi": "Quản lý LiveOps (PM)"
       },
       "summary": {
-        "en": "Managed the workflow during the LiveOps phase.",
-        "vi": "Quản lý quy trình giai đoạn LiveOps."
+        "en": "Managed the workflow and the product during the LiveOps phase.",
+        "vi": "Quản lý quy trình và sản phẩm giai đoạn LiveOps."
       },
       "did": {
         "en": [
           "Worked with the publisher on new events and content for LiveOps, then held team meetings and planned the rollout.",
           "Defined working conventions (naming, folder structure) and a coordination process so the team's work didn't overlap or get disorganized.",
-          "Planned timelines for new features and limited-time events with the Lead Artist, Animator and Game Designer."
-        ],
-        "vi": [
-          "Trao đổi với đối tác publisher về các sự kiện và nội dung mới trong giai đoạn LiveOps, sau đó tổ chức họp với team và lên kế hoạch triển khai.",
-          "Quy tắc làm việc (Naming convention, Folder structure): Đưa ra quy trình phối hợp để team không bị chồng chéo, rối loạn.",
-          "Làm việc với Lead Artist, Animator, Game Designer để lên lên timeline cho feature/limited event mới."
-        ]
-      }
-    },
-    {
-      "name": {
-        "en": "LiveOps Product Owner",
-        "vi": "Product Owner LiveOps"
-      },
-      "summary": {
-        "en": "Owned the product during the LiveOps phase.",
-        "vi": "Quản lý sản phẩm giai đoạn LiveOps."
-      },
-      "did": {
-        "en": [
+          "Planned timelines for new features and limited-time events with the Lead Artist, Animator and Game Designer.",
           "Managed Google Play: production and internal test builds, in-app products",
           "Managed Firebase: Crashlytics, Remote Config, A/B Testing, Analytics",
           "Set up event tracking and A/B tests for new features",
           "Set up Remote Config to turn new features on/off without an app update"
         ],
         "vi": [
+          "Trao đổi với đối tác publisher về các sự kiện và nội dung mới trong giai đoạn LiveOps, sau đó tổ chức họp với team và lên kế hoạch triển khai.",
+          "Quy tắc làm việc (Naming convention, Folder structure): Đưa ra quy trình phối hợp để team không bị chồng chéo, rối loạn.",
+          "Làm việc với Lead Artist, Animator, Game Designer để lên lên timeline cho feature/limited event mới.",
           "Quản lý Playstore: Build Production/Internal Test, gói purchase",
           "Quản lý Firebase: Crashlytics, Remote Config, A/B Testing, Analytics",
           "Setup tracking event và A/B testing cho các tính năng mới",
@@ -115,8 +99,8 @@
   "learned": [
     {
       "title": {
-        "en": "Programmer",
-        "vi": "Lập trình viên"
+        "en": "Main Developer",
+        "vi": "Lập trình viên chính"
       },
       "text": {
         "en": [
@@ -131,31 +115,19 @@
     },
     {
       "title": {
-        "en": "LiveOps Project Manager",
-        "vi": "Quản lý dự án LiveOps"
+        "en": "LiveOps PM",
+        "vi": "Quản lý LiveOps (PM)"
       },
       "text": {
         "en": [
           "How to set working rules (naming convention, folder structure) so assets are easy to find and manage.",
-          "How to prioritize work to hit deadlines, and coordinate with other departments toward a shared goal."
-        ],
-        "vi": [
-          "Cách đặt ra quy tắc làm việc (naming convention, folder structure) để tìm kiếm và quản lý tài nguyên hiệu quả.",
-          "Cách ưu tiên thứ tự công việc để đạt được deadline, và cách phối hợp với các bộ phận khác để đạt được mục tiêu chung."
-        ]
-      }
-    },
-    {
-      "title": {
-        "en": "LiveOps Product Owner",
-        "vi": "Product Owner LiveOps"
-      },
-      "text": {
-        "en": [
+          "How to prioritize work to hit deadlines, and coordinate with other departments toward a shared goal.",
           "How to set up internal testing, when to promote a build to production, what percentage to start a staged rollout at, and when to go to 100%.",
           "How to set up in-app products and subscriptions, and set prices per country."
         ],
         "vi": [
+          "Cách đặt ra quy tắc làm việc (naming convention, folder structure) để tìm kiếm và quản lý tài nguyên hiệu quả.",
+          "Cách ưu tiên thứ tự công việc để đạt được deadline, và cách phối hợp với các bộ phận khác để đạt được mục tiêu chung.",
           "Cách tạo Internal Test và khi nào đẩy lên Production, đẩy lên Production thì rollout bao nhiêu % người dùng, khi nào thì đẩy lên 100% người dùng.",
           "Cách tạo gói purchase, cách tạo subscription, đặt giá cho từng quốc gia."
         ]

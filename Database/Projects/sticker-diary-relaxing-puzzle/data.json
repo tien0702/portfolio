@@ -39,8 +39,8 @@
   "roles": [
     {
       "name": {
-        "en": "Programmer",
-        "vi": "Lập trình viên"
+        "en": "Solo Programmer",
+        "vi": "Lập trình viên solo"
       },
       "summary": {
         "en": "Designed the core systems, polished game feel, and optimized performance/memory with Addressables, Unity Profiler and Project Auditor.",
@@ -95,8 +95,8 @@
   "learned": [
     {
       "title": {
-        "en": "Programmer",
-        "vi": "Lập trình viên"
+        "en": "Solo Programmer",
+        "vi": "Lập trình viên solo"
       },
       "text": {
         "en": [

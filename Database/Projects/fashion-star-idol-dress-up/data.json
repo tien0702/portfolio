@@ -38,8 +38,8 @@
   "roles": [
     {
       "name": {
-        "en": "Programmer",
-        "vi": "Lập trình viên"
+        "en": "Solo Programmer",
+        "vi": "Lập trình viên solo"
       },
       "summary": {
         "en": "Built the game from the GDD, learned the development process and took on the core responsibilities of a programmer.",
@@ -60,8 +60,8 @@
   "learned": [
     {
       "title": {
-        "en": "Programmer",
-        "vi": "Lập trình viên"
+        "en": "Solo Programmer",
+        "vi": "Lập trình viên solo"
       },
       "text": {
         "en": [

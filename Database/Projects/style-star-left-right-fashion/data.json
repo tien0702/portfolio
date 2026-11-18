@@ -38,8 +38,8 @@
   "roles": [
     {
       "name": {
-        "en": "Main Developer",
-        "vi": "Lập trình viên chính"
+        "en": "Solo Programmer",
+        "vi": "Lập trình viên solo"
       },
       "summary": {
         "en": "Handled programming through to the game's release.",
@@ -64,8 +64,8 @@
   "learned": [
     {
       "title": {
-        "en": "Main Developer",
-        "vi": "Lập trình viên chính"
+        "en": "Solo Programmer",
+        "vi": "Lập trình viên solo"
       },
       "text": {
         "en": [

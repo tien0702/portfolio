@@ -89,7 +89,7 @@ var IC = {
 };
 function roleIcon(name) {
   var n = String(name).toLowerCase();
-  if (/lead|manag|produc|quản lý|trưởng/.test(n)) return IC.team;
+  if (/lead|manag|produc|\bp[mo]\b|quản lý|trưởng/.test(n)) return IC.team;
   if (/design/.test(n)) return IC.design;
   if (/art|vfx|anim/.test(n)) return IC.vfx;
   if (/ui|ux/.test(n)) return IC.ui;
