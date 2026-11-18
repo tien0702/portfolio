@@ -84,6 +84,7 @@ var IC = {
   dl: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><polyline points="7 10 12 15 17 10"/><path d="M5 21h14"/></svg>',
   apple: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 12.6c-.02-2.3 1.88-3.4 1.97-3.46-1.07-1.57-2.74-1.78-3.33-1.8-1.42-.14-2.77.83-3.49.83-.72 0-1.83-.81-3.01-.79-1.55.02-2.98.9-3.78 2.29-1.61 2.8-.41 6.93 1.16 9.2.77 1.11 1.68 2.36 2.88 2.31 1.16-.05 1.6-.75 3-.75 1.4 0 1.79.75 3.01.73 1.25-.02 2.04-1.13 2.8-2.25.88-1.29 1.24-2.54 1.26-2.6-.03-.01-2.42-.93-2.47-3.71zM14.1 5.85c.64-.78 1.07-1.85.95-2.92-.92.04-2.03.61-2.69 1.38-.59.68-1.11 1.78-.97 2.83 1.02.08 2.07-.52 2.71-1.29z"/></svg>',
   muted: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>',
+  discord: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.32 4.37A19.8 19.8 0 0 0 15.43 2.86a.07.07 0 0 0-.08.04c-.21.38-.44.86-.61 1.25a18.27 18.27 0 0 0-5.49 0 12.6 12.6 0 0 0-.62-1.25.08.08 0 0 0-.08-.04A19.74 19.74 0 0 0 3.68 4.37a.07.07 0 0 0-.03.03C.53 9.05-.32 13.58.1 18.06a.08.08 0 0 0 .03.06 19.9 19.9 0 0 0 5.99 3.03.08.08 0 0 0 .09-.03c.46-.63.87-1.3 1.22-1.99a.08.08 0 0 0-.04-.11 13.1 13.1 0 0 1-1.87-.89.08.08 0 0 1-.01-.13l.37-.29a.07.07 0 0 1 .08-.01c3.93 1.79 8.18 1.79 12.06 0a.07.07 0 0 1 .08.01l.37.29a.08.08 0 0 1-.01.13c-.6.35-1.22.64-1.87.89a.08.08 0 0 0-.04.11c.36.7.77 1.36 1.22 1.99a.08.08 0 0 0 .09.03 19.84 19.84 0 0 0 6-3.03.08.08 0 0 0 .03-.06c.5-5.18-.84-9.67-3.55-13.66a.06.06 0 0 0-.03-.03zM8.02 15.33c-1.18 0-2.16-1.09-2.16-2.42s.96-2.42 2.16-2.42c1.21 0 2.18 1.1 2.16 2.42 0 1.33-.96 2.42-2.16 2.42zm7.97 0c-1.18 0-2.15-1.09-2.15-2.42s.95-2.42 2.15-2.42c1.21 0 2.18 1.1 2.16 2.42 0 1.33-.95 2.42-2.16 2.42z"/></svg>',
   sound: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>'
 };
 function roleIcon(name) {
@@ -276,8 +277,8 @@ function renderShell() {
   $('drawerSoc').innerHTML = '<div class="socials" style="margin:0">' + socialHTML() + '</div>';
   var email = (p.contact || {}).email || '';
   $('mailTxt').textContent = email;
-  $('mailBtn').href = 'mailto:' + email;
   $('contactSoc').innerHTML = socialHTML();
+  renderContact();
   $('footL').textContent = '© ' + new Date().getFullYear() + ' ' + p.name;
 }
 
@@ -317,7 +318,7 @@ function renderHero() {
   $('heroSoc').innerHTML = socialHTML();
   renderNowCard(p, name);
   $('strip').innerHTML = (p.stats || []).map(function (s) {
-    var m = String(s.value).match(/^(\d+)(.*)$/);
+    var m = String(s.value).match(/^(\d+(?:\.\d+)?)(.*)$/); // "2.5+" → 2.5 counts up, "+" stays as suffix
     var val = m ? '<span data-to="' + m[1] + '">' + m[1] + '</span><em>' + esc(m[2]) + '</em>' : esc(s.value);
     return '<div><b>' + val + '</b><span>' + esc(loc(s.label)) + '</span></div>';
   }).join('');
@@ -373,6 +374,21 @@ function renderWork() {
         (contrib.length ? '<div class="prj-k">' + t('key_contrib') + '</div><ul class="did">' + contrib.map(function (c) { return '<li><span>' + esc(c) + '</span></li>'; }).join('') + '</ul>' : '') +
         '<div class="cta"><a class="btn btn-pri btn-sm" href="' + url + '">' + t('read_more') + ' →</a>' + storeButtons(p, ['btn-ghost btn-sm', 'btn-ghost btn-sm']) + '</div>' +
       '</div></article>';
+  }).join('');
+}
+
+// Contact box (both pages): Gmail / Discord buttons + what I can be hired for (web-config.json → services)
+function renderContact() {
+  var c = CONFIG.profile.contact || {}, mail = c.email, dc = c.discord, h = '';
+  // Email opens Gmail compose; Discord links to a profile URL, or copies a plain username and opens Discord.
+  if (mail) h += '<a class="btn btn-pri" href="https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(mail) + '" target="_blank" rel="noopener">' + IC.email + t('svc_email') + '</a>';
+  if (dc) h += '<a class="btn btn-ghost" href="' + esc(isURL(dc) ? dc : 'https://discord.com/app') + '" target="_blank" rel="noopener"' + (isURL(dc) ? '' : ' data-discord="' + esc(dc) + '"') + '>' + IC.discord + t('svc_discord') + '</a>';
+  $('ctCta').innerHTML = h; $('ctCta').hidden = !h;
+  var xs = sectionOn('services') ? CONFIG.services || [] : [];
+  $('ctSvc').hidden = !xs.length;
+  $('contact').classList.toggle('has-svc', !!xs.length);
+  $('svcList').innerHTML = xs.map(function (x, i) {
+    return '<div class="sv"><span class="sv-n">' + String(i + 1).padStart(2, '0') + '</span><div><h4>' + esc(loc(x.title)) + '</h4><p>' + esc(loc(x.desc)) + '</p></div></div>';
   }).join('');
 }
 
@@ -547,9 +563,10 @@ function lbStep(d) { LB.i = (LB.i + d + GALLERY.length) % GALLERY.length; lbShow
 var revealIO = null, booted = false;
 function countUp(el) {
   if (el.dataset.done) return; el.dataset.done = '1';
-  var to = +el.dataset.to; if (REDUCED || !to) { el.textContent = to; return; }
+  var to = +el.dataset.to, dec = (el.dataset.to.split('.')[1] || '').length; // keep the decimals of e.g. 2.5
+  if (REDUCED || !to) { el.textContent = el.dataset.to; return; }
   var t0 = null;
-  (function s(ts) { if (!t0) t0 = ts; var p = Math.min((ts - t0) / 1300, 1); el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * to); if (p < 1) requestAnimationFrame(s); })(performance.now());
+  (function s(ts) { if (!t0) t0 = ts; var p = Math.min((ts - t0) / 1300, 1); el.textContent = ((1 - Math.pow(1 - p, 3)) * to).toFixed(dec); if (p < 1) requestAnimationFrame(s); })(performance.now());
 }
 function observeReveal() {
   if (revealIO) revealIO.disconnect();
@@ -592,6 +609,8 @@ function bindStatic() {
     if (vp) { vmPlay(vp.closest('.vbox')); return; }
     var vs = e.target.closest('.v-sound');
     if (vs) { vmToggleSound(vs.closest('.vbox')); return; }
+    var dcb = e.target.closest('[data-discord]');
+    if (dcb) { var u = dcb.dataset.discord; if (navigator.clipboard) navigator.clipboard.writeText(u).catch(function () {}); toast(t('discord_copied', { u: u })); } // link still opens Discord
     var lb = e.target.closest('[data-lb]');
     if (lb) { lbOpen(+lb.dataset.lb, lb); return; }
     if (e.target === $('lb')) lbClose();

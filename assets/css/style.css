@@ -124,7 +124,6 @@ nav.scrolled{background:rgba(8,11,17,.92);border-bottom-color:rgba(0,229,255,.14
 .hero .lead{margin:18px 0 28px;max-width:560px;color:var(--text);font-size:1.02rem}
 .cta{display:flex;gap:10px;flex-wrap:wrap}
 .socials{display:flex;gap:6px;margin-top:26px}
-.socials.center{justify-content:center;margin-top:24px}
 .socials a{width:40px;height:40px;display:grid;place-items:center;border:1px solid var(--line);border-radius:10px;color:var(--dim);transition:color .2s,border-color .2s,transform .25s var(--ease);position:relative}
 .socials a:hover{color:var(--cyan);border-color:var(--cyan);transform:translateY(-3px)}
 .socials a::after{content:attr(data-label);position:absolute;bottom:calc(100% + 8px);left:50%;transform:translate(-50%,4px);font-family:var(--mono);font-size:.6rem;background:var(--card2);border:1px solid var(--line2);color:var(--bright);padding:3px 8px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:.2s}
@@ -199,6 +198,13 @@ section{padding:110px 0 0}
 .bx p{font-size:.82rem;color:var(--dim)}
 .bx:hover{transform:translateY(-3px)}
 .bx .chips{margin-top:10px}
+/* contact: what I can help with (right column) */
+.ct-svc h3{font-family:var(--mono);font-size:.72rem;font-weight:500;color:var(--cyan);letter-spacing:.16em;text-transform:uppercase;margin-bottom:6px}
+.sv{display:grid;grid-template-columns:34px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.sv:last-child{border-bottom:0}
+.sv-n{font-family:var(--mono);font-size:.7rem;color:var(--cyan);letter-spacing:.1em;padding-top:3px}
+.sv h4{color:var(--bright);font-size:.98rem;font-weight:800;line-height:1.3;margin-bottom:3px}
+.contact .sv p{font-size:.84rem;color:var(--dim);margin:0}
 /* packages */
 .pk-h{color:var(--bright);font-size:1.15rem;font-weight:800;margin:40px 0 14px}
 .pkgs{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
@@ -213,10 +219,19 @@ section{padding:110px 0 0}
 /* contact */
 .contact{margin-top:120px;padding:64px 40px;text-align:center;border-radius:24px;position:relative;overflow:hidden;border:1px solid var(--line2);
   background:radial-gradient(600px 300px at 50% 0%,rgba(0,229,255,.12),transparent 70%),radial-gradient(500px 300px at 50% 120%,rgba(255,45,117,.10),transparent 70%),var(--card)}
-.term{font-family:var(--mono);font-size:.8rem;color:var(--dim);margin-bottom:18px}
-.term b{color:var(--green)}
 .contact h2{font-size:clamp(2rem,5vw,3.4rem);font-weight:900;color:var(--bright);letter-spacing:-.035em;line-height:1.05;margin-bottom:14px}
 .contact p{color:var(--dim);margin-bottom:28px}
+/* with services: left-aligned two columns */
+.ct-cta{justify-content:center;margin-top:14px}
+.contact .socials{justify-content:center;margin-top:22px}
+.contact.has-svc{text-align:left}
+.contact.has-svc .ct-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:48px;align-items:start}
+.contact.has-svc .ct-cta,.contact.has-svc .socials{justify-content:flex-start}
+.contact.has-svc .ct-svc{padding-left:40px;border-left:1px solid var(--line2)}
+@media (max-width:860px){
+  .contact.has-svc .ct-grid{grid-template-columns:1fr;gap:32px}
+  .contact.has-svc .ct-svc{padding-left:0;border-left:0;padding-top:28px;border-top:1px solid var(--line2)}
+}
 .mailbox{display:inline-flex;align-items:center;gap:6px;padding:6px 6px 6px 18px;border-radius:14px;border:1px solid var(--line2);background:var(--bg2);font-family:var(--mono);font-size:.9rem;color:var(--bright);flex-wrap:wrap;justify-content:center;max-width:100%}
 .mailbox span{overflow-wrap:anywhere}
 footer{padding:50px 0 40px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--mono);font-size:.68rem;color:var(--dim)}

@@ -6,7 +6,7 @@ Each group is one card on the site. `items` is a comma-separated list.
 - items: Unity, C#, C++, Cocos2d-x, SDL
 
 ## Architecture
-- items: FSM, Event system / Pub-Sub, Zenject (DI), Data-driven levels, Save / Load
+- items: MVP, FSM, Event system / Pub-Sub, DI (Zenject / VContainer), Data-driven levels, Save / Load
 
 ## Game Feel & UI
 - items: Juice / Spring / Easing, Haptics, Particles / VFX, uGUI, Multi-screen (notch / tablet), Spine

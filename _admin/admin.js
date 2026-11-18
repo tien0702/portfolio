@@ -373,6 +373,7 @@ var TEMPLATES = {
   now: function () { return { label: L(''), value: L('') }; },
   exp: function () { return { current: false, period: L(''), role: L(''), org: '', desc: L(''), tags: '', _o: {} }; },
   skill: function () { return { name: '', items: '', _kv: [] }; },
+  svc: function () { return { title: L(''), desc: L('') }; },
   pkg: function () { return { title: '', line: L(''), tags: '', github: '', _kv: [] }; }
 };
 
@@ -671,7 +672,7 @@ function mdWrite(head, blocks) {
 function csvList(s) { return String(s || '').split(',').map(function (x) { return x.trim(); }).filter(Boolean); }
 
 // UI strings that get their own field in a section; every other i18n key lands in "Nhãn giao diện khác".
-var SITE_KEYS = ['h1', 'available', 'view_work', 'download_cv', 'contact_me', 'work_t', 'skills_t', 'pkgs_t', 'exp_t', 'contact_t', 'contact_p',
+var SITE_KEYS = ['h1', 'available', 'view_work', 'download_cv', 'contact_me', 'work_t', 'services_t', 'svc_email', 'svc_discord', 'discord_copied', 'skills_t', 'pkgs_t', 'exp_t', 'contact_t', 'contact_p',
   'nav_work', 'nav_skills', 'nav_experience', 'nav_contact', 'hire'];
 var KEY_DESC = {
   skip: 'Link "bỏ qua tới nội dung" (dùng bàn phím)', read_more: 'Nút trên thẻ dự án', google_play: 'Nút Google Play', app_store: 'Nút App Store', download_apk: 'Nút tải APK',
@@ -690,10 +691,11 @@ function siteDraft(j) {
   var i18n = {}; keys.forEach(function (k) { i18n[k] = { en: (I.en || {})[k] || '', vi: (I.vi || {})[k] || '' }; });
   return {
     profile: { name: p.name || '', brand: p.brand || '', location: p.location || '', available: p.status === 'available', statusLabel: L(p.statusLabel), bio: L(p.bio), cv: p.cv || '' },
-    contact: { email: ct.email || '', linkedin: ct.linkedin || '', github: ct.github || '', blog: ct.blog || '', itchio: ct.itchio || '' },
+    contact: { email: ct.email || '', discord: ct.discord || '', linkedin: ct.linkedin || '', github: ct.github || '', blog: ct.blog || '', itchio: ct.itchio || '' },
     stats: (p.stats || []).map(function (x) { return { value: x.value == null ? '' : String(x.value), label: L(x.label) }; }),
     now: (p.now || []).map(function (x) { return { label: L(x.label), value: L(x.value) }; }),
-    sections: { skills: sec.skills !== false, experience: sec.experience !== false },
+    sections: { services: sec.services !== false, skills: sec.skills !== false, experience: sec.experience !== false },
+    services: (c.services || []).map(function (x) { return { title: L(x.title), desc: L(x.desc) }; }),
     experience: (c.experience || []).map(function (x) { return { current: !!x.current, period: L(x.period), role: L(x.role), org: x.org || '', desc: L(x.desc), tags: (x.tags || []).join(', '), _o: x }; }),
     i18n: i18n,
     skills: mdParse(j.skills).blocks.map(function (b) { return { name: b.title, items: kvGet(b.kv, 'items'), _kv: b.kv }; }),
@@ -711,10 +713,11 @@ function siteBuild(d, src) {
   p.statusLabel = l(d.profile.statusLabel); p.bio = l(d.profile.bio);
   if (s(d.profile.cv)) p.cv = s(d.profile.cv); else delete p.cv;
   var ct = p.contact = p.contact || {};
-  ['email', 'linkedin', 'github', 'blog', 'itchio'].forEach(function (k) { if (s(d.contact[k])) ct[k] = s(d.contact[k]); else delete ct[k]; });
+  ['email', 'discord', 'linkedin', 'github', 'blog', 'itchio'].forEach(function (k) { if (s(d.contact[k])) ct[k] = s(d.contact[k]); else delete ct[k]; });
   p.stats = d.stats.filter(function (x) { return s(x.value) || has(x.label); }).map(function (x) { return { value: s(x.value), label: l(x.label) }; });
   p.now = d.now.filter(function (x) { return has(x.label) || has(x.value); }).map(function (x) { return { label: l(x.label), value: l(x.value) }; });
-  c.sections = Object.assign({}, c.sections, { skills: !!d.sections.skills, experience: !!d.sections.experience });
+  c.sections = Object.assign({}, c.sections, { services: !!d.sections.services, skills: !!d.sections.skills, experience: !!d.sections.experience });
+  c.services = d.services.filter(function (x) { return has(x.title) || has(x.desc); }).map(function (x) { return { title: l(x.title), desc: l(x.desc) }; });
   c.experience = d.experience.filter(function (x) { return has(x.role) || s(x.org); }).map(function (x) {
     var o = Object.assign({}, x._o);
     if (x.current) o.current = true; else if ('current' in o) o.current = false;
@@ -813,11 +816,21 @@ function renderSite() {
         '<label class="check"><input type="checkbox" data-path="' + b + '.current"' + (x.current ? ' checked' : '') + '> Đang làm (hiện nhãn ● NOW)</label></div></div>';
     }).join('') + '</div><button class="btn ghost sm add" type="button" data-act="addItem" data-path="experience" data-t="exp">+ Vị trí</button>', 'experience[]');
 
-  var contact = sec('x-contact', 'Liên hệ & CV',
-    '<div class="grid2">' + inp('contact.email', 'Email', { key: 'contact.email', type: 'email' }) + inp('profile.cv', 'Link CV', { key: 'profile.cv', type: 'url', hint: 'Để trống thì ẩn nút CV.' }) +
-      inp('contact.linkedin', 'LinkedIn', { type: 'url' }) + inp('contact.github', 'GitHub', { type: 'url', hint: 'Để trống thì lấy từ link GitHub của package.' }) +
+  var contact = sec('x-contact', 'Liên hệ (khung cuối trang)',
+    key('contact_t', 'Tiêu đề', { hint: 'Dùng <code>&lt;br&gt;</code> để xuống dòng.' }) + key('contact_p', 'Dòng dưới tiêu đề') +
+    '<div class="grid2">' + inp('contact.email', 'Email', { key: 'contact.email', type: 'email', hint: 'Hiện kèm nút Copy; nút Email mở Gmail soạn thư tới địa chỉ này.' }) +
+      inp('contact.discord', 'Discord', { key: 'contact.discord', hint: 'Username (bấm nút sẽ copy username và mở Discord) hoặc link https://discord.com/users/&lt;ID&gt; để mở thẳng profile. Để trống thì ẩn nút.' }) + '</div>' +
+    key('svc_email', 'Chữ trên nút Email') + key('svc_discord', 'Chữ trên nút Discord') + key('discord_copied', 'Thông báo khi copy Discord — {u} là username') +
+    '<div class="grid2">' + inp('contact.linkedin', 'LinkedIn', { type: 'url' }) + inp('contact.github', 'GitHub', { type: 'url', hint: 'Để trống thì lấy từ link GitHub của package.' }) +
       inp('contact.blog', 'Blog', { type: 'url' }) + inp('contact.itchio', 'itch.io', { type: 'url' }) + '</div>' +
-    key('contact_t', 'Tiêu đề khung liên hệ', { hint: 'Dùng <code>&lt;br&gt;</code> để xuống dòng.' }) + key('contact_p', 'Dòng dưới tiêu đề'), 'để trống = ẩn');
+    '<label class="check"><input type="checkbox" data-path="sections.services"' + (d.sections.services ? ' checked' : '') + '> Hiện danh sách công việc tôi nhận (cột phải khung liên hệ)</label>' +
+    key('services_t', 'Tiêu đề danh sách') +
+    '<div class="items">' + d.services.map(function (x, i) {
+      return '<div class="item">' + itemHead('services', i, d.services.length, 'Công việc') + '<div class="item-b">' +
+        bi('services.' + i + '.title', 'Tên công việc') + bi('services.' + i + '.desc', 'Mô tả ngắn', { area: true, rows: 2 }) + '</div></div>';
+    }).join('') + '</div><button class="btn ghost sm add" type="button" data-act="addItem" data-path="services" data-t="svc">+ Công việc</button>', 'để trống = ẩn');
+
+  var cv = sec('x-cv', 'CV', inp('profile.cv', 'Link CV', { key: 'profile.cv', type: 'url', hint: 'Nút ở đầu trang. Để trống thì ẩn nút CV.' }));
 
   var general = sec('x-general', 'Tên & menu',
     '<div class="grid2">' + inp('profile.name', 'Tên', { key: 'profile.name', hint: 'Dùng ở footer và tiêu đề tab của trang dự án.' }) +
@@ -830,14 +843,14 @@ function renderSite() {
     '<details' + (ED.labelsOpen ? ' open' : '') + ' id="labelsBox"><summary style="cursor:pointer;color:var(--dim);font-size:.84rem">Mở ' + rest.length + ' nhãn (nút, tiêu đề mục trang dự án, thông báo…)</summary><div style="display:grid;gap:14px;margin-top:14px">' +
       rest.map(function (k) { return key(k, KEY_DESC[k] || k); }).join('') + '</div></details>', 'web-config.json → i18n');
 
-  var nav = '<nav class="secnav">' + [['x-hero', 'Hero'], ['x-stats', 'Con số'], ['x-skills', 'Kỹ năng'], ['x-exp', 'Kinh nghiệm'], ['x-contact', 'Liên hệ'], ['x-general', 'Tên & menu'], ['x-labels', 'Nhãn khác']]
+  var nav = '<nav class="secnav">' + [['x-hero', 'Hero'], ['x-stats', 'Con số'], ['x-skills', 'Kỹ năng'], ['x-exp', 'Kinh nghiệm'], ['x-contact', 'Liên hệ'], ['x-cv', 'CV'], ['x-general', 'Tên & menu'], ['x-labels', 'Nhãn khác']]
     .map(function (x) { return '<a href="javascript:void 0" data-act="goto" data-to="' + x[0] + '">' + x[1] + '</a>'; }).join('') + '</nav>';
   var pv = '<aside class="pv' + (ED.pvMobile ? ' mobile' : '') + '"><div class="pv-bar"><span>Xem trước · cập nhật khi Lưu</span>' +
     seg('pvMode', '', ED.pvMobile ? 'm' : 'd', [['d', 'Desktop'], ['m', 'Mobile']]) +
     '<button class="icon-btn" type="button" data-act="pvReload" title="Tải lại">⟳</button></div>' +
     '<div class="pv-frame"><iframe id="pvFrame" title="Preview" src="/index.html?_=' + ED.pvStamp + '"></iframe></div></aside>';
 
-  $('app').innerHTML = bar + '<div class="ed"><div>' + nav + hero + stats + skills + exp + contact + general + labels + '</div>' + pv + '</div>';
+  $('app').innerHTML = bar + '<div class="ed"><div>' + nav + hero + stats + skills + exp + contact + cv + general + labels + '</div>' + pv + '</div>';
   var lb = $('labelsBox'); if (lb) lb.addEventListener('toggle', function () { ED.labelsOpen = lb.open; });
   updateDirty();
 }

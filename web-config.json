@@ -14,8 +14,8 @@
       "vi": "Hiện chưa nhận việc mới"
     },
     "bio": {
-      "en": "3+ years shipping casual mobile games in Unity — 80M+ downloads. Led teams of 4–10+; game development instructor at VTC Academy since 2022.",
-      "vi": "3+ năm làm game mobile casual bằng Unity — 80M+ lượt tải. Dẫn dắt team 4–10+ người; giảng viên làm game tại VTC Academy từ 2022."
+      "en": "2.5+ years shipping casual mobile games in Unity — 80M+ downloads. Led teams of 4–10+; part-time game development instructor at VTC Academy since 2024 (50+ students).",
+      "vi": "2.5+ năm làm game mobile casual bằng Unity — 80M+ lượt tải. Dẫn dắt team 4–10+ người; giảng viên làm game bán thời gian tại VTC Academy từ 2024 (50+ học viên)."
     },
     "avatar": "assets/images/avt.jpg",
     "stats": [
@@ -27,7 +27,7 @@
         }
       },
       {
-        "value": "3+",
+        "value": "2.5+",
         "label": {
           "en": "Years in game dev",
           "vi": "Năm làm game"
@@ -45,7 +45,8 @@
       "email": "tientv.0702@gmail.com",
       "linkedin": "https://www.linkedin.com/in/ti%E1%BA%BFn-tr%E1%BA%A7n-a675a8223/",
       "blog": "https://tien0702.github.io/nix-blog/",
-      "itchio": "https://tiennix.itch.io/"
+      "itchio": "https://tiennix.itch.io/",
+      "discord": "tientv.dev"
     },
     "cv": "https://drive.google.com/drive/folders/1DzDeKy8Mhjfpp6RXvTxVrB44fruPhYPI?usp=sharing",
     "now": [
@@ -63,14 +64,67 @@
   },
   "sections": {
     "skills": true,
-    "experience": true
+    "experience": true,
+    "services": true
   },
+  "services": [
+    {
+      "title": {
+        "en": "SDK integration & fixes",
+        "vi": "Tích hợp & sửa lỗi SDK"
+      },
+      "desc": {
+        "en": "Ads, IAP, Firebase, AppsFlyer, Adjust — integrate, upgrade, or fix mediation and Google Play policy issues.",
+        "vi": "Ads, IAP, Firebase, AppsFlyer, Adjust — tích hợp, nâng cấp, sửa lỗi mediation và lỗi theo chính sách Google Play."
+      }
+    },
+    {
+      "title": {
+        "en": "Performance & build size",
+        "vi": "Tối ưu hiệu năng & dung lượng"
+      },
+      "desc": {
+        "en": "Profile and fix lag, crashes and memory issues on low-end devices; cut build size with Addressables.",
+        "vi": "Profile và xử lý giật lag, crash, bộ nhớ trên máy yếu; giảm dung lượng build bằng Addressables."
+      }
+    },
+    {
+      "title": {
+        "en": "Game feel & polish",
+        "vi": "Game feel & polish"
+      },
+      "desc": {
+        "en": "Juice, easing, haptics, VFX and UI motion that make every tap feel satisfying.",
+        "vi": "Juice, easing, haptic, VFX và chuyển động UI giúp mỗi thao tác đều \"đã tay\"."
+      }
+    },
+    {
+      "title": {
+        "en": "Casual game prototypes",
+        "vi": "Prototype game casual"
+      },
+      "desc": {
+        "en": "A playable prototype of your casual or puzzle idea, ready for CPI testing, built on a reusable codebase.",
+        "vi": "Bản chơi được cho ý tưởng game casual/puzzle, sẵn sàng test CPI, dựng trên codebase tái sử dụng."
+      }
+    },
+    {
+      "title": {
+        "en": "Unity training & mentoring",
+        "vi": "Đào tạo & mentoring Unity"
+      },
+      "desc": {
+        "en": "1-on-1 or team training in Unity and C#, code reviews, and onboarding for new developers.",
+        "vi": "Dạy kèm 1-1 hoặc training cho team về Unity, C#; review code và onboard dev mới."
+      }
+    }
+  ],
   "experience": [
     {
       "current": false,
       "period": {
-        "en": "2025 — 2026",
-        "vi": "2025 — 2026"
+        "en": "04/2025 — 10/2026",
+        "vi": "04/2025 — 10/2026"
       },
       "role": {
         "en": "Team Leader",
@@ -89,17 +143,17 @@
     },
     {
       "period": {
-        "en": "2022 — Now",
-        "vi": "2022 — Nay"
+        "en": "2024 — Now · per course",
+        "vi": "2024 — Nay · theo từng khóa"
       },
       "role": {
-        "en": "Game Development Instructor",
-        "vi": "Giảng viên phát triển game"
+        "en": "Game Development Instructor (Part-time)",
+        "vi": "Giảng viên phát triển game (bán thời gian)"
       },
       "org": "VTC Academy",
       "desc": {
-        "en": "Game development instructor at VTC Academy, teaching classes of 10–20 students: game industry fundamentals and hands-on practice with engines such as Cocos2d-x and Unity.",
-        "vi": "Giảng viên chuyên ngành game tại VTC Academy. Đứng các lớp từ 10 đến 20 học viên, giảng dạy các kiến thức về ngành game và hướng dẫn các học viên thực hành với các engine như Cocos2dx, Unity."
+        "en": "Part-time game development instructor at VTC Academy, teaching per course — 50+ students so far in classes of 10–20: game industry fundamentals and hands-on practice with engines such as Cocos2d-x and Unity.",
+        "vi": "Giảng viên chuyên ngành game bán thời gian tại VTC Academy, dạy theo từng khóa — 50+ học viên, mỗi lớp 10–20 người. Giảng dạy kiến thức về ngành game và hướng dẫn thực hành với các engine như Cocos2d-x, Unity."
       },
       "tags": [
         "Mentoring",
@@ -108,8 +162,8 @@
     },
     {
       "period": {
-        "en": "2022 — 2025",
-        "vi": "2022 — 2025"
+        "en": "04/2024 — 10/2026",
+        "vi": "04/2024 — 10/2026"
       },
       "role": {
         "en": "Game Developer",
@@ -139,7 +193,7 @@
       "download_cv": "View CV",
       "contact_me": "Contact me",
       "h1": "Tran Van Tien [NIX] - Unity Game Developer",
-      "available": "Available for freelance & training",
+      "available": "Available for freelance",
       "skills_t": "Skills",
       "exp_t": "Experience",
       "now": "NOW",
@@ -181,12 +235,15 @@
       "contact_p": "Open to work as a freelancer or trainer.",
       "copy": "Copy",
       "copied": "Email copied to clipboard",
-      "send": "Send",
       "sample": "sample data",
       "err": "Could not load data files.",
       "download_apk": "Download APK",
       "draft_note": "Draft — hidden on the site",
-      "pkgs_t": "Reusable packages"
+      "pkgs_t": "Reusable packages",
+      "services_t": "What I can help with",
+      "svc_email": "Email me",
+      "svc_discord": "Message on Discord",
+      "discord_copied": "Discord username copied: {u}"
     },
     "vi": {
       "skip": "Bỏ qua tới nội dung",
@@ -199,7 +256,7 @@
       "download_cv": "Xem CV",
       "contact_me": "Liên hệ",
       "h1": "Trần Văn Tiến [NIX] - Lập trình viên game Unity",
-      "available": "Đang nhận freelance & đào tạo",
+      "available": "Nhận freelance",
       "skills_t": "Kỹ năng",
       "exp_t": "Kinh nghiệm",
       "now": "HIỆN TẠI",
@@ -241,12 +298,15 @@
       "contact_p": "Sẵn sàng cho công việc: freelancer, trainer.",
       "copy": "Sao chép",
       "copied": "Đã sao chép email",
-      "send": "Gửi",
       "sample": "dữ liệu mẫu",
       "err": "Không tải được dữ liệu.",
       "download_apk": "Tải APK",
       "draft_note": "Bản nháp — đang ẩn trên site",
-      "pkgs_t": "Package tự xây dựng"
+      "pkgs_t": "Package tự xây dựng",
+      "services_t": "Tôi có thể giúp gì",
+      "svc_email": "Gửi email",
+      "svc_discord": "Nhắn qua Discord",
+      "discord_copied": "Đã copy Discord: {u}"
     }
   }
 }
