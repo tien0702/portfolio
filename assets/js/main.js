@@ -272,7 +272,6 @@ function renderShell() {
   document.querySelectorAll('.lang button').forEach(function (b) { b.classList.toggle('on', b.dataset.lang === lang); b.setAttribute('aria-pressed', b.dataset.lang === lang); });
   document.querySelectorAll('[data-i18n]').forEach(function (el) { el.textContent = t(el.dataset.i18n); });
   document.querySelectorAll('[data-i18n-html]').forEach(function (el) { el.innerHTML = t(el.dataset.i18nHtml); });
-  $('navAva').src = p.avatar;
   if (p.brand) $('navBrand').innerHTML = brandHTML(p.brand);
   $('drawerSoc').innerHTML = '<div class="socials" style="margin:0">' + socialHTML() + '</div>';
   var email = (p.contact || {}).email || '';
