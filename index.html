@@ -28,7 +28,15 @@
     <div class="ld-c"><img class="ld-img" src="assets/logo/NIX-02.svg" alt="" /><div class="ld-pct" id="ldPct">0%</div></div>
     <div class="ld-flash"></div>
   </div>
-  <script>try { var n = performance.getEntriesByType('navigation')[0]; if (sessionStorage.getItem('nix-warp') || (n && n.type === 'back_forward')) document.getElementById('loader').classList.add('nav'); } catch (e) {}</script>
+  <script>try {
+    var ld = document.getElementById('loader'), n = performance.getEntriesByType('navigation')[0];
+    var still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (sessionStorage.getItem('nix-warp') || (n && n.type === 'back_forward')) ld.classList.add('nav');
+    // home, first visit, top of the page: the hero plays the logo intro itself (no loader); see heroIntro() in main.js
+    if (!ld.classList.contains('nav') && document.body.dataset.page === 'home' && !location.hash && !still) {
+      ld.classList.add('hx-mode'); document.body.classList.add('ix-run', 'ix-0', 'ix-dark');
+    }
+  } catch (e) {}</script>
 
   <div class="scroll-prog" id="scrollProg"></div>
   <div class="bg-grid" aria-hidden="true"></div>
@@ -41,6 +49,7 @@
       <li><a href="#work" data-i18n="nav_work">Projects</a></li>
       <li><a href="#skills" data-i18n="nav_skills">Skills</a></li>
       <li><a href="#experience" data-i18n="nav_experience">Experience</a></li>
+      <li><a href="#about" data-i18n="nav_about">About</a></li>
       <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
     </ul>
     <div class="nav-r">
@@ -58,35 +67,21 @@
       <li><a href="#work" data-i18n="nav_work">Projects</a></li>
       <li><a href="#skills" data-i18n="nav_skills">Skills</a></li>
       <li><a href="#experience" data-i18n="nav_experience">Experience</a></li>
+      <li><a href="#about" data-i18n="nav_about">About</a></li>
       <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
     </ul>
     <div class="drawer-soc" id="drawerSoc"></div>
   </div>
 
-  <!-- HERO -->
-  <header class="hero wrap" id="top">
-    <div class="hero-grid">
-      <div>
-        <div class="eyebrow rv"><span class="dot"></span><span id="heroStatus"></span></div>
-        <h1 class="rv" id="heroH1"></h1>
-        <p class="lead rv" id="heroBio"></p>
-        <div class="cta rv">
-          <a class="btn btn-pri" href="#work"><span data-i18n="view_work">View my work</span> <span aria-hidden="true">→</span></a>
-          <a class="btn btn-ghost" id="cvBtn" href="#" target="_blank" rel="noopener" hidden><span data-i18n="download_cv">View CV</span></a>
-          <a class="btn btn-ghost" href="#contact" id="ctaContact" data-i18n="contact_me">Contact me</a>
-        </div>
-        <div class="socials rv" id="heroSoc"></div>
-      </div>
-
-      <div class="card-wrap rv">
-        <div class="pcard now-card" id="pcard">
-          <img class="now-ava" id="pcImg" src="" alt="" />
-          <div class="now-rows" id="pcRows"></div>
-        </div>
-      </div>
+  <!-- HERO: NIX logo intro (assets/js/intro.js) -->
+  <header class="hx" id="top">
+    <h1 class="sr">Tran Van Tien [NIX] — Unity Game Developer</h1>
+    <div class="hx-stage"><canvas id="hxIntro" aria-hidden="true"></canvas></div>
+    <div class="hx-sub" aria-hidden="true">
+      <p class="hx-word">Portfolio</p>
+      <div class="hx-skills"><div class="hx-track" id="hxSkills"></div></div>
     </div>
-
-    <div class="strip rv" id="strip"></div>
+    <a class="hx-down" href="#work" aria-label="Scroll to projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a>
   </header>
 
   <main class="wrap">
@@ -108,6 +103,30 @@
     <section id="experience">
       <div class="sh rv"><h2 data-i18n="exp_t">Experience</h2></div>
       <div class="tl" id="timeline"></div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="sh rv"><h2 data-i18n="about_t">About me</h2></div>
+      <div class="ab">
+        <div class="card-wrap rv">
+          <div class="pcard now-card" id="pcard">
+            <img class="now-ava" id="pcImg" src="" alt="" />
+            <div class="now-rows" id="pcRows"></div>
+          </div>
+        </div>
+        <div>
+          <div class="ab-h rv" id="heroH1"></div>
+          <div class="eyebrow rv"><span class="dot"></span><span id="heroStatus"></span></div>
+          <p class="lead rv" id="heroBio"></p>
+          <div class="cta rv">
+            <a class="btn btn-pri" id="cvBtn" href="#" target="_blank" rel="noopener" hidden><span data-i18n="download_cv">View CV</span></a>
+            <a class="btn btn-ghost" href="#contact" id="ctaContact" data-i18n="contact_me">Contact me</a>
+          </div>
+          <div class="socials rv" id="heroSoc"></div>
+        </div>
+      </div>
+      <div class="strip rv" id="strip"></div>
     </section>
 
     <!-- CONTACT -->
@@ -142,6 +161,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <script src="assets/js/intro.js"></script>
   <script src="assets/js/main.js"></script>
   <script src="assets/js/cursor.js"></script>
 </body>

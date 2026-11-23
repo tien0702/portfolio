@@ -317,6 +317,10 @@ function renderHero() {
   $('ctaContact').hidden = !!p.cv;
   $('heroSoc').innerHTML = socialHTML();
   renderNowCard(p, name);
+  // hero ticker under "PORTFOLIO": every skill in Database/skills.md, written twice so the loop is seamless
+  var sk = SKILLS.reduce(function (a, g) { return a.concat(g.items); }, []);
+  $('hxSkills').style.setProperty('--n', sk.length);
+  $('hxSkills').innerHTML = (sk.map(function (s) { return '<span>' + esc(s) + '</span>'; }).join('')).repeat(2);
   $('strip').innerHTML = (p.stats || []).map(function (s) {
     var m = String(s.value).match(/^(\d+(?:\.\d+)?)(.*)$/); // "2.5+" → 2.5 counts up, "+" stays as suffix
     var val = m ? '<span data-to="' + m[1] + '">' + m[1] + '</span><em>' + esc(m[2]) + '</em>' : esc(s.value);
@@ -726,6 +730,7 @@ function warpLoader(ld) {
   var cv = $('ldWarp'), ctx = cv.getContext('2d'), pct = $('ldPct');
   var W = 0, H = 0, stars = [], speed = 0, target = 2, raf = 0, running = false;
   var fromNav = ld.classList.contains('nav'); // arrived from another page of this site → no intro
+  var hxMode = ld.classList.contains('hx-mode'); // home, first visit: the hero plays the logo intro instead (heroIntro)
   try { sessionStorage.removeItem('nix-warp'); } catch (e) {}
   function resize() {
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -753,13 +758,13 @@ function warpLoader(ld) {
   function stop() { running = false; cancelAnimationFrame(raf); removeEventListener('resize', resize); }
   for (var i = 0; i < 420; i++) stars.push({ x: Math.random() * 2 - 1, y: Math.random() * 2 - 1, z: Math.random() });
   // intro: stars accelerate from rest (CSS fades the canvas + logo in); via in-site nav they're already at speed
-  start(fromNav ? 10 : 0, fromNav ? 10 : 2);
+  if (!hxMode) start(fromNav ? 10 : 0, fromNav ? 10 : 2);
 
   return {
     progress: function (v) { target = 2 + v * 14; pct.textContent = Math.round(v * 100) + '%'; },
     // reveal the page: boost → fade out with a soft glow while the page scales in
     exit: function (onDone) {
-      if (REDUCED) { ld.className = 'done'; stop(); if (onDone) onDone(); return; }
+      if (REDUCED || hxMode) { ld.className = 'done'; stop(); if (onDone) onDone(); return; }
       target = 40; ld.classList.add('boost');
       setTimeout(function () { ld.classList.add('out'); document.body.classList.add('page-in'); }, LD_TIME.boost);
       setTimeout(function () { ld.className = 'done'; stop(); if (onDone) onDone(); }, LD_TIME.boost + LD_TIME.reveal);
@@ -781,6 +786,40 @@ function warpLoader(ld) {
     },
     stop: stop
   };
+}
+
+// ══════════════════════════════
+// HERO — the NIX logo intro (assets/js/intro.js) on the site background.
+// First visit: lines fly in → the grid and glow build up → logo forms → nav slides in.
+// Any other arrival (warp loader covered the load): the logo is shown already formed.
+// ══════════════════════════════
+var INTRO_REVEAL = 1.35; // s — the logo has formed: nav + the rest of the hero come in
+function heroIntro(play) {
+  var cv = $('hxIntro'), B = document.body;
+  function finish() { B.classList.remove('ix-run', 'ix-0', 'ix-dark'); }
+  if (!window.NixIntro) { finish(); return; }
+  NixIntro.create(cv).then(function (it) {
+    function place() { $('top').style.setProperty('--hx-bottom', it.bottom() + 'px'); } // "PORTFOLIO" sits under the logo
+    place();
+    var rt;
+    addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { it.resize(); place(); }, 120); });
+    var busy = false; // the logo fades as the hero scrolls away
+    addEventListener('scroll', function () {
+      if (busy) return; busy = true;
+      requestAnimationFrame(function () { B.style.setProperty('--sp', Math.min(1, scrollY / (innerHeight * .8)).toFixed(3)); busy = false; });
+    }, { passive: true });
+    if (!play) { it.skip(); finish(); return; }
+    it.play(function (t) {
+      if (!B.classList.contains('ix-run')) return;
+      if (t > .05) B.classList.remove('ix-0');      // grid fades in with the first lines
+      if (t > .5) B.classList.remove('ix-dark');    // glow blooms as the logo starts to form
+      if (t > INTRO_REVEAL) finish();               // logo formed → nav, PORTFOLIO, skills, arrow
+    });
+    // click / scroll / any key skips the intro
+    function skip() { if (B.classList.contains('ix-run')) { it.skip(); finish(); } }
+    $('top').addEventListener('click', skip);
+    ['keydown', 'wheel', 'touchmove'].forEach(function (ev) { addEventListener(ev, skip, { passive: true }); });
+  }, finish);
 }
 
 // In-site links (home ↔ project pages) play the warp cover before leaving the page.
@@ -806,6 +845,7 @@ function bindPageTransitions(warp) {
 function boot() {
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   var ld = $('loader'), warp = warpLoader(ld), got = 0, total = 4, t0 = Date.now();
+  if ($('hxIntro')) heroIntro(ld.classList.contains('hx-mode')); // the hero needs no data → starts right away
   try { var saved = localStorage.getItem('nix-lang'); if (saved === 'en' || saved === 'vi') lang = saved; else throw 0; }
   catch (e) { lang = (navigator.language || 'en').toLowerCase().indexOf('vi') === 0 ? 'vi' : 'en'; }
   function tick(v) { got++; warp.progress(Math.min(got / total, 1)); return v; }
