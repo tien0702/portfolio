@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hero Intro — Preview</title>
+<link rel="icon" type="image/png" href="../../assets/logo/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../assets/css/style.css" />
+<style>
+/* ── preview-only ── */
+.pv-bar{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:150;display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:.66rem;color:var(--gold);background:rgba(14,19,29,.95);border:1px dashed rgba(255,213,79,.45);padding:6px 8px 6px 14px;border-radius:10px;max-width:calc(100% - 32px)}
+.pv-bar button{font-family:var(--mono);font-size:.66rem;color:#001318;background:var(--gold);padding:5px 10px;border-radius:7px;font-weight:700;white-space:nowrap}
+.pv-stub{border:1px dashed var(--line2);border-radius:20px;padding:34px 24px;text-align:center;font-family:var(--mono);font-size:.75rem;color:var(--dim)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ── "transition before": the page background builds up with the intro ── */
+.bg-grid{transition:opacity 1.2s ease-out}
+body.ix-0 .bg-grid{opacity:0}
+.ix-glow{position:fixed;left:50%;top:50%;width:min(900px,120vw);aspect-ratio:1;z-index:-1;pointer-events:none;
+  transform:translate(-50%,-50%) scale(.2);opacity:0;
+  background:radial-gradient(closest-side,rgba(0,229,255,.16),rgba(124,77,255,.07) 55%,transparent);
+  transition:transform 1.6s var(--ease),opacity 1.2s ease-out}
+body.ix-glow-on .ix-glow{transform:translate(-50%,-50%) scale(1);opacity:1}
+body.ix-done .ix-glow{transform:translate(-50%,calc(-50% + var(--dy))) scale(1)}
+
+nav{transition:transform .8s var(--ease),opacity .6s,background .3s,border-color .3s,box-shadow .3s}
+body:not(.ix-done) nav{transform:translateY(-110%);opacity:0}
+
+/* ── HERO ── */
+.hx{position:relative;height:100vh;height:100svh;min-height:520px;overflow:hidden}
+.hx-stage{position:absolute;inset:0;transform-origin:50% 50%;
+  transform:translateY(calc(var(--dy,0px) * var(--on,0) - var(--sp,0) * 60px)) scale(calc(1 - (1 - var(--k,1)) * var(--on,0)));
+  opacity:calc(1 - var(--sp,0));transition:transform 1.1s var(--ease)}
+body.ix-done .hx-stage{--on:1}
+body.scrolling .hx-stage{transition:none}
+#ix{display:block;width:100%;height:100%}
+.hx-scroll{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);display:grid;justify-items:center;gap:8px;font-family:var(--mono);font-size:.58rem;letter-spacing:.3em;color:var(--dim);opacity:0;transition:opacity .8s .6s}
+body.ix-done .hx-scroll{opacity:calc(1 - var(--sp,0) * 3)}
+.hx-scroll i{width:1px;height:34px;background:linear-gradient(var(--cyan),transparent);animation:drip 1.8s ease-in-out infinite;transform-origin:top}
+@keyframes drip{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+.hx-skip{position:absolute;right:20px;bottom:22px;font-family:var(--mono);font-size:.6rem;letter-spacing:.2em;color:var(--dim);padding:6px 10px;border:1px solid var(--line);border-radius:8px;transition:opacity .4s,color .2s}
+.hx-skip:hover{color:var(--bright)}
+body.ix-done .hx-skip{opacity:0;pointer-events:none}
+
+/* ── ABOUT (avatar, links, stats moved down from the hero) ── */
+.ab{display:grid;grid-template-columns:minmax(240px,.7fr) 1.3fr;gap:clamp(28px,5vw,64px);align-items:center}
+.ab-name{font-size:clamp(1.9rem,4.4vw,3.1rem);font-weight:900;line-height:1.05;letter-spacing:-.03em;color:var(--bright)}
+.ab-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:14px 0 4px}
+.ab-tag{font-family:var(--mono);font-size:.85rem;font-weight:700;letter-spacing:.12em;color:var(--cyan);padding:4px 10px;border:1px solid rgba(0,229,255,.45);border-radius:8px;background:rgba(0,229,255,.07)}
+.ab-sub{font-family:var(--mono);font-size:.72rem;letter-spacing:.26em;text-transform:uppercase;color:var(--dim)}
+.ab-status{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text);margin-top:18px}
+.ab-status .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0}
+.ab .lead{margin:16px 0 24px;max-width:600px;color:var(--text);font-size:1.02rem}
+#about .strip{margin-top:48px;grid-template-columns:repeat(3,1fr)}
+#about .pcard{max-width:360px}
+@media (max-width:860px){
+  .ab{grid-template-columns:1fr}
+  #about .pcard{max-width:320px;margin:0 auto}
+  #about .strip{grid-template-columns:1fr}
+  #about .strip div{border-right:0;border-bottom:1px solid var(--line)}
+  #about .strip div:last-child{border-bottom:0}
+  .links{display:none}
+}
+@media (prefers-reduced-motion:reduce){.hx-stage,.ix-glow,nav{transition:none!important}}
+</style>
+</head>
+<body class="ix-0">
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="ix-glow" aria-hidden="true"></div>
+
+<nav class="scrolled" id="nav">
+  <a class="logo" href="#top"><img src="../../assets/logo/favicon.png" alt="" /><span><b>[</b>NIX<b>]</b></span></a>
+  <ul class="links">
+    <li><a href="#work">Featured Projects</a></li>
+    <li><a href="#showcase">Showcase</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-r"><a class="btn btn-pri btn-sm" href="#contact">Hire me</a></div>
+</nav>
+
+<!-- HERO: logo intro only -->
+<header class="hx" id="top">
+  <h1 class="sr">Tran Van Tien [NIX] — Unity Game Developer</h1>
+  <div class="hx-stage" id="stage"><canvas id="ix" aria-hidden="true"></canvas></div>
+  <div class="hx-scroll" aria-hidden="true">SCROLL<i></i></div>
+  <button class="hx-skip" id="skip" type="button">SKIP ›</button>
+</header>
+
+<main class="wrap">
+  <section id="work"><div class="sh"><h2>Featured Projects</h2></div><div class="pv-stub">Featured Projects (unchanged)</div></section>
+  <section id="showcase"><div class="sh"><h2>Showcase</h2></div><div class="pv-stub">Showcase carousel — preview/showcase.html</div></section>
+  <section id="skills"><div class="sh"><h2>Skills</h2></div><div class="pv-stub">Skills · Reusable packages (unchanged)</div></section>
+  <section id="experience"><div class="sh"><h2>Experience</h2></div><div class="pv-stub">Experience timeline (unchanged)</div></section>
+
+  <!-- ABOUT: everything that used to sit in the hero -->
+  <section id="about">
+    <div class="sh"><div><div class="sh-k">// ABOUT</div><h2>About me</h2></div></div>
+    <div class="ab">
+      <div class="pcard now-card">
+        <img class="now-ava" src="../../assets/images/avt.jpg" alt="Tran Van Tien" />
+        <div class="now-rows">
+          <div><span>Open to</span><b>Unity Developer · Freelancer · Trainer</b></div>
+          <div><span>Based in</span><b>Ha Noi City, VN</b></div>
+        </div>
+      </div>
+      <div>
+        <div class="ab-name">Tran Van Tien</div>
+        <div class="ab-meta"><span class="ab-tag">[NIX]</span><span class="ab-sub">Unity Game Developer</span></div>
+        <div class="ab-status"><span class="dot"></span>Not taking new work right now</div>
+        <p class="lead">2.5+ years shipping casual mobile games in Unity — 80M+ downloads. Led teams of 4–10+; part-time game development instructor at VTC Academy since 2024 (50+ students).</p>
+        <div class="cta">
+          <a class="btn btn-pri" href="https://drive.google.com/drive/folders/1DzDeKy8Mhjfpp6RXvTxVrB44fruPhYPI?usp=sharing" target="_blank" rel="noopener">View CV</a>
+          <a class="btn btn-ghost" href="#contact">Contact me</a>
+        </div>
+        <div class="socials" id="soc"></div>
+      </div>
+    </div>
+    <div class="strip">
+      <div><b>10<em>+</em></b><span>Projects shipped</span></div>
+      <div><b>2.5<em>+</em></b><span>Years in game dev</span></div>
+      <div><b>80M<em>+</em></b><span>Total downloads</span></div>
+    </div>
+  </section>
+
+  <section id="contact" style="padding-bottom:140px"><div class="sh"><h2>Contact</h2></div><div class="pv-stub">Contact + services (unchanged)</div></section>
+</main>
+
+<div class="pv-bar">PREVIEW · logo intro on the site background · click / scroll / any key skips <button type="button" id="replay">↻ Replay</button></div>
+
+<script src="intro.js"></script>
+<script>
+/* social icons: copied from assets/js/main.js (IC) */
+var IC = {
+  email: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>',
+  linkedin: '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/></svg>',
+  blog: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+  itchio: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3.13 1.338C2.08 1.96.02 4.328 0 4.95v1.03c0 1.303 1.22 2.45 2.325 2.45 1.33 0 2.436-1.102 2.436-2.41 0 1.308 1.07 2.41 2.4 2.41 1.328 0 2.362-1.102 2.362-2.41 0 1.308 1.104 2.41 2.432 2.41h.024c1.33 0 2.432-1.102 2.432-2.41 0 1.308 1.034 2.41 2.363 2.41 1.33 0 2.4-1.102 2.4-2.41 0 1.308 1.105 2.41 2.435 2.41C22.78 8.43 24 7.282 24 5.98V4.95c-.02-.622-2.08-2.99-3.13-3.612C19.948 1 12.588 1 12 1c-.588 0-7.948 0-8.87.338z"/></svg>'
+};
+var SOC = [
+  { k: 'email', label: 'Email', href: 'mailto:' + ['tientv.0702', 'gmail.com'].join('@') },
+  { k: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/ti%E1%BA%BFn-tr%E1%BA%A7n-a675a8223/' },
+  { k: 'blog', label: 'Blog', href: 'https://tien0702.github.io/nix-blog/' },
+  { k: 'itchio', label: 'itch.io', href: 'https://tiennix.itch.io/' }
+];
+document.getElementById('soc').innerHTML = SOC.map(function (s) {
+  return '<a href="' + s.href + '"' + (s.k !== 'email' ? ' target="_blank" rel="noopener"' : '') + ' aria-label="' + s.label + '" data-label="' + s.label + '">' + IC[s.k] + '</a>';
+}).join('');
+
+/* ── intro choreography ── */
+var B = document.body, hero = document.querySelector('.hx');
+var REVEAL = 1.35;                       // s — logo is formed; start moving it up and bring in the page
+var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function scale() { return innerWidth < innerHeight ? .46 : .36; }
+
+// after the reveal the logo stays centred and settles slightly smaller
+function place() {
+  hero.style.setProperty('--k', .9);
+  hero.style.setProperty('--dy', '0px');
+  B.style.setProperty('--dy', '0px');
+}
+
+function onTime(t) {
+  if (t > .05) B.classList.remove('ix-0');
+  if (t > .5) B.classList.add('ix-glow-on');
+  if (t > REVEAL) B.classList.add('ix-done');
+}
+function start() {
+  B.classList.add('ix-0'); B.classList.remove('ix-glow-on', 'ix-done');
+  scrollTo(0, 0);
+  if (reduced) { NixIntro.skip(); return; }
+  NixIntro.play(onTime);
+}
+function skip() { if (!B.classList.contains('ix-done')) NixIntro.skip(); }
+
+NixIntro.mount(document.getElementById('ix'), { logoScale: scale() }).then(function () {
+  place(); start();
+});
+
+document.getElementById('skip').addEventListener('click', skip);
+document.getElementById('replay').addEventListener('click', start);
+hero.addEventListener('click', function (e) { if (!e.target.closest('a,button')) skip(); });
+addEventListener('keydown', skip);
+addEventListener('wheel', skip, { passive: true });
+addEventListener('touchmove', skip, { passive: true });
+
+/* hero fades away as you scroll */
+var tick = false;
+addEventListener('scroll', function () {
+  if (tick) return; tick = true;
+  requestAnimationFrame(function () {
+    var p = Math.min(1, scrollY / (innerHeight * .8));
+    B.style.setProperty('--sp', p.toFixed(3));
+    B.classList.toggle('scrolling', scrollY > 2);
+    tick = false;
+  });
+}, { passive: true });
+
+var rt;
+addEventListener('resize', function () {
+  clearTimeout(rt);
+  rt = setTimeout(function () { NixIntro.layout({ logoScale: scale() }); place(); }, 120);
+});
+</script>
+</body>
+</html>
