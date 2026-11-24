@@ -51,3 +51,5 @@ File paths are relative to the project folder (e.g. `images/screenshot-1.jpg`); 
 | `results` | `[{ "value": "70M+", "label": {…} }]` | |
 | `screenshots` | `["images/screenshot-1.jpg", { "src": "images/screenshot-2.jpg", "caption": {…} }]` | portrait or landscape |
 | `placeholder` | `true` | shows a "sample data" badge — remove once the content is real |
+| `category` | `"other"` | shows the project in Showcase › **Other Projects** instead of the Projects list. Its page is a short version: hero, video, stats (team, duration, engine, platform, year), overview and gallery — roles, learned, challenges and results are not shown. Studio: tick "Là Other Project" |
+| `links` | `{ "play": "https://…itch.io/…", "source": "https://github.com/…" }` | optional extra buttons ("Play", "Source"), e.g. for web builds and game jams |

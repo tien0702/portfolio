@@ -1,0 +1,112 @@
+{
+  "publish": true,
+  "kind": "tool",
+  "accentColor": "#00e5ff",
+  "glyph": "◎",
+  "title": "UIMotionKit · Motion Studio",
+  "tagline": {
+    "en": "Data-driven UGUI motion with a timeline editor that previews on the real objects, no Play Mode.",
+    "vi": "Motion UGUI theo dữ liệu với timeline editor preview ngay trên object thật, không cần Play Mode."
+  },
+  "focus": {
+    "en": "A timeline tool and a zero-allocation runtime: popup and screen motion becomes reusable assets instead of one-off tween code.",
+    "vi": "Một công cụ timeline và runtime không cấp phát bộ nhớ: motion của popup, màn hình thành asset dùng lại thay vì code tween viết một lần."
+  },
+  "overview": {
+    "en": "UIMotionKit stores a view's whole motion — named slots and states like In, Out and Idle, each a list of timed elements and events — in one asset that travels between games. A MotionView binds it to the view's RectTransforms. Motion Studio edits it on a timeline while the Scene and Game views preview the real objects.",
+    "vi": "UIMotionKit lưu toàn bộ motion của một view — các slot và state như In, Out, Idle, mỗi state là danh sách element có thời gian và event — vào một asset mang được giữa các game. MotionView gắn nó vào RectTransform của view. Motion Studio chỉnh trên timeline trong khi Scene và Game view preview object thật."
+  },
+  "features": {
+    "en": [
+      "Timeline with drag / trim, magnet snapping and one Undo step per edit",
+      "Channels: position, scale, rotation, alpha, size, color, fill, punch, shake — DOTween eases or custom curves",
+      "Out can mirror In; elements chain with After / With timing and stagger across children",
+      "Shared Motion SOs: one title motion used by every popup, edited once",
+      "Compiled once into flat arrays, one ticker for all motions, no allocation while playing",
+      "Fluent runtime: motionView.PlayIn().OnEvent(\"sfx_open\", …).OnComplete(…)"
+    ],
+    "vi": [
+      "Timeline kéo / cắt, magnet snap, mỗi lần sửa là một bước Undo",
+      "Channel: position, scale, rotation, alpha, size, color, fill, punch, shake — ease DOTween hoặc curve tuỳ chỉnh",
+      "Out có thể mirror In; element nối nhau bằng After / With và stagger theo các con",
+      "Motion SO dùng chung: một motion tiêu đề cho mọi popup, sửa một lần",
+      "Biên dịch một lần thành mảng phẳng, một ticker cho mọi motion, không cấp phát khi chạy",
+      "Runtime fluent: motionView.PlayIn().OnEvent(\"sfx_open\", …).OnComplete(…)"
+    ]
+  },
+  "tech": [
+    "Unity Editor",
+    "C#",
+    "UGUI",
+    "UI Toolkit",
+    "DOTween"
+  ],
+  "links": {},
+  "access": "internal",
+  "poster": "images/studio.webp",
+  "screenshots": [
+    {
+      "src": "images/studio.webp",
+      "caption": {
+        "en": "Motion Studio — timeline of the reward popup with events, previewing the real scene",
+        "vi": "Motion Studio — timeline popup phần thưởng có event, preview ngay trên scene"
+      }
+    },
+    {
+      "src": "images/insp-motion-view.webp",
+      "caption": {
+        "en": "MotionView inspector — states, scrub bar and mini timeline, slot bindings",
+        "vi": "Inspector MotionView — state, thanh scrub, mini timeline và gán slot"
+      }
+    },
+    {
+      "src": "images/insp-motion-sequence.webp",
+      "caption": {
+        "en": "Motion Sequence asset — slots, In / Out (mirror) / Idle states",
+        "vi": "Asset Motion Sequence — slot, state In / Out (mirror) / Idle"
+      }
+    },
+    {
+      "src": "images/insp-motion-clip.webp",
+      "caption": {
+        "en": "Motion Clip asset — a shared element motion with its In and Out parts",
+        "vi": "Asset Motion Clip — motion dùng chung với phần In và Out"
+      }
+    }
+  ],
+  "api": [
+    {
+      "title": {
+        "en": "Play states, react to events",
+        "vi": "Phát state, nghe event"
+      },
+      "note": {
+        "en": "Motion authored in Motion Studio plays from one line; named events time sounds and input.",
+        "vi": "Motion dựng trong Motion Studio chạy bằng một dòng; event có tên canh thời điểm cho âm thanh và input."
+      },
+      "code": "motionView.PlayIn()\n    .OnEvent(\"sfx_open\", () => AudioPlayer.Instance.Play(openClip))\n    .OnEvent(\"interactable\", EnableInput)\n    .OnComplete(OnShown);"
+    },
+    {
+      "title": {
+        "en": "Loops and async",
+        "vi": "Loop và async"
+      },
+      "note": {
+        "en": "Any state can loop; Out can be awaited with a cancellation token.",
+        "vi": "State nào cũng loop được; Out có thể await kèm cancellation token."
+      },
+      "code": "motionView.Play(\"Idle\").SetLoops(-1);\nawait motionView.PlayOut().WaitAsync(destroyCancellationToken);"
+    },
+    {
+      "title": {
+        "en": "Motion from code",
+        "vi": "Dựng motion bằng code"
+      },
+      "note": {
+        "en": "One shared Motion SO on any RectTransform, or a motion built in code — no MotionView needed.",
+        "vi": "Một Motion SO dùng chung cho RectTransform bất kỳ, hoặc motion dựng bằng code — không cần MotionView."
+      },
+      "code": "rewardIcon.PlayMotion(rewardPopClip).SetSpeed(1.5f);\n\nvar pop = MotionClipData.Build().Scale(0.6f, 0.35f).With().Fade(0f, 0.2f).Create();\nicon.PlayMotion(pop);"
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 {
-  "publish": false,
+  "publish": true,
+  "category": "other",
   "title": "Find The Capy: Spot It!",
   "studio": "Champion Game Studio",
   "accentColor": "#ce93d8",

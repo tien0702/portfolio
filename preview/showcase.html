@@ -13,19 +13,47 @@
 .pv-bar{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:150;font-family:var(--mono);font-size:.66rem;color:var(--gold);background:rgba(14,19,29,.95);border:1px dashed rgba(255,213,79,.45);padding:7px 14px;border-radius:10px;max-width:calc(100% - 32px);text-align:center}
 .pv-stub{border:1px dashed var(--line2);border-radius:20px;padding:40px 24px;text-align:center;font-family:var(--mono);font-size:.75rem;color:var(--dim)}
 
+/* ── Section headers: UPPERCASE, biggest level (section > group > item) ── */
+main>section>.sh{margin-bottom:48px}
+main>section>.sh h2{position:relative;font-size:clamp(2.4rem,5.5vw,3.8rem);font-weight:900;text-transform:uppercase;letter-spacing:.01em;line-height:1;padding-bottom:16px}
+main>section>.sh h2::after{content:'';position:absolute;left:0;bottom:0;width:72px;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--cyan),var(--purple),var(--pink));box-shadow:0 0 14px rgba(0,229,255,.45)}
+main>section+section{margin-top:40px}
+
 /* ── SHOWCASE ── */
 #showcase{position:relative}
+.sc-group{scroll-margin-top:80px}
 .sc-group+.sc-group{margin-top:96px}
+
+/* ── Showcase dropdown in the nav ── */
+.links{align-items:center}
+.links>li>a{display:block}
+.links .dd{position:relative}
+.links .dd-btn{display:flex;align-items:center;gap:6px}
+.dd-btn svg{width:12px;height:12px;transition:transform .25s var(--ease)}
+.dd.open .dd-btn svg{transform:rotate(180deg)}
+.dd-panel{position:absolute;top:calc(100% + 14px);left:50%;width:min(720px,calc(100vw - 32px));transform:translate(-50%,-6px);
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:12px;border-radius:16px;
+  background:rgba(12,16,24,.97);border:1px solid var(--line2);border-top-color:rgba(0,229,255,.45);box-shadow:0 30px 70px rgba(0,0,0,.6);
+  opacity:0;visibility:hidden;transition:opacity .2s,transform .25s var(--ease),visibility .2s}
+.dd-panel::before{content:'';position:absolute;top:-7px;left:50%;width:12px;height:12px;margin-left:-6px;transform:rotate(45deg);background:rgba(12,16,24,.97);border-left:1px solid rgba(0,229,255,.45);border-top:1px solid rgba(0,229,255,.45)}
+.dd-panel::after{content:'';position:absolute;left:0;right:0;top:-16px;height:16px}/* hover bridge */
+.dd.open .dd-panel{opacity:1;visibility:visible;transform:translate(-50%,0)}
+.links .dd-panel a{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:var(--card2);border:1px solid var(--line);color:var(--text)}
+.links .dd-panel a:hover{background:var(--card2);border-color:var(--cyan)}
+.links .dd-panel a::after{display:none}
+.dd-ic{flex:none;width:42px;height:42px;display:grid;place-items:center;border-radius:10px;background:var(--bg);border:1px solid var(--line2);color:var(--cyan)}
+.dd-ic svg{width:20px;height:20px}
+.dd-panel b{display:block;color:var(--bright);font-size:.9rem;font-weight:800}
+.dd-panel small{display:block;color:var(--dim);font-size:.72rem;line-height:1.35;margin-top:2px}
 .sc-gh{display:flex;align-items:center;gap:18px;margin-bottom:24px}
 .sc-gh::before,.sc-gh::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--line2))}
 .sc-gh::after{transform:scaleX(-1)}
-.sc-gh h3{font-size:clamp(1.4rem,3vw,2rem);font-weight:900;color:var(--bright);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
-.sc-gh h3 i{font-style:normal;font-family:var(--mono);font-size:.62rem;font-weight:500;color:var(--pink);letter-spacing:.18em;margin-right:12px;vertical-align:middle}
+.sc-gh h3{font-size:clamp(1.5rem,3vw,2.1rem);font-weight:800;color:var(--bright);letter-spacing:-.02em;white-space:nowrap}
 
 /* Tools: one big block per tool */
 .sc-tool{max-width:1000px;margin:0 auto 80px;display:grid;justify-items:center;gap:22px}
 .sc-tool:last-child{margin-bottom:0}
-.sc-tool>h3{font-size:clamp(1.6rem,3.6vw,2.4rem);font-weight:900;color:var(--bright);letter-spacing:-.02em;text-transform:uppercase;text-align:center}
+.sc-tool>h3{font-size:clamp(1.3rem,2.4vw,1.6rem);font-weight:900;color:var(--bright);letter-spacing:-.02em;text-align:center}
 .sc-frame{position:relative;width:100%;padding:14px}
 .sc-frame::before,.sc-frame::after{content:'';position:absolute;top:0;width:34px;height:34px;border-top:3px solid var(--ac);pointer-events:none}
 .sc-frame::before{left:0;border-left:3px solid var(--ac)}
@@ -94,20 +122,19 @@ a.sc-gcard:hover{transform:translateY(-4px);border-color:var(--ac);box-shadow:0 
 .sc-lock{font-family:var(--mono);font-size:.66rem;color:var(--dim);display:inline-flex;align-items:center;gap:6px}
 
 .sc-dots{display:flex;justify-content:center;gap:8px;margin-top:28px}
-.sc-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px 14px}
-.sc-row .chips,.sc-row .sc-act{margin:0}
 
 /* Prototype carousel: card + info fit in one screen */
 #scProto .sc-gh{margin-bottom:8px}
-#scProto .sc-stage{--cw:min(720px,74vw,calc((100svh - 380px) * 16 / 9));height:calc(var(--cw) * 9 / 16 + 48px)}
+#scProto .sc-stage{--cw:min(720px,74vw,calc((100svh - 400px) * 16 / 9));height:calc(var(--cw) * 9 / 16 + 48px)}
 #scProto .sc-card{top:24px}
 #scProto .sc-nav{top:calc(24px + var(--cw) * 9 / 32)}
 #scProto .sc-info{gap:6px;margin-top:0}
 #scProto .sc-info h3{font-size:clamp(1.3rem,2.4vw,1.6rem)}
 #scProto .sc-tag{font-size:.92rem}
 #scProto .sc-focus{font-size:.8rem}
-#scProto .sc-row{margin-top:6px}
-#scProto .sc-dots{margin-top:14px}
+#scProto .sc-info .chips{margin-top:4px}
+#scProto .sc-act{margin-top:6px}
+#scProto .sc-dots{margin:0 0 12px}
 .sc-dots button{width:30px;height:4px;border-radius:2px;background:var(--line2);transition:background .3s,width .4s var(--ease)}
 .sc-dots button.on{width:46px;background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
 
@@ -129,7 +156,14 @@ a.sc-gcard:hover{transform:translateY(-4px);border-color:var(--ac);box-shadow:0 
   <a class="logo" href="#top"><img src="../assets/logo/favicon.png" alt="" /><span><b>[</b>NIX<b>]</b></span></a>
   <ul class="links">
     <li><a href="#work" data-k="nav_work"></a></li>
-    <li><a href="#showcase" class="on" data-k="nav_sc"></a></li>
+    <li class="dd" id="dd">
+      <a href="#showcase" class="on dd-btn" aria-haspopup="true" aria-expanded="false"><span data-k="nav_sc"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></a>
+      <div class="dd-panel">
+        <a href="#scProto"><span class="dd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6L4.5 18.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3"/><path d="M7 15h10"/></svg></span><span><b data-k="g_prototype"></b><small data-k="dd_prototype"></small></span></a>
+        <a href="#scToolsG"><span class="dd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0 5 5L21 13l-8 8-3-3 1.3-1.3a4 4 0 0 0-5-5L3 10l8-8z"/></svg></span><span><b data-k="g_tool"></b><small data-k="dd_tool"></small></span></a>
+        <a href="#scOtherG"><span class="dd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span><span><b data-k="g_other"></b><small data-k="dd_other"></small></span></a>
+      </div>
+    </li>
     <li><a href="#about" data-k="nav_about"></a></li>
     <li><a href="#contact" data-k="nav_contact"></a></li>
   </ul>
@@ -146,26 +180,25 @@ a.sc-gcard:hover{transform:translateY(-4px);border-color:var(--ac);box-shadow:0 
   <!-- SHOWCASE -->
   <section id="showcase" aria-roledescription="carousel">
     <div class="sh">
-      <div><div class="sh-k">// SHOWCASE</div><h2>Showcase</h2></div>
-      <p data-k="sc_d"></p>
+      <h2>Showcase</h2>
     </div>
     <div class="sc-group" id="scProto">
-    <div class="sc-gh"><h3><i>01</i><span data-k="g_prototype"></span></h3></div>
+    <div class="sc-gh"><h3><span data-k="g_prototype"></span></h3></div>
     <div class="sc-stage" id="scStage">
       <div class="sc-glow" id="scGlow"></div>
       <div class="sc-track" id="scTrack"></div>
       <button class="sc-nav sc-prev" id="scPrev" type="button" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 6l-6 6 6 6M19 6l-6 6 6 6"/></svg></button>
       <button class="sc-nav sc-next" id="scNext" type="button" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 6l6 6-6 6M5 6l6 6-6 6"/></svg></button>
     </div>
-    <div class="sc-info" id="scInfo" aria-live="polite"></div>
     <div class="sc-dots" id="scDots"></div>
+    <div class="sc-info" id="scInfo" aria-live="polite"></div>
     </div>
-    <div class="sc-group">
-      <div class="sc-gh"><h3><i>02</i><span data-k="g_tool"></span></h3></div>
+    <div class="sc-group" id="scToolsG">
+      <div class="sc-gh"><h3><span data-k="g_tool"></span></h3></div>
       <div id="scTools"></div>
     </div>
-    <div class="sc-group">
-      <div class="sc-gh"><h3><i>03</i><span data-k="g_other"></span></h3></div>
+    <div class="sc-group" id="scOtherG">
+      <div class="sc-gh"><h3><span data-k="g_other"></span></h3></div>
       <div class="sc-grid" id="scOther"></div>
     </div>
   </section>
@@ -197,10 +230,12 @@ var UI = {
   stub: { en: '↑ the current shipped-game list stays here, unchanged', vi: '↑ danh sách game đã ship hiện tại giữ nguyên ở đây' },
   stub2: { en: 'Skills · Reusable packages · Experience (merged into About)', vi: 'Kỹ năng · Reusable packages · Kinh nghiệm (gộp vào About)' },
   stub3: { en: 'Contact (unchanged)', vi: 'Liên hệ (giữ nguyên)' },
-  sc_d: { en: 'Tools I built and use in real production, plus prototypes and technical experiments.', vi: 'Các tool tôi tự build và dùng trong sản xuất thật, cùng prototype và thử nghiệm kỹ thuật.' },
   g_prototype: { en: 'Prototypes', vi: 'Prototype' },
   g_tool: { en: 'Tools', vi: 'Tool' },
   g_other: { en: 'Other Projects', vi: 'Dự án khác' },
+  dd_prototype: { en: 'Playable experiments & tech demos', vi: 'Thử nghiệm chơi được & tech demo' },
+  dd_tool: { en: 'Built and used in production', vi: 'Tự build và dùng thực tế' },
+  dd_other: { en: 'Side projects & game jams', vi: 'Dự án phụ & game jam' },
   s_tool: { en: 'Tool', vi: 'Tool' },
   s_prototype: { en: 'Prototype', vi: 'Prototype' },
   s_other: { en: 'Project', vi: 'Dự án' },
@@ -311,14 +346,14 @@ function info(it, noTitle) {
       ((it.usedIn || []).length ? '<div class="used"><span>' + t('used') + '</span>' + it.usedIn.map(function (u) { return '<em>' + esc(u) + '</em>'; }).join('') + '</div>' : '') +
       '</div>';
   }
-  return '<div class="sc-badges">' + (it.kind === 'tool' ? '<span class="prod"><span class="dot"></span>' + t('prod') + '</span>' : '') +
-      '<span>' + t('s_' + it.kind) + ' · ' + esc(it.year) + '</span></div>' +
+  return (it.kind === 'tool' ? '<div class="sc-badges"><span class="prod"><span class="dot"></span>' + t('prod') + '</span>' +
+      '<span>' + t('s_' + it.kind) + ' · ' + esc(it.year) + '</span></div>' : '') +
     (noTitle ? '' : '<h3>' + esc(it.title) + sample(it.placeholder) + '</h3>') +
     '<p class="sc-tag">' + esc(loc(it.tagline)) + '</p>' +
     '<p class="sc-focus"><b>' + t('focus') + '</b>' + esc(loc(it.focus)) + '</p>' +
     proof +
-    '<div class="sc-row"><div class="chips">' + (it.tech || []).map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div>' +
-    actions(it) + '</div>';
+    '<div class="chips">' + (it.tech || []).map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div>' +
+    actions(it);
 }
 
 function ofKind(k) { return ITEMS.filter(function (it) { return it.kind === k; }); }
@@ -417,6 +452,16 @@ document.addEventListener('keydown', function (e) {
   if (e.key === 'ArrowLeft') go(cur - 1);
   if (e.key === 'ArrowRight') go(cur + 1);
 });
+
+/* nav dropdown: hover on desktop, click/tap toggles, Esc or outside click closes */
+var dd = $('dd'), ddBtn = dd.querySelector('.dd-btn');
+function ddSet(on) { dd.classList.toggle('open', on); ddBtn.setAttribute('aria-expanded', on); }
+dd.addEventListener('mouseenter', function () { ddSet(true); });
+dd.addEventListener('mouseleave', function () { ddSet(false); });
+ddBtn.addEventListener('click', function (e) { e.preventDefault(); ddSet(!dd.classList.contains('open')); });
+dd.querySelector('.dd-panel').addEventListener('click', function () { ddSet(false); });
+document.addEventListener('click', function (e) { if (!dd.contains(e.target)) ddSet(false); });
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape') ddSet(false); });
 
 $('lang').addEventListener('click', function (e) {
   var b = e.target.closest('button'); if (!b) return;

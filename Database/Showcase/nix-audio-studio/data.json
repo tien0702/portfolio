@@ -1,0 +1,143 @@
+{
+  "publish": true,
+  "kind": "tool",
+  "accentColor": "#ffd54f",
+  "glyph": "♪",
+  "title": "NIX Audio · Audio Studio",
+  "tagline": {
+    "en": "Unity audio layer with per-clip metadata, markers and an in-editor studio for editing clips.",
+    "vi": "Lớp âm thanh cho Unity: metadata theo từng clip, marker và một studio trong editor để chỉnh clip."
+  },
+  "focus": {
+    "en": "Editor tooling + runtime API: game code passes only an AudioClip, everything else is data edited in Audio Studio.",
+    "vi": "Editor tooling + runtime API: code game chỉ truyền AudioClip, mọi thứ khác là dữ liệu chỉnh trong Audio Studio."
+  },
+  "overview": {
+    "en": "The Core audio unit of my NIX Framework. Clips are played by reference and the metadata — volume, random pitch, spatial blend, loop, mixer bus, max instances, cooldown and markers that fire events while the clip plays — is looked up automatically. Audio Studio is the editor for all of it: browse clips, place markers on the waveform, and trim, re-level or re-speed the audio files with backups.",
+    "vi": "Unit âm thanh Core trong NIX Framework của tôi. Clip được phát bằng tham chiếu, metadata — volume, pitch ngẫu nhiên, spatial blend, loop, mixer bus, giới hạn số instance, cooldown và marker bắn event trong lúc phát — được tra tự động. Audio Studio là trình chỉnh tất cả những thứ đó: duyệt clip, đặt marker trên waveform, cắt / chỉnh âm lượng / đổi tốc độ file âm thanh có backup."
+  },
+  "features": {
+    "en": [
+      "AudioPlayer with pooled voices, voice limit and stealing, BGM / SFX buses saved per player",
+      "Markers on the waveform that reach code as events: Play(clip).OnMarker(\"hit\", …)",
+      "Trim, gain / peak / LUFS normalize and speed change (resample or keep pitch) applied to the file, with automatic backups",
+      "Optional FFmpeg integration for LUFS, time-stretch and OGG / MP3 / FLAC output",
+      "Analysis: spectrum, waveform, frequency bands, BeatDetector and an AudioReactive component",
+      "Audio Debug window with Play Mode charts for voices, CPU, memory and markers"
+    ],
+    "vi": [
+      "AudioPlayer với pool voice, giới hạn và cướp voice, bus BGM / SFX lưu theo người chơi",
+      "Marker trên waveform đi thẳng vào code thành event: Play(clip).OnMarker(\"hit\", …)",
+      "Cắt, gain / normalize peak / LUFS và đổi tốc độ (resample hoặc giữ pitch) ghi thẳng vào file, có backup tự động",
+      "Tích hợp FFmpeg tuỳ chọn cho LUFS, time-stretch và xuất OGG / MP3 / FLAC",
+      "Phân tích: spectrum, waveform, dải tần, BeatDetector và component AudioReactive",
+      "Cửa sổ Audio Debug với biểu đồ voice, CPU, bộ nhớ và marker trong Play Mode"
+    ]
+  },
+  "tech": [
+    "Unity Editor",
+    "C#",
+    "UI Toolkit",
+    "FFmpeg"
+  ],
+  "links": {},
+  "access": "internal",
+  "poster": "images/studio.webp",
+  "screenshots": [
+    {
+      "src": "images/studio.webp",
+      "caption": {
+        "en": "Audio Studio — waveform, markers and per-clip metadata",
+        "vi": "Audio Studio — waveform, marker và metadata của từng clip"
+      }
+    },
+    {
+      "src": "images/audio-trim.webp",
+      "caption": {
+        "en": "Trim tab — cut the clip with fades; markers shift with it",
+        "vi": "Tab Trim — cắt clip có fade; marker dịch theo"
+      }
+    },
+    {
+      "src": "images/audio-volume.webp",
+      "caption": {
+        "en": "Volume tab — gain, peak and LUFS normalize",
+        "vi": "Tab Volume — gain, normalize peak và LUFS"
+      }
+    },
+    {
+      "src": "images/audio-speed.webp",
+      "caption": {
+        "en": "Speed tab — resample or keep pitch (time-stretch)",
+        "vi": "Tab Speed — resample hoặc giữ pitch (time-stretch)"
+      }
+    },
+    {
+      "src": "images/audio-integrations.webp",
+      "caption": {
+        "en": "Integrations tab — FFmpeg detection and the features it unlocks",
+        "vi": "Tab Integrations — dò FFmpeg và các tính năng nó mở khoá"
+      }
+    },
+    {
+      "src": "images/audio-debug.webp",
+      "caption": {
+        "en": "Audio Debug — voices, CPU, memory and markers recorded every frame in Play Mode",
+        "vi": "Audio Debug — voice, CPU, bộ nhớ và marker ghi lại từng frame trong Play Mode"
+      }
+    },
+    {
+      "src": "images/insp-audio-settings.webp",
+      "caption": {
+        "en": "Audio Studio settings asset in the Inspector",
+        "vi": "Asset cài đặt Audio Studio trong Inspector"
+      }
+    }
+  ],
+  "api": [
+    {
+      "title": {
+        "en": "Markers become events",
+        "vi": "Marker thành event"
+      },
+      "note": {
+        "en": "Markers placed on the waveform in Audio Studio reach code by name — sync VFX and gameplay to the exact moment in the sound.",
+        "vi": "Marker đặt trên waveform trong Audio Studio tới code theo tên — đồng bộ VFX và gameplay đúng khoảnh khắc trong âm thanh."
+      },
+      "code": "player.Play(swordSwing)\n    .OnMarker(\"windup\", OnWindupEvent)\n    .OnMarker(\"hit\", OnSwordHitEvent)\n    .OnComplete(OnSwingFinishedEvent);"
+    },
+    {
+      "title": {
+        "en": "One handle per playback",
+        "vi": "Mỗi lần phát một handle"
+      },
+      "note": {
+        "en": "Every Play returns a handle. Voices are pooled, so an old handle can never control a newer sound.",
+        "vi": "Mỗi lần Play trả về một handle. Voice được pool, nên handle cũ không bao giờ điều khiển nhầm âm thanh mới."
+      },
+      "code": "private AudioHandle _music;\n\n_music = player.Play(musicLoop).FadeIn(1.5f);\n_music.SetVolume(0.5f);\nif (_music.IsPlaying) _music.Stop(fadeOut: 2f);"
+    },
+    {
+      "title": {
+        "en": "Reactive to the music",
+        "vi": "Phản ứng theo nhạc"
+      },
+      "note": {
+        "en": "Frequency bands and a beat detector drive lights, camera punches or UI from what is actually playing.",
+        "vi": "Dải tần và bộ dò nhịp điều khiển ánh sáng, rung camera hay UI theo đúng thứ đang phát."
+      },
+      "code": "var bass = _music.GetBandLevel(AudioBand.BASS, -50f);   // 0..1\nif (_kickBeats.Process(_music.GetBand(AudioBand.KICK), Time.deltaTime))\n    PunchCamera();"
+    },
+    {
+      "title": {
+        "en": "Libraries and buses",
+        "vi": "Thư viện và bus"
+      },
+      "note": {
+        "en": "Metadata comes from reference-counted libraries; bus volumes are saved for the player.",
+        "vi": "Metadata đến từ thư viện có đếm tham chiếu; âm lượng bus được lưu cho người chơi."
+      },
+      "code": "player.Load(combatLibrary, preloadAudioData: true);\nplayer.SetBusVolume(AudioBus.MUSIC, 0.5f);\nplayer.Release(combatLibrary);"
+    }
+  ]
+}

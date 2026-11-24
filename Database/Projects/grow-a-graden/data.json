@@ -1,5 +1,6 @@
 {
-  "publish": false,
+  "publish": true,
+  "category": "other",
   "title": "Grow a Garden",
   "studio": "Champion Game Studio",
   "accentColor": "#ce93d8",

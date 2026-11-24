@@ -1,0 +1,104 @@
+{
+  "publish": true,
+  "kind": "tool",
+  "accentColor": "#ff9f43",
+  "glyph": "💾",
+  "title": "SaveSystem",
+  "tagline": {
+    "en": "Local saves as ScriptableObject-backed models with encryption, versioning, migrations and remote sync.",
+    "vi": "Lưu dữ liệu local bằng model dựa trên ScriptableObject, có mã hoá, versioning, migration và đồng bộ từ xa."
+  },
+  "focus": {
+    "en": "Data safety: an old save is upgraded step by step and backed up first, never silently wiped.",
+    "vi": "An toàn dữ liệu: save cũ được nâng cấp từng bước và backup trước, không bao giờ bị xoá âm thầm."
+  },
+  "overview": {
+    "en": "Each save model is one ScriptableObject asset with Save, SaveAsync, Load, Delete and Reset. A registry keyed by [SaveData(Key, Group)] lets the game fetch any data with SaveSystem.Get<T>() and load, save or reset whole groups at once. IDataMigration upgrades an old save to the current schema step by step, writing a backup before every migration and reporting failures instead of wiping data. RemoteSync keeps chosen data on a server the game supplies.",
+    "vi": "Mỗi model save là một asset ScriptableObject có Save, SaveAsync, Load, Delete và Reset. Registry theo [SaveData(Key, Group)] cho game lấy bất kỳ dữ liệu nào bằng SaveSystem.Get<T>() và load, save hay reset cả nhóm một lúc. IDataMigration nâng save cũ lên schema hiện tại từng bước, ghi backup trước mỗi lần migration và báo lỗi thay vì xoá dữ liệu. RemoteSync giữ dữ liệu được chọn trên server do game cung cấp."
+  },
+  "features": {
+    "en": [
+      "BaseDataTSO<T>: one asset per save model with Save / SaveAsync / Load / Delete / Reset",
+      "Registry with keys and groups: Get<T>(), LoadAll, SaveAll, ResetAll — settings survive a profile reset",
+      "Step-by-step migrations with a backup before each one and typed failure reasons",
+      "Selectable encryption for the stored payload",
+      "RemoteSync on a game-supplied IRemoteDataStore",
+      "Save Data window and inspector buttons: load, save, reset, test data, raw JSON"
+    ],
+    "vi": [
+      "BaseDataTSO<T>: mỗi model save một asset với Save / SaveAsync / Load / Delete / Reset",
+      "Registry theo key và nhóm: Get<T>(), LoadAll, SaveAll, ResetAll — cài đặt vẫn giữ khi reset hồ sơ",
+      "Migration từng bước, backup trước mỗi bước và lý do lỗi rõ ràng",
+      "Chọn kiểu mã hoá cho dữ liệu lưu",
+      "RemoteSync trên IRemoteDataStore do game cung cấp",
+      "Cửa sổ Save Data và nút trong Inspector: load, save, reset, dữ liệu test, xem JSON thô"
+    ]
+  },
+  "tech": [
+    "Unity",
+    "C#",
+    "ScriptableObject",
+    "JSON"
+  ],
+  "links": {},
+  "access": "internal",
+  "poster": "images/insp-save-data.webp",
+  "screenshots": [
+    {
+      "src": "images/insp-save-data.webp",
+      "caption": {
+        "en": "A save model in the Inspector — encryption, data, Save / Load / Reset / Test",
+        "vi": "Model save trong Inspector — mã hoá, dữ liệu, Save / Load / Reset / Test"
+      }
+    },
+    {
+      "src": "images/save-window.webp",
+      "caption": {
+        "en": "Save Data window — every DataSO by group",
+        "vi": "Cửa sổ Save Data — mọi DataSO theo nhóm"
+      }
+    },
+    {
+      "src": "images/insp-save-list.webp",
+      "caption": {
+        "en": "Boot list — Scan adds every [SaveData] asset",
+        "vi": "Danh sách khởi động — Scan thêm mọi asset [SaveData]"
+      }
+    }
+  ],
+  "api": [
+    {
+      "title": {
+        "en": "A save model in two lines",
+        "vi": "Model save trong hai dòng"
+      },
+      "note": {
+        "en": "Declare the data and its asset; Save, SaveAsync, Load and Reset come with it.",
+        "vi": "Khai báo dữ liệu và asset của nó; Save, SaveAsync, Load và Reset có sẵn."
+      },
+      "code": "public class PlayerData : BaseData { public int Level; }\npublic class PlayerDataSO : BaseDataTSO<PlayerData> { }\n\nplayerDataSo.Load();\nplayerDataSo.Data.Level++;\nplayerDataSo.SaveAsync();"
+    },
+    {
+      "title": {
+        "en": "Registry by key and group",
+        "vi": "Registry theo key và nhóm"
+      },
+      "note": {
+        "en": "Any feature fetches its data by type; whole groups load, save or reset together.",
+        "vi": "Tính năng nào cũng lấy dữ liệu theo kiểu; cả nhóm load, save hay reset cùng lúc."
+      },
+      "code": "[SaveData(Key = \"newbie-login\", Group = \"liveops\")]\npublic class NewbieLoginDataSO : BaseDataTSO<NewbieLoginData> { }\n\nSaveSystem.RegisterAll(saveDataList);\nNewbieLoginDataSO newbie = SaveSystem.Get<NewbieLoginDataSO>();\nSaveSystem.ResetAll();"
+    },
+    {
+      "title": {
+        "en": "Schema migrations",
+        "vi": "Migration schema"
+      },
+      "note": {
+        "en": "Bump the version and ship one step; old saves are upgraded on load, with a backup first.",
+        "vi": "Tăng version và thêm một bước; save cũ được nâng cấp khi load, có backup trước."
+      },
+      "code": "public class PlayerDataSO : BaseDataTSO<PlayerData>\n{\n    public override int CurrentVersion => 2;\n    protected override IDataMigration[] Migrations => new IDataMigration[] { new RenameCoins() };\n}\n\nclass RenameCoins : IDataMigration\n{\n    public int From => 1;\n    public void Migrate(JObject raw)\n    {\n        raw[\"Gold\"] = raw[\"Coins\"];\n        raw.Remove(\"Coins\");\n    }\n}"
+    }
+  ]
+}

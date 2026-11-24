@@ -1,0 +1,136 @@
+{
+  "publish": true,
+  "kind": "tool",
+  "accentColor": "#ff2d75",
+  "glyph": "🦴",
+  "title": "SpineKit · Skeleton Studio",
+  "tagline": {
+    "en": "Fluent Spine API plus a studio that keeps every skeleton's animations, events, skins and groups in one asset.",
+    "vi": "API Spine dạng fluent cùng một studio gom animation, event, skin và group của mỗi skeleton vào một asset."
+  },
+  "focus": {
+    "en": "Tooling for animators and devs together: designers set up a skeleton visually, code just calls Play / PlayGroup.",
+    "vi": "Tooling cho cả animator lẫn dev: designer setup skeleton bằng giao diện, code chỉ gọi Play / PlayGroup."
+  },
+  "overview": {
+    "en": "A NIX Framework module for Spine 4.2. A SkeletonHandle next to any SkeletonAnimation or SkeletonGraphic finds that skeleton's metadata asset and runs it with a short fluent API. Skeleton Studio edits the metadata: animation defaults, custom events with payloads, skin sets and animation groups, with its own viewport, an event timeline and a bone tree.",
+    "vi": "Module NIX Framework cho Spine 4.2. SkeletonHandle đặt cạnh SkeletonAnimation hoặc SkeletonGraphic tự tìm asset metadata của skeleton đó và chạy bằng API fluent ngắn gọn. Skeleton Studio chỉnh metadata: animation mặc định, custom event có payload, bộ skin và animation group, với viewport riêng, timeline event và cây bone."
+  },
+  "features": {
+    "en": [
+      "handle.Play(\"attack\").OnEvent(\"hit\", …).OnComplete(…) — stale callbacks are dropped automatically",
+      "Animation groups: steps with their own loops, mix, clear pose and skin changes, played with PlayGroup",
+      "Custom events keyed in the Studio (Int / Float / String payload) arrive like Spine events",
+      "Skins tab: combine, swap and reorder worn skins; save them as start skins",
+      "Bones tab: bone tree, bones drawn in the viewport, which animations key each bone",
+      "Preview in the viewport or on the scene object without entering Play Mode"
+    ],
+    "vi": [
+      "handle.Play(\"attack\").OnEvent(\"hit\", …).OnComplete(…) — callback cũ tự bị bỏ",
+      "Animation group: các bước có loop, mix, clear pose và đổi skin riêng, chạy bằng PlayGroup",
+      "Custom event đặt trong Studio (payload Int / Float / String) tới code giống event Spine",
+      "Tab Skins: ghép, đổi và sắp xếp skin đang mặc; lưu làm skin khởi đầu",
+      "Tab Bones: cây bone, bone vẽ trên viewport, animation nào key bone nào",
+      "Preview trên viewport hoặc trên object trong scene mà không cần Play Mode"
+    ]
+  },
+  "tech": [
+    "Unity Editor",
+    "C#",
+    "Spine 4.2",
+    "UI Toolkit"
+  ],
+  "links": {},
+  "access": "internal",
+  "poster": "images/studio.webp",
+  "screenshots": [
+    {
+      "src": "images/studio.webp",
+      "caption": {
+        "en": "Animations & Events — animation list, viewport and event timeline",
+        "vi": "Animations & Events — danh sách animation, viewport và timeline event"
+      }
+    },
+    {
+      "src": "images/skeleton-skins.webp",
+      "caption": {
+        "en": "Skins — combine and reorder worn skins",
+        "vi": "Skins — ghép và sắp xếp các skin đang mặc"
+      }
+    },
+    {
+      "src": "images/skeleton-bones.webp",
+      "caption": {
+        "en": "Bones — bone tree with the bones drawn in the viewport",
+        "vi": "Bones — cây bone, bone vẽ trên viewport"
+      }
+    },
+    {
+      "src": "images/skeleton-details.webp",
+      "caption": {
+        "en": "Details — source assets, counts and checks",
+        "vi": "Details — asset nguồn, thống kê và kiểm tra"
+      }
+    },
+    {
+      "src": "images/insp-skeleton-handle.webp",
+      "caption": {
+        "en": "SkeletonHandle inspector — start skins, preview on the GameObject without Play Mode",
+        "vi": "Inspector SkeletonHandle — skin khởi đầu, preview trên GameObject không cần Play Mode"
+      }
+    },
+    {
+      "src": "images/insp-skeleton-metadata.webp",
+      "caption": {
+        "en": "Skeleton metadata asset in the Inspector",
+        "vi": "Asset metadata của skeleton trong Inspector"
+      }
+    }
+  ],
+  "api": [
+    {
+      "title": {
+        "en": "Fluent playback",
+        "vi": "Phát animation dạng fluent"
+      },
+      "note": {
+        "en": "Loops, speed and mix come from the metadata asset; a playback that ends drops its callbacks, so old references are harmless.",
+        "vi": "Loop, tốc độ và mix lấy từ asset metadata; playback kết thúc thì tự bỏ callback, nên giữ tham chiếu cũ cũng vô hại."
+      },
+      "code": "handle.Play(\"attack\")\n    .OnEvent(\"hit\", OnHitEvent)\n    .OnComplete(() => handle.Play(\"idle\").SetLoops(-1));"
+    },
+    {
+      "title": {
+        "en": "Custom events with payload",
+        "vi": "Custom event có payload"
+      },
+      "note": {
+        "en": "Events keyed in Skeleton Studio arrive exactly like Spine events, with Int / Float / String data.",
+        "vi": "Event đặt trong Skeleton Studio tới code y như event Spine, kèm dữ liệu Int / Float / String."
+      },
+      "code": "handle.Play(\"walk\")\n    .OnEvent(\"footstep\", e => PlayStep(e.String, e.Float));\n\nSkeletonHandle.onAnyEvent += (source, name) => { };"
+    },
+    {
+      "title": {
+        "en": "Animation groups",
+        "vi": "Animation group"
+      },
+      "note": {
+        "en": "A designer-built sequence of steps — loops, mixes, skin changes — played by id.",
+        "vi": "Chuỗi bước do designer dựng — loop, mix, đổi skin — được gọi bằng id."
+      },
+      "code": "handle.PlayGroup(\"transform_to_wolf\")\n    .OnStep((index, step) => Debug.Log($\"{index}: {step.Animation}\"))\n    .OnComplete(OnTransformedEvent);"
+    },
+    {
+      "title": {
+        "en": "Skins",
+        "vi": "Skin"
+      },
+      "note": {
+        "en": "Worn skins combine into one runtime skin; a batch applies several changes at once.",
+        "vi": "Các skin đang mặc được ghép thành một skin runtime; batch áp nhiều thay đổi cùng lúc."
+      },
+      "code": "handle.Skins.Swap(\"hair/black\", \"hair/red\");\n\nusing (handle.Skins.Batch())\n{\n    handle.Skins.Remove(\"armor/leather\");\n    handle.Skins.Add(\"armor/knight_chest\", \"armor/knight_legs\");\n}"
+    }
+  ]
+}

@@ -47,8 +47,14 @@
     <a class="logo" href="#top" aria-label="Home"><img src="assets/logo/favicon.png" alt="" /><span id="navBrand"><b>[</b>NIX<b>]</b></span></a>
     <ul class="links" id="navLinks">
       <li><a href="#work" data-i18n="nav_work">Projects</a></li>
-      <li><a href="#skills" data-i18n="nav_skills">Skills</a></li>
-      <li><a href="#experience" data-i18n="nav_experience">Experience</a></li>
+      <li class="dd" id="dd">
+        <a href="#showcase" class="dd-btn" aria-haspopup="true" aria-expanded="false"><span data-i18n="nav_showcase">Showcase</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a>
+        <div class="dd-panel">
+          <a href="#scProto"><span class="dd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6M10 3v6L4.5 18.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3"/><path d="M7 15h10"/></svg></span><span><b data-i18n="sc_proto">Prototypes</b><small data-i18n="dd_proto">Playable experiments &amp; tech demos</small></span></a>
+          <a href="#scTools"><span class="dd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 7.5l9 4.5 9-4.5z"/><path d="m3 12 9 4.5 9-4.5"/><path d="m3 16.5 9 4.5 9-4.5"/></svg></span><span><b data-i18n="sc_tools">Frameworks</b><small data-i18n="dd_tools">Runtime systems with editor tooling</small></span></a>
+          <a href="#scOther"><span class="dd-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span><span><b data-i18n="sc_other">Other Projects</b><small data-i18n="dd_other">Side projects &amp; game jams</small></span></a>
+        </div>
+      </li>
       <li><a href="#about" data-i18n="nav_about">About</a></li>
       <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
     </ul>
@@ -65,8 +71,8 @@
   <div class="drawer" id="drawer" aria-hidden="true">
     <ul>
       <li><a href="#work" data-i18n="nav_work">Projects</a></li>
-      <li><a href="#skills" data-i18n="nav_skills">Skills</a></li>
-      <li><a href="#experience" data-i18n="nav_experience">Experience</a></li>
+      <li><a href="#showcase" data-i18n="nav_showcase">Showcase</a>
+        <div class="drawer-sub"><a href="#scProto" data-i18n="sc_proto">Prototypes</a><a href="#scTools" data-i18n="sc_tools">Frameworks</a><a href="#scOther" data-i18n="sc_other">Other Projects</a></div></li>
       <li><a href="#about" data-i18n="nav_about">About</a></li>
       <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
     </ul>
@@ -91,18 +97,28 @@
       <div class="prj-list" id="prjList"></div>
     </section>
 
-    <!-- SKILLS -->
-    <section id="skills">
-      <div class="sh rv"><h2 data-i18n="skills_t">Skills</h2></div>
-      <div class="bento" id="bento"></div>
-      <h3 class="pk-h rv" id="pkgsT" data-i18n="pkgs_t">Reusable packages</h3>
-      <div class="pkgs" id="pkgs"></div>
-    </section>
-
-    <!-- EXPERIENCE -->
-    <section id="experience">
-      <div class="sh rv"><h2 data-i18n="exp_t">Experience</h2></div>
-      <div class="tl" id="timeline"></div>
+    <!-- SHOWCASE: Database/Showcase/ → prototypes (carousel) · tools (large) · other projects (grid) -->
+    <section id="showcase">
+      <div class="sh rv"><h2 data-i18n="showcase_t">Showcase</h2></div>
+      <div class="grp" id="scProto" aria-roledescription="carousel">
+        <h3 class="gh rv"><span data-i18n="sc_proto">Prototypes</span></h3>
+        <div class="sc-stage" id="scStage">
+          <div class="sc-glow" id="scGlow"></div>
+          <div class="sc-track" id="scTrack"></div>
+          <button class="sc-nav sc-prev" id="scPrev" type="button" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 6l-6 6 6 6M19 6l-6 6 6 6"/></svg></button>
+          <button class="sc-nav sc-next" id="scNext" type="button" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 6l6 6-6 6M5 6l6 6-6 6"/></svg></button>
+        </div>
+        <div class="sc-dots" id="scDots"></div>
+        <div class="sc-info" id="scInfo" aria-live="polite"></div>
+      </div>
+      <div class="grp" id="scTools">
+        <h3 class="gh rv"><span data-i18n="sc_tools">Frameworks</span></h3>
+        <div class="sc-tools" id="scToolList"></div>
+      </div>
+      <div class="grp" id="scOther">
+        <h3 class="gh rv"><span data-i18n="sc_other">Other Projects</span></h3>
+        <div class="sc-grid" id="scGrid"></div>
+      </div>
     </section>
 
     <!-- ABOUT -->
@@ -123,10 +139,20 @@
             <a class="btn btn-pri" id="cvBtn" href="#" target="_blank" rel="noopener" hidden><span data-i18n="download_cv">View CV</span></a>
             <a class="btn btn-ghost" href="#contact" id="ctaContact" data-i18n="contact_me">Contact me</a>
           </div>
-          <div class="socials rv" id="heroSoc"></div>
         </div>
       </div>
       <div class="strip rv" id="strip"></div>
+
+      <!-- About › Experience -->
+      <div class="grp" id="experience">
+        <h3 class="gh rv"><span data-i18n="exp_t">Experience</span></h3>
+        <div class="tl" id="timeline"></div>
+      </div>
+      <!-- About › Skills -->
+      <div class="grp" id="skills">
+        <h3 class="gh rv"><span data-i18n="skills_t">Skills</span></h3>
+        <div class="sk rv" id="skillList"></div>
+      </div>
     </section>
 
     <!-- CONTACT -->

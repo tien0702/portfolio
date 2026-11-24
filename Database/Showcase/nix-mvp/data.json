@@ -1,0 +1,87 @@
+{
+  "publish": true,
+  "kind": "tool",
+  "accentColor": "#7c4dff",
+  "glyph": "MVP",
+  "title": "MVPArchitecture · SO-MVP",
+  "tagline": {
+    "en": "Model-View-Presenter on ScriptableObjects for every popup, screen and page, with a scaffolder that writes the unit.",
+    "vi": "Model-View-Presenter trên ScriptableObject cho mọi popup, màn hình và trang, kèm scaffolder viết sẵn cả unit."
+  },
+  "focus": {
+    "en": "Architecture as a team standard: one shape for every UI feature, generated instead of hand-copied.",
+    "vi": "Kiến trúc thành chuẩn chung của team: mọi tính năng UI cùng một khuôn, được sinh ra thay vì copy tay."
+  },
+  "overview": {
+    "en": "The SO-MVP architecture of my NIX Framework. The Presenter is the popup / screen / page MonoBehaviour and passes everything the Model needs through its constructor; the View is just Unity's UI components in the prefab; the Model is plain C# that fetches nothing itself. A UIManager runs every presenter, tracks the topmost one and blocks input during transitions. Presenters can carry a UIMotionKit MotionView, so Open() and Close() play their In and Out motion.",
+    "vi": "Kiến trúc SO-MVP trong NIX Framework của tôi. Presenter là MonoBehaviour của popup / màn hình / trang, truyền mọi thứ Model cần qua constructor; View chỉ là các component UI của Unity trong prefab; Model là C# thuần, tự nó không lấy gì cả. UIManager chạy mọi presenter, theo dõi presenter trên cùng và khoá input khi chuyển cảnh. Presenter có thể gắn MotionView của UIMotionKit, nên Open() và Close() phát motion In và Out."
+  },
+  "features": {
+    "en": [
+      "BasePopup / BaseScreen / BasePage (+ <TData>) with a clear lifecycle: Initialize, Open, Close",
+      "UIManager: OpenPopup<T>(data), OpenScreen, CloseAll, Transition<T>(onMiddle), input blocker",
+      "SO-MVP Unit window: name, namespace, presenter kind and roles → one file per role, Presenter already building the Model",
+      "ViewGenerator analyses a UI prefab and writes the presenter's fields and handlers, keeping hand-written code",
+      "BaseTransition and PageSlideHandle driven by motion presets",
+      "Presenter feedback components: audio, vibration, camera FX"
+    ],
+    "vi": [
+      "BasePopup / BaseScreen / BasePage (+ <TData>) với vòng đời rõ ràng: Initialize, Open, Close",
+      "UIManager: OpenPopup<T>(data), OpenScreen, CloseAll, Transition<T>(onMiddle), lớp chặn input",
+      "Cửa sổ SO-MVP Unit: tên, namespace, loại presenter và các vai trò → mỗi vai trò một file, Presenter dựng sẵn Model",
+      "ViewGenerator phân tích prefab UI rồi viết field và handler cho presenter, giữ nguyên code viết tay",
+      "BaseTransition và PageSlideHandle chạy bằng motion preset",
+      "Component feedback cho presenter: âm thanh, rung, hiệu ứng camera"
+    ]
+  },
+  "tech": [
+    "Unity",
+    "C#",
+    "UGUI",
+    "ScriptableObject",
+    "DOTween"
+  ],
+  "links": {},
+  "access": "internal",
+  "poster": "images/mvp-scaffolder.webp",
+  "screenshots": [
+    {
+      "src": "images/mvp-scaffolder.webp",
+      "caption": {
+        "en": "SO-MVP Unit — generates every file of a feature, ready to fill in",
+        "vi": "SO-MVP Unit — sinh mọi file của một tính năng, chỉ việc điền logic"
+      }
+    },
+    {
+      "src": "images/insp-mvp-presenter.webp",
+      "caption": {
+        "en": "A presenter in the Inspector — motion states, buttons, Open / Close preview",
+        "vi": "Presenter trong Inspector — state motion, nút, xem thử Open / Close"
+      }
+    }
+  ],
+  "api": [
+    {
+      "title": {
+        "en": "Open any presenter, typed",
+        "vi": "Mở presenter có kiểu"
+      },
+      "note": {
+        "en": "UIManager runs every popup, screen and transition; data is passed in typed.",
+        "vi": "UIManager chạy mọi popup, màn hình và transition; dữ liệu truyền vào có kiểu rõ ràng."
+      },
+      "code": "UIManager.Instance.OpenPopup<NewbieLoginPopup>();\nUIManager.Instance.OpenPopup<RewardPopup, RewardData>(reward);\nUIManager.Instance.Transition<FadeTransition>(onMiddle: LoadNextLevel);"
+    },
+    {
+      "title": {
+        "en": "What the SO-MVP Unit window writes",
+        "vi": "Code cửa sổ SO-MVP Unit sinh ra"
+      },
+      "note": {
+        "en": "The Presenter gathers what the Model needs — static SO, saved data and its save — and passes it in. The Model stays plain C#.",
+        "vi": "Presenter gom những gì Model cần — SO tĩnh, dữ liệu đã lưu và hàm save — rồi truyền vào. Model vẫn là C# thuần."
+      },
+      "code": "public class DailyRewardPopup : BasePopup\n{\n    [SerializeField] private DailyRewardSO _staticData;\n    private DailyRewardModel _model;\n\n    public override void Initialize()\n    {\n        base.Initialize();\n        DailyRewardDataSO data = SaveSystem.Get<DailyRewardDataSO>();\n        _model = new DailyRewardModel(_staticData, data.Data, data.Save);\n    }\n}"
+    }
+  ]
+}

@@ -3,14 +3,21 @@
    Pages: index.html (home) · project.html?p=<folder> (case study)
    Data:  web-config.json · Database/skills.md · Database/packages.md
           Database/Projects/index.json → Database/Projects/<folder>/data.json
+          Database/Showcase/index.json → Database/Showcase/<folder>/data.json
    ══════════════════════════════════════════ */
 (function () {
 'use strict';
 
 var PAGE = document.body.dataset.page;
 var PROJECTS_DIR = 'Database/Projects/';
+var SHOWCASE_DIR = 'Database/Showcase/';
 
 var CONFIG = null, SKILLS = [], PACKAGES = [], PROJECTS = [], ALL_PROJECTS = []; // PROJECTS = published only
+var SHOWCASE = []; // published showcase items (prototype / tool) — Database/Showcase/
+// Projects with "category": "other" show in Showcase › Other Projects (short detail page), the rest in Projects
+function isOther(p) { return p.category === 'other'; }
+function mainProjects() { return PROJECTS.filter(function (p) { return !isOther(p); }); }
+function otherProjects() { return PROJECTS.filter(isOther); }
 var lang = 'en';
 var REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -71,7 +78,8 @@ var IC = {
   email: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>',
   linkedin: '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/></svg>',
   github: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>',
-  blog: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
+  x: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932zM17.61 20.644h2.039L6.486 3.24H4.298z"/></svg>',
+  threads: '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.964-.065-1.19.408-2.285 1.33-3.082.88-.76 2.119-1.207 3.583-1.291a13.853 13.853 0 0 1 3.02.142c-.126-.742-.375-1.332-.75-1.757-.513-.586-1.308-.883-2.359-.89h-.029c-.844 0-1.992.232-2.721 1.32L7.734 7.847c.98-1.454 2.568-2.256 4.478-2.256h.044c3.194.02 5.097 1.975 5.287 5.388.108.046.216.094.321.142 1.49.7 2.58 1.761 3.154 3.07.797 1.82.871 4.79-1.548 7.158-1.85 1.81-4.094 2.628-7.277 2.65zm1.003-11.69c-.242 0-.487.007-.739.021-1.836.103-2.98.946-2.916 2.143.067 1.256 1.452 1.839 2.784 1.767 1.224-.065 2.818-.543 3.086-3.71a10.5 10.5 0 0 0-2.215-.221z"/></svg>',
   itchio: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3.13 1.338C2.08 1.96.02 4.328 0 4.95v1.03c0 1.303 1.22 2.45 2.325 2.45 1.33 0 2.436-1.102 2.436-2.41 0 1.308 1.07 2.41 2.4 2.41 1.328 0 2.362-1.102 2.362-2.41 0 1.308 1.104 2.41 2.432 2.41h.024c1.33 0 2.432-1.102 2.432-2.41 0 1.308 1.034 2.41 2.363 2.41 1.33 0 2.4-1.102 2.4-2.41 0 1.308 1.105 2.41 2.435 2.41C22.78 8.43 24 7.282 24 5.98V4.95c-.02-.622-2.08-2.99-3.13-3.612C19.948 1 12.588 1 12 1c-.588 0-7.948 0-8.87.338z"/></svg>',
   code: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>',
   design: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4z"/></svg>',
@@ -107,7 +115,8 @@ function contacts() {
   if (c.email) out.push({ k: 'email', label: 'Email', href: 'mailto:' + c.email });
   if (c.linkedin) out.push({ k: 'linkedin', label: 'LinkedIn', href: c.linkedin });
   if (gh) out.push({ k: 'github', label: 'GitHub', href: gh });
-  if (c.blog) out.push({ k: 'blog', label: 'Blog', href: c.blog });
+  if (c.x) out.push({ k: 'x', label: 'X', href: c.x });
+  if (c.threads) out.push({ k: 'threads', label: 'Threads', href: c.threads });
   if (c.itchio) out.push({ k: 'itchio', label: 'itch.io', href: c.itchio });
   return out;
 }
@@ -121,7 +130,7 @@ function stat(re) { return (CONFIG.profile.stats || []).filter(function (s) { re
 function sample(on) { return on ? ' <span class="sample">' + t('sample') + '</span>' : ''; }
 
 // ── projects (one folder per project) ──
-function pAsset(p, path) { return !path ? '' : isURL(path) ? path : PROJECTS_DIR + p.id + '/' + path; }
+function pAsset(p, path) { return !path ? '' : isURL(path) ? path : (p._dir || PROJECTS_DIR) + p.id + '/' + path; }
 function ytId(p) { var y = (p.video || {}).youtube; return y && !/^VIDEO_ID/i.test(y) ? y : ''; }
 function hasVideo(p) { return !!(ytId(p) || (p.video || {}).file); }
 function isPortrait(p) { return (p.video || {}).orientation === 'portrait'; }
@@ -136,7 +145,7 @@ function imgOrPh(p, src) {
 }
 function iconHTML(p) { return imgOrPh(p, p.icon ? pAsset(p, p.icon) : posterOf(p)); }
 function rolesOf(p) { return (p.roles || []).map(function (r) { return loc(r.name); }).filter(Boolean); }
-function projectURL(p) { return 'project.html?p=' + encodeURIComponent(p.id); }
+function projectURL(p) { return p._dir === SHOWCASE_DIR ? 'project.html?s=' + encodeURIComponent(p.id) : 'project.html?p=' + encodeURIComponent(p.id); }
 function roleChips(p) {
   return '<div class="roles">' + rolesOf(p).map(function (r) { return '<span class="role"><i>' + roleIcon(r) + '</i>' + esc(r) + '</span>'; }).join('') + '</div>';
 }
@@ -147,6 +156,9 @@ function storeButtons(p, cls) {
   if (s.apk) h += isURL(s.apk)
     ? '<a class="btn ' + cls[1] + '" href="' + esc(s.apk) + '" target="_blank" rel="noopener">' + IC.dl + t('download_apk') + '</a>'
     : '<a class="btn ' + cls[1] + '" href="' + esc(pAsset(p, s.apk)) + '" download>' + IC.dl + t('download_apk') + '</a>'; // file inside the project folder
+  var l = p.links || {}; // optional: web build / itch.io page, source repo
+  if (l.play) h += '<a class="btn ' + (h ? cls[1] : cls[0]) + '" href="' + esc(l.play) + '" target="_blank" rel="noopener">' + t('sc_play') + ' →</a>';
+  if (l.source) h += '<a class="btn ' + cls[1] + '" href="' + esc(l.source) + '" target="_blank" rel="noopener">' + IC.github + t('sc_source') + '</a>';
   return h;
 }
 
@@ -294,7 +306,7 @@ function renderAll() {
   if (playing) vmPause(playing);
   renderShell();
   if (PAGE === 'home') {
-    renderHero(); renderWork();
+    renderHero(); renderWork(); renderShowcase();
     if (sectionOn('skills')) renderSkills();
     if (sectionOn('experience')) renderExperience();
   } else renderProject();
@@ -315,12 +327,12 @@ function renderHero() {
   $('heroBio').textContent = loc(p.bio);
   $('cvBtn').hidden = !p.cv; if (p.cv) $('cvBtn').href = p.cv;
   $('ctaContact').hidden = !!p.cv;
-  $('heroSoc').innerHTML = socialHTML();
   renderNowCard(p, name);
   // hero ticker under "PORTFOLIO": every skill in Database/skills.md, written twice so the loop is seamless
   var sk = SKILLS.reduce(function (a, g) { return a.concat(g.items); }, []);
   $('hxSkills').style.setProperty('--n', sk.length);
   $('hxSkills').innerHTML = (sk.map(function (s) { return '<span>' + esc(s) + '</span>'; }).join('')).repeat(2);
+  $('strip').hidden = !(p.stats || []).length;
   $('strip').innerHTML = (p.stats || []).map(function (s) {
     var m = String(s.value).match(/^(\d+(?:\.\d+)?)(.*)$/); // "2.5+" → 2.5 counts up, "+" stays as suffix
     var val = m ? '<span data-to="' + m[1] + '">' + m[1] + '</span><em>' + esc(m[2]) + '</em>' : esc(s.value);
@@ -354,7 +366,9 @@ function applySections() {
 }
 
 function renderWork() {
-  var list = PROJECTS;
+  var list = mainProjects();
+  $('work').hidden = !list.length; // nothing to show → hide the section and its menu links
+  document.querySelectorAll('a[href="#work"]').forEach(function (a) { a.closest('li') ? a.closest('li').hidden = !list.length : a.hidden = !list.length; });
   $('prjList').innerHTML = list.map(function (p, i) {
     var url = projectURL(p), portrait = hasVideo(p) && isPortrait(p);
     var tagline = loc(p.tagline) || loc(p.overview);
@@ -397,16 +411,9 @@ function renderContact() {
 }
 
 function renderSkills() {
-  $('bento').innerHTML = SKILLS.map(function (g) {
-    return '<div class="spot bx w2 rv"><h4>' + esc(g.name) + '</h4><div class="chips">' + g.items.map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div></div>';
-  }).join('');
-  // link only to an actual repo, not the bare profile
-  var repo = function (u) { return /github\.com\/[^/]+\/[^/]+/.test(u) ? u : ''; };
-  $('pkgsT').hidden = !PACKAGES.length;
-  $('pkgs').innerHTML = PACKAGES.map(function (k) {
-    var u = repo(k.githubLink);
-    return '<div class="pk rv"><b>' + esc(k.title) + '</b><span>' + esc(loc(k.line)) + '</span>' +
-      (u ? '<a href="' + esc(u) + '" target="_blank" rel="noopener" aria-label="GitHub: ' + esc(k.title) + '">' + IC.github + '</a>' : '') + '</div>';
+  $('skills').hidden = !SKILLS.length;
+  $('skillList').innerHTML = SKILLS.map(function (g) {
+    return '<div class="sk-row"><h4>' + esc(g.name) + '</h4><div class="chips">' + g.items.map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div></div>';
   }).join('');
 }
 
@@ -425,14 +432,187 @@ function renderExperience() {
 }
 
 // ══════════════════════════════
+// SHOWCASE — prototypes (3D carousel) · tools (one large block each) · other projects (grid)
+// ══════════════════════════════
+var SC = { list: [], cur: 0, timer: null, paused: false, AUTO_MS: 5000 };
+var LOCK_IC = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
+function scOf(kind) { return SHOWCASE.filter(function (it) { return it.kind === kind; }); }
+// poster (or YouTube thumbnail) — else the accent gradient with the item's glyph
+function scMedia(it) { var src = posterOf(it); return src ? '<img src="' + esc(src) + '" alt="" loading="lazy">' : '<div class="sc-ph">' + esc(it.glyph || String(it.title).charAt(0)) + '</div>'; }
+function scChips(it) { return '<div class="chips">' + (it.tech || []).map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div>'; }
+// Minimal C# highlighter for the API snippets: one pass, each token escaped on its own.
+var CS_KW = /^(public|private|protected|internal|override|virtual|abstract|sealed|static|readonly|const|class|struct|interface|enum|new|var|void|return|if|else|for|foreach|in|while|using|await|async|int|float|double|string|bool|object|true|false|null|this|base|out|ref|params)$/;
+function hlCS(code) {
+  var re = /(\/\/[^\n]*)|(\$?"(?:[^"\\]|\\.)*")|(\b\d+(?:\.\d+)?f?\b)|(\[[A-Z]\w*)|\b([A-Za-z_]\w*)\b(\s*\()?/g, out = '', last = 0, m;
+  while ((m = re.exec(code))) {
+    out += esc(code.slice(last, m.index)); last = re.lastIndex;
+    if (m[1]) out += '<i class="c">' + esc(m[1]) + '</i>';
+    else if (m[2]) out += '<i class="s">' + esc(m[2]) + '</i>';
+    else if (m[3]) out += '<i class="n">' + esc(m[3]) + '</i>';
+    else if (m[4]) out += '[<i class="t">' + esc(m[4].slice(1)) + '</i>';
+    else if (CS_KW.test(m[5])) out += '<i class="k">' + m[5] + '</i>' + esc(m[6] || '');
+    else if (m[6]) out += '<i class="f">' + m[5] + '</i>' + esc(m[6]);
+    else out += /^[A-Z]/.test(m[5]) ? '<i class="t">' + m[5] + '</i>' : m[5];
+  }
+  return out + esc(code.slice(last));
+}
+
+// big: detail-page hero (normal buttons, no "Details" link); otherwise a card (small buttons + Details)
+function scActions(it, big) {
+  var l = it.links || {}, h = '', sz = big ? '' : ' btn-sm';
+  if (!big) h += '<a class="btn btn-ghost btn-sm" href="' + esc(projectURL(it)) + '">' + t('sc_details') + '</a>';
+  if (l.play) h += '<a class="btn btn-pri' + sz + '" href="' + esc(l.play) + '" target="_blank" rel="noopener">' + t('sc_explore') + ' →</a>';
+  if (l.source) h += '<a class="btn btn-ghost' + sz + '" href="' + esc(l.source) + '" target="_blank" rel="noopener">' + t('sc_source') + '</a>';
+  if (l.post) h += '<a class="btn btn-ghost' + sz + '" href="' + esc(l.post) + '" target="_blank" rel="noopener">' + t('sc_post') + '</a>';
+  if (!l.play && !l.source && !l.post && it.access === 'internal') h += '<span class="sc-lock">' + LOCK_IC + t('sc_internal') + '</span>';
+  return h ? '<div class="sc-act">' + h + '</div>' : '';
+}
+// details block: carousel info (with title) or under a tool (title is above the media there)
+function scInfo(it, noTitle) {
+  var tool = it.kind === 'tool', proof = '';
+  if (tool && (it.impact || (it.usedIn || []).length)) {
+    proof = '<div class="proof">' +
+      (it.impact ? '<div class="imp"><b>' + esc(it.impact.value) + '</b><span>' + esc(loc(it.impact.label)) + '</span></div>' : '') +
+      ((it.usedIn || []).length ? '<div class="used"><span>' + t('sc_used') + '</span>' + it.usedIn.map(function (u) { return '<em>' + esc(u) + '</em>'; }).join('') + '</div>' : '') +
+      '</div>';
+  }
+  return (tool ? '<div class="sc-badges"><span class="prod"><span class="dot"></span>' + t('sc_prod') + '</span><span>' + t('sc_tool') + (it.year ? ' · ' + esc(it.year) : '') + '</span></div>' : '') +
+    (noTitle ? '' : '<h3>' + esc(it.title) + sample(it.placeholder) + '</h3>') +
+    (loc(it.tagline) ? '<p class="sc-tag">' + esc(loc(it.tagline)) + '</p>' : '') +
+    (loc(it.focus) ? '<p class="sc-focus"><b>' + t('sc_focus') + '</b>' + esc(loc(it.focus)) + '</p>' : '') +
+    proof + scChips(it) + scActions(it);
+}
+function renderShowcase() {
+  var sec = $('showcase'); if (!sec) return;
+  var others = otherProjects();
+  var groups = { scProto: scOf('prototype').length, scTools: scOf('tool').length, scOther: others.length };
+  sec.hidden = !(groups.scProto || groups.scTools || groups.scOther);
+  document.querySelectorAll('a[href="#showcase"]').forEach(function (a) { a.closest('li').hidden = sec.hidden; });
+  Object.keys(groups).forEach(function (id) {
+    $(id).hidden = !groups[id];
+    document.querySelectorAll('a[href="#' + id + '"]').forEach(function (a) { a.hidden = !groups[id]; });
+  });
+
+  $('scToolList').innerHTML = scOf('tool').map(function (it) {
+    return '<article class="sc-tool rv" style="--ac:' + esc(it.accentColor || '#00e5ff') + '">' +
+      '<a class="sc-media" href="' + esc(projectURL(it)) + '" aria-label="' + esc(it.title) + '">' + scMedia(it) + '</a>' +
+      '<div class="sc-tbody"><h3><a href="' + esc(projectURL(it)) + '">' + esc(it.title) + '</a>' + sample(it.placeholder) + '</h3>' +
+      '<div class="sc-info">' + scInfo(it, true) + '</div></div></article>';
+  }).join('');
+
+  $('scGrid').innerHTML = others.map(function (p) {
+    var tech = [p.engine, p.platform].filter(Boolean);
+    return '<a class="sc-gcard rv" href="' + esc(projectURL(p)) + '" style="--ac:' + esc(p.accentColor || '#7c4dff') + '">' +
+      '<div class="sc-media">' + scMedia(p) + '</div>' +
+      '<div class="sc-gbody">' + (p.year ? '<small>' + esc(p.year) + '</small>' : '') +
+      '<h4>' + esc(p.title) + sample(p.placeholder) + '</h4>' +
+      (loc(p.tagline) ? '<p>' + esc(loc(p.tagline)) + '</p>' : '') +
+      (tech.length ? '<div class="chips">' + tech.map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div>' : '') +
+      '</div></a>';
+  }).join('');
+
+  // carousel: build the cards once per render; moving only updates CSS vars
+  var keep = SC.list.length ? SC.cur : 0;
+  SC.list = scOf('prototype');
+  $('scTrack').innerHTML = SC.list.map(function (it, i) {
+    return '<div class="sc-card" data-i="' + i + '" style="--ac:' + esc(it.accentColor || '#00e5ff') + '">' +
+      '<span class="sc-kind">' + t('sc_prototype') + '</span>' + scMedia(it) +
+      '<a class="sc-hit" href="' + esc(projectURL(it)) + '" aria-label="' + esc(it.title) + '"></a></div>';
+  }).join('');
+  $('scDots').innerHTML = SC.list.map(function (it, i) { return '<button type="button" data-i="' + i + '" aria-label="' + esc(it.title) + '"></button>'; }).join('');
+  var multi = SC.list.length > 1;
+  $('scPrev').hidden = $('scNext').hidden = $('scDots').hidden = !multi;
+  scGo(keep, true);
+}
+function scGo(i, silent) {
+  var n = SC.list.length; if (!n) return;
+  SC.cur = (i + n) % n;
+  document.querySelectorAll('.sc-card').forEach(function (c, k) {
+    var d = k - SC.cur;
+    if (d > n / 2) d -= n; if (d < -n / 2) d += n; // wrap so neighbours sit on both sides
+    var ad = Math.abs(d);
+    c.style.setProperty('--d', d); c.style.setProperty('--ad', ad); c.style.setProperty('--s', Math.sign(d));
+    c.classList.toggle('on', d === 0); c.classList.toggle('far', ad > 2);
+  });
+  document.querySelectorAll('#scDots button').forEach(function (b, k) { b.classList.toggle('on', k === SC.cur); });
+  var it = SC.list[SC.cur], el = $('scInfo');
+  el.style.setProperty('--ac', it.accentColor || '#00e5ff');
+  $('scGlow').style.setProperty('--ac', it.accentColor || '#00e5ff');
+  el.innerHTML = scInfo(it);
+  if (!silent && !REDUCED) { el.classList.remove('swap'); void el.offsetWidth; el.classList.add('swap'); }
+  scRestart();
+}
+// autoplay: next card every 5 s; pauses while hovered/focused or the tab is hidden; any manual move restarts the timer
+function scRestart() {
+  clearInterval(SC.timer);
+  if (REDUCED) return;
+  SC.timer = setInterval(function () { if (!SC.paused && !document.hidden && SC.list.length > 1) scGo(SC.cur + 1); }, SC.AUTO_MS);
+}
+function bindShowcase() {
+  if (!$('scStage')) return;
+  var box = $('scProto');
+  ['mouseenter', 'focusin'].forEach(function (ev) { box.addEventListener(ev, function () { SC.paused = true; }); });
+  ['mouseleave', 'focusout'].forEach(function (ev) { box.addEventListener(ev, function () { SC.paused = false; }); });
+  $('scPrev').onclick = function () { scGo(SC.cur - 1); };
+  $('scNext').onclick = function () { scGo(SC.cur + 1); };
+  $('scDots').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) scGo(+b.dataset.i); });
+  // swipe / drag; a tap on a side card brings it to the centre
+  var sx = null, moved = false;
+  $('scStage').addEventListener('pointerdown', function (e) { if (e.target.closest('.sc-nav')) return; sx = e.clientX; moved = false; });
+  window.addEventListener('pointerup', function (e) {
+    if (sx == null) return;
+    var dx = e.clientX - sx; sx = null;
+    if (Math.abs(dx) > 40) { moved = true; scGo(SC.cur + (dx < 0 ? 1 : -1)); }
+  });
+  $('scTrack').addEventListener('click', function (e) {
+    if (moved) { e.preventDefault(); return; } // a swipe must not open the detail page
+    var c = e.target.closest('.sc-card'); if (!c) return;
+    if (+c.dataset.i !== SC.cur) scGo(+c.dataset.i);
+  });
+  // ← → only while the carousel is on screen
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+    if (e.target.closest('input,textarea') || document.body.classList.contains('lock')) return;
+    var r = $('scStage').getBoundingClientRect();
+    if (r.bottom < 0 || r.top > innerHeight) return;
+    scGo(SC.cur + (e.key === 'ArrowLeft' ? -1 : 1));
+  });
+}
+
+// Nav dropdown (Showcase): hover on desktop, click/tap toggles, Esc / outside click / picking an item closes it
+function bindDropdown() {
+  var dd = $('dd'); if (!dd) return;
+  var btn = dd.querySelector('.dd-btn');
+  function set(on) { dd.classList.toggle('open', on); btn.setAttribute('aria-expanded', on); }
+  dd.addEventListener('mouseenter', function () { set(true); });
+  dd.addEventListener('mouseleave', function () { set(false); });
+  btn.addEventListener('click', function (e) { e.preventDefault(); set(!dd.classList.contains('open')); });
+  dd.querySelector('.dd-panel').addEventListener('click', function () { set(false); });
+  document.addEventListener('click', function (e) { if (!dd.contains(e.target)) set(false); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') set(false); });
+}
+
+// ══════════════════════════════
 // PROJECT PAGE
 // ══════════════════════════════
 var GALLERY = [];
+// ?p=<folder> → Database/Projects (full page, or the short one for "category": "other")
+// ?s=<folder> → Database/Showcase prototype / tool
 function currentProject() {
-  var q = new URLSearchParams(location.search), id = q.get('p');
-  for (var i = 0; i < PROJECTS.length; i++) if (PROJECTS[i].id === id) return { p: PROJECTS[i], i: i };
+  var q = new URLSearchParams(location.search), sid = q.get('s'), id = q.get('p');
+  if (sid) {
+    for (var k = 0; k < SHOWCASE.length; k++) if (SHOWCASE[k].id === sid) {
+      var same = SHOWCASE.filter(function (x) { return x.kind === SHOWCASE[k].kind; });
+      return { p: SHOWCASE[k], list: same, i: same.indexOf(SHOWCASE[k]), mode: 'showcase' };
+    }
+    return null;
+  }
+  for (var i = 0; i < PROJECTS.length; i++) if (PROJECTS[i].id === id) {
+    var p = PROJECTS[i], L = isOther(p) ? otherProjects() : mainProjects();
+    return { p: p, list: L, i: L.indexOf(p), mode: isOther(p) ? 'other' : 'full' };
+  }
   // hidden projects are only reachable as a draft preview (Studio's "open page" link adds &draft)
-  if (q.has('draft')) for (var j = 0; j < ALL_PROJECTS.length; j++) if (ALL_PROJECTS[j].id === id) return { p: ALL_PROJECTS[j], i: -1, draft: true };
+  if (q.has('draft')) for (var j = 0; j < ALL_PROJECTS.length; j++) if (ALL_PROJECTS[j].id === id) return { p: ALL_PROJECTS[j], list: [], i: -1, draft: true, mode: isOther(ALL_PROJECTS[j]) ? 'other' : 'full' };
   return null;
 }
 function renderProject() {
@@ -443,24 +623,30 @@ function renderProject() {
     return;
   }
   var p = cur.p, ph = !!p.placeholder, vid = hasVideo(p), portrait = vid && isPortrait(p);
+  var full = cur.mode === 'full', sc = cur.mode === 'showcase', tool = sc && p.kind === 'tool';
   document.title = p.title + ' — ' + CONFIG.profile.name;
   var tagline = loc(p.tagline) || loc(p.overview);
+  var back = sc ? (tool ? ['index.html#scTools', t('sc_tools')] : ['index.html#scProto', t('sc_proto')])
+    : cur.mode === 'other' ? ['index.html#scOther', t('sc_other')] : ['index.html#work', t('all_projects')];
+  var kicker = sc ? t(tool ? 'sc_tool' : 'sc_prototype') : p.studio || (cur.mode === 'other' ? t('sc_other') : '');
 
   // HERO — blurred poster backdrop; portrait video sits beside the title in a phone frame
   var info =
     '<div class="pj-info">' +
-      '<a class="back" href="index.html#work">← ' + t('all_projects') + '</a>' +
+      '<a class="back" href="' + back[0] + '">← ' + esc(back[1]) + '</a>' +
       (cur.draft ? ' <span class="sample draft">' + t('draft_note') + '</span>' : '') +
-      '<div class="pj-title rv in"><div class="pj-icon">' + iconHTML(p) + '</div><div>' +
-        '<div class="sh-k" style="margin-bottom:8px">' + esc(p.studio) + '</div><h1>' + esc(p.title) + '</h1></div></div>' +
+      '<div class="pj-title rv in"><div class="pj-icon"' + (sc ? ' style="--ac:' + esc(p.accentColor || '#00e5ff') + '"' : '') + '>' + (sc && !p.icon ? scMedia(p) : iconHTML(p)) + '</div><div>' +
+        (kicker ? '<div class="sh-k" style="margin-bottom:8px">' + esc(kicker) + '</div>' : '') + '<h1>' + esc(p.title) + '</h1></div></div>' +
+      (tool ? '<div class="sc-badges pj-badges"><span class="prod"><span class="dot"></span>' + t('sc_prod') + '</span></div>' : '') +
       '<p class="tagline">' + (tagline ? esc(tagline) + sample(ph) : '<span class="muted">' + t('no_desc') + '</span>') + '</p>' +
-      roleChips(p) +
-      '<div class="cta">' + storeButtons(p, ['btn-pri', 'btn-ghost']) +
-        (vid ? '<button class="btn btn-ghost" type="button" id="watchBtn">🔊 ' + t('watch') + '</button>' : '') + '</div>' +
+      (full ? roleChips(p) : '') +
+      (sc ? scActions(p, true).replace('class="sc-act"', 'class="cta"') :
+        '<div class="cta">' + storeButtons(p, ['btn-pri', 'btn-ghost']) +
+        (vid ? '<button class="btn btn-ghost" type="button" id="watchBtn">🔊 ' + t('watch') + '</button>' : '') + '</div>') +
     '</div>';
   $('pjRoot').innerHTML =
     '<header class="pj-hero">' +
-      '<div class="pj-banner">' + imgOrPh(p, posterOf(p)) + '</div>' +
+      '<div class="pj-banner">' + (posterOf(p) || full ? imgOrPh(p, posterOf(p)) : '<div class="sc-ph" style="--ac:' + esc(p.accentColor || '#00e5ff') + '"></div>') + '</div>' + // no poster: accent glow, no big letter
       '<div class="wrap pj-head' + (portrait ? ' has-phone' : '') + '">' + info +
         (portrait ? '<div class="pj-phone"><div class="phone">' + videoBox(p, 'hero') + '</div></div>' : '') +
       '</div>' +
@@ -469,18 +655,46 @@ function renderProject() {
   // BODY
   var h = '';
   if (vid && !portrait) h += '<div class="pj-player rv in">' + videoBox(p, 'hero') + '</div>';
+  else if (!vid && !full) h += '<div class="pj-player pj-still rv in" style="--ac:' + esc(p.accentColor || '#00e5ff') + '">' + scMedia(p) + '</div>'; // no video: the poster / accent art
   var stats = [];
-  if (p.downloads) stats.push(['<b class="g">' + esc(p.downloads) + '</b>', t('downloads')]);
-  if (p.team) stats.push(['<b>' + esc(t('people', { n: p.team })) + '</b>', loc(p.teamDetail) ? '<em class="raw">' + esc(loc(p.teamDetail)) + '</em>' : t('team')]);
-  if (p.duration) stats.push(['<b>' + esc(loc(p.duration)) + '</b>', t('duration')]);
-  if (p.engine) stats.push(['<b>' + esc(p.engine) + '</b>', t('engine')]);
-  if (p.year) stats.push(['<b>' + esc(p.year) + '</b>', t('year')]);
+  if (sc) {
+    stats.push(['<b>' + t(tool ? 'sc_tool' : 'sc_prototype') + '</b>', t('sc_type')]);
+    if (tool && p.impact) stats.push(['<b class="g">' + esc(p.impact.value) + '</b>', esc(loc(p.impact.label))]);
+    if (p.year) stats.push(['<b>' + esc(p.year) + '</b>', t('year')]);
+    stats.push(['<b>' + t(p.access === 'internal' ? 'sc_private' : 'sc_public') + '</b>', t('sc_access')]);
+  } else {
+    if (p.downloads) stats.push(['<b class="g">' + esc(p.downloads) + '</b>', t('downloads')]);
+    if (p.team) stats.push(['<b>' + esc(t('people', { n: p.team })) + '</b>', loc(p.teamDetail) ? '<em class="raw">' + esc(loc(p.teamDetail)) + '</em>' : t('team')]);
+    if (p.duration) stats.push(['<b>' + esc(loc(p.duration)) + '</b>', t('duration')]);
+    if (p.engine) stats.push(['<b>' + esc(p.engine) + '</b>', t('engine')]);
+    if (!full && p.platform) stats.push(['<b>' + esc(p.platform) + '</b>', t('platform')]);
+    if (p.year) stats.push(['<b>' + esc(p.year) + '</b>', t('year')]);
+  }
   if (stats.length) h += '<div class="pj-stats rv">' + stats.map(function (s) { return '<div>' + s[0] + '<span>' + s[1] + '</span></div>'; }).join('') + '</div>';
 
   var n = 1, num = function () { return String(n++).padStart(2, '0'); };
   if (loc(p.overview)) h += '<section class="pj-sec rv"><h2><small>' + num() + '</small>' + t('overview') + '</h2><p class="overview">' + esc(loc(p.overview)) + sample(ph) + '</p></section>';
 
-  // responsibilities (per role)
+  if (sc) {
+    if (loc(p.focus)) h += '<section class="pj-sec rv"><h2><small>' + num() + '</small>' + t('sc_shows_t') + '</h2><p class="overview">' + esc(loc(p.focus)) + '</p></section>';
+    var feats = locArr(p.features);
+    if (feats.length) h += '<section class="pj-sec rv"><h2><small>' + num() + '</small>' + t('sc_features') + '</h2><ul class="did sc-feats">' + feats.map(function (x) { return '<li><span>' + esc(x) + '</span></li>'; }).join('') + '</ul></section>';
+    // API: short snippets that show what the unit is like to use (data: "api": [{ title, note, code }])
+    var api = (p.api || []).filter(function (a) { return a.code; });
+    if (api.length) h += '<section class="pj-sec rv"><h2><small>' + num() + '</small>' + t('sc_api') + '</h2><div class="api">' + api.map(function (a) {
+      return '<article class="api-item"><div class="api-head"><h4>' + esc(loc(a.title)) + '</h4>' + (loc(a.note) ? '<p>' + esc(loc(a.note)) + '</p>' : '') + '</div>' +
+        '<pre class="api-code"><code>' + hlCS(a.code) + '</code></pre></article>';
+    }).join('') + '</div></section>';
+    if ((p.tech || []).length || (p.usedIn || []).length) {
+      h += '<section class="pj-sec rv"><h2><small>' + num() + '</small>' + t('sc_tech') + '</h2>' +
+        ((p.tech || []).length ? scChips(p).replace('class="chips"', 'class="chips sc-tech"') : '') +
+        ((p.usedIn || []).length ? '<div class="sc-usedin"><span>' + t('sc_used') + '</span>' + p.usedIn.map(function (u) { return '<em>' + esc(u) + '</em>'; }).join('') + '</div>' : '') +
+        '</section>';
+    }
+  }
+
+  // responsibilities (per role) — full project page only
+  if (full) {
   var roles = (p.roles || []).filter(function (r) { return locArr(r.did).length; });
   h += '<section class="pj-sec" id="roles"><h2 class="rv"><small>' + num() + '</small>' + t('resp') + (roles.length ? ' <span class="cnt">' + t('roles_n', { n: roles.length }) + '</span>' : '') + '</h2>';
   if (roles.length) {
@@ -501,6 +715,7 @@ function renderProject() {
       return '<div class="spot lc rv"><span class="lc-n">' + String(i + 1).padStart(2, '0') + '</span><h4>' + esc(loc(l.title)) + sample(ph) + '</h4><ul class="did">' + locArr(l.text).map(function (x) { return '<li><span>' + esc(x) + '</span></li>'; }).join('') + '</ul></div>';
     }).join('') + '</div></section>';
   }
+  }
 
   GALLERY = (p.screenshots || []).map(function (g, i) {
     var src = typeof g === 'string' ? g : g.src;
@@ -511,6 +726,7 @@ function renderProject() {
       return '<button type="button" data-lb="' + i + '"><img src="' + esc(g.img) + '" alt="' + esc(g.cap || g.alt) + '" loading="lazy">' + (g.cap ? '<span>' + esc(g.cap) + '</span>' : '') + '</button>';
     }).join('') + '</div></section>';
   }
+  if (full) {
   var chal = (p.challenges || []).filter(function (c) { return loc(c.title) || loc(c.problem) || loc(c.solution); });
   if (chal.length) {
     h += '<section class="pj-sec"><h2 class="rv"><small>' + num() + '</small>' + t('challenges') + '</h2><div class="chal">' + chal.map(function (c) {
@@ -523,11 +739,14 @@ function renderProject() {
       return '<div class="rv"><b>' + esc(r.value) + '</b><span>' + esc(loc(r.label)) + '</span></div>';
     }).join('') + '</div></section>';
   }
+  }
 
-  var L = PROJECTS, prev = L[(cur.i - 1 + L.length) % L.length], next = L[(cur.i + 1) % L.length];
+  // prev / next within the same list (projects, other projects, prototypes or tools)
+  var L = cur.list, prev = L[(cur.i - 1 + L.length) % L.length], next = L[(cur.i + 1) % L.length];
+  var pgIcon = function (x) { return x._dir === SHOWCASE_DIR && !x.icon ? '<div style="--ac:' + esc(x.accentColor || '#00e5ff') + ';position:absolute;inset:0">' + scMedia(x) + '</div>' : iconHTML(x); };
   if (cur.i >= 0 && L.length > 1) h += '<div class="pager" role="navigation">' +
-    '<a class="spot rv" href="' + projectURL(prev) + '"><div class="pg-ic">' + iconHTML(prev) + '</div><div><small>← ' + t('prev_p') + '</small><b>' + esc(prev.title) + '</b></div></a>' +
-    '<a class="spot nx rv" href="' + projectURL(next) + '"><div class="pg-ic">' + iconHTML(next) + '</div><div><small>' + t('next_p') + ' →</small><b>' + esc(next.title) + '</b></div></a></div>';
+    '<a class="spot rv" href="' + projectURL(prev) + '"><div class="pg-ic">' + pgIcon(prev) + '</div><div><small>← ' + t('prev_p') + '</small><b>' + esc(prev.title) + '</b></div></a>' +
+    '<a class="spot nx rv" href="' + projectURL(next) + '"><div class="pg-ic">' + pgIcon(next) + '</div><div><small>' + t('next_p') + ' →</small><b>' + esc(next.title) + '</b></div></a></div>';
   $('pjBody').innerHTML = h;
 
   var wb = $('watchBtn');
@@ -662,6 +881,8 @@ function bindStatic() {
 
   $('burger').onclick = function () { toggleDrawer(!$('drawer').classList.contains('open')); };
   $('drawer').addEventListener('click', function (e) { if (e.target.closest('a')) toggleDrawer(false); });
+  bindShowcase();
+  bindDropdown();
   $('totop').onclick = function () { window.scrollTo({ top: 0, behavior: REDUCED ? 'auto' : 'smooth' }); };
 
   if (window.matchMedia('(hover: hover)').matches && !REDUCED) {
@@ -694,8 +915,8 @@ function bindStatic() {
     $('totopRing').style.strokeDashoffset = 125.7 * (1 - p);
     if (PAGE === 'home') {
       var cur = null;
-      ['work', 'skills', 'experience', 'contact'].forEach(function (id) { var s = $(id); if (s && !s.hidden && s.getBoundingClientRect().top < innerHeight * 0.4) cur = id; });
-      document.querySelectorAll('.links a').forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + cur); });
+      ['work', 'showcase', 'about', 'contact'].forEach(function (id) { var s = $(id); if (s && !s.hidden && s.getBoundingClientRect().top < innerHeight * 0.4) cur = id; });
+      document.querySelectorAll('.links > li > a').forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + cur); });
       var tl = $('timeline');
       if (tl && tl.offsetParent) {
         var r = tl.getBoundingClientRect(), mid = innerHeight * 0.6, tp = Math.min(Math.max((mid - r.top) / r.height, 0), 1);
@@ -720,10 +941,10 @@ function toggleDrawer(open) {
 // ══════════════════════════════
 // transition timings (ms) — also drive the matching CSS durations via --ld-* variables
 var LD_TIME = {
-  cover: 150,   // loader fades in over the current page before navigating away
-  boost: 80,    // stars jump to max speed before the reveal starts
-  reveal: 250,  // loader fades out
-  pageIn: 400   // page content scales/fades in
+  cover: 80,    // loader fades in over the current page before navigating away
+  boost: 40,    // stars jump to max speed before the reveal starts
+  reveal: 150,  // loader fades out
+  pageIn: 250   // page content scales/fades in
 };
 function warpLoader(ld) {
   Object.keys(LD_TIME).forEach(function (k) { document.documentElement.style.setProperty('--ld-' + k, LD_TIME[k] + 'ms'); });
@@ -861,13 +1082,27 @@ function boot() {
       }));
     }).then(function (list) { return list.filter(Boolean); });
   }
+  // showcase is optional: a missing folder just hides the section
+  function loadShowcase() {
+    if (PAGE !== 'home' && !new URLSearchParams(location.search).has('s')) return Promise.resolve([]);
+    return get(SHOWCASE_DIR + 'index.json', 'json').then(function (ids) {
+      total += ids.length;
+      return Promise.all(ids.map(function (id) {
+        return get(SHOWCASE_DIR + id + '/data.json', 'json').then(function (d) { d.id = id; d._dir = SHOWCASE_DIR; return d; })
+          .catch(function (err) { console.warn('Skipping showcase item', id, err); return null; });
+      }));
+    }).then(function (list) { return list.filter(function (d) { return d && d.publish !== false; }); })
+      .catch(function (err) { console.warn('No showcase data', err); return []; });
+  }
   Promise.all([
     get('web-config.json', 'json'),
     get('Database/skills.md'),
     get('Database/packages.md').catch(function () { return ''; }),
-    loadProjects()
+    loadProjects(),
+    loadShowcase()
   ]).then(function (res) {
     CONFIG = res[0]; SKILLS = parseSkills(res[1]); PACKAGES = parsePackages(res[2]);
+    SHOWCASE = res[4];
     ALL_PROJECTS = res[3]; PROJECTS = ALL_PROJECTS.filter(function (p) { return p.publish !== false; }); // "publish": false hides a project
     renderAll();
     bindStatic();
@@ -881,7 +1116,7 @@ function boot() {
     else if (location.hash) { var target = document.getElementById(decodeURIComponent(location.hash.slice(1))); if (target) target.scrollIntoView({ behavior: 'instant' }); }
     // let layout/paint settle (two frames) before starting the reveal, then allow video autoplay
     // fresh visit: reveal as soon as data is ready; arriving from another page: a short beat
-    var wait = Math.max(0, (ld.classList.contains('nav') ? 200 : 0) - (Date.now() - t0));
+    var wait = Math.max(0, (ld.classList.contains('nav') ? 60 : 0) - (Date.now() - t0));
     setTimeout(function () {
       requestAnimationFrame(function () { requestAnimationFrame(function () {
         warp.exit(function () { VM.hold = false; observeVideos(); });

@@ -1,0 +1,105 @@
+{
+  "publish": true,
+  "kind": "tool",
+  "accentColor": "#69ff47",
+  "glyph": "UI",
+  "title": "UIBuilder",
+  "tagline": {
+    "en": "Editor tool that draws game UI sprites from parameters and builds prefabs and a demo scene from them.",
+    "vi": "Tool editor vẽ sprite UI game từ tham số, rồi dựng prefab và scene demo từ chính các sprite đó."
+  },
+  "focus": {
+    "en": "Procedural UI art: one style template drives 29 element types, exported as 9-slice PNGs ready for UGUI.",
+    "vi": "UI art procedural: một style template điều khiển 29 loại element, xuất PNG 9-slice dùng ngay cho UGUI."
+  },
+  "overview": {
+    "en": "UIBuilder renders game UI with a CPU signed-distance rasterizer: buttons, popups, cards, progress bars, tabs and 24 more elements, every state and part, saved as snake_case PNGs with 9-slice borders. A style template — outline, rim, bevel, depth, patterns, shadow, an 8-role palette — keeps the whole set consistent. 22 styles are built in, including four sampled from our own games. It is editor-only: nothing ships in the build, and the generated prefabs are plain UGUI + TextMeshPro.",
+    "vi": "UIBuilder vẽ UI game bằng một rasterizer signed-distance chạy trên CPU: nút, popup, card, thanh tiến trình, tab và 24 element khác, đủ mọi trạng thái và phần, lưu thành PNG snake_case có viền 9-slice. Một style template — outline, rim, bevel, độ dày, pattern, bóng, bảng màu 8 vai trò — giữ cả bộ đồng nhất. Có sẵn 22 style, trong đó 4 style lấy mẫu từ game của chúng tôi. Tool chỉ chạy trong editor: không có gì vào bản build, prefab sinh ra là UGUI + TextMeshPro thuần."
+  },
+  "features": {
+    "en": [
+      "29 elements with every state / part: button, popup, card, slider, progress bar, tab, joystick, tooltip, sale tag…",
+      "Style templates shared by every element; 22 built in, save your own, import / export JSON",
+      "Screens preview re-renders Home, Shop, Gameplay, Settings and Daily Reward with the current elements",
+      "Layouts tab: tab bar + grid / list / detail pages built as a prefab, no script needed",
+      "Templates tab builds a wired demo scene (Home → Play / Shop / Settings / Daily Reward)",
+      "4,239 game-icons.net icons and 208 VFX textures, styled and imported from the same window"
+    ],
+    "vi": [
+      "29 element đủ mọi trạng thái / phần: nút, popup, card, slider, thanh tiến trình, tab, joystick, tooltip, nhãn sale…",
+      "Style template dùng chung cho mọi element; có sẵn 22 style, lưu style riêng, nhập / xuất JSON",
+      "Preview Screens vẽ lại Home, Shop, Gameplay, Settings và Daily Reward bằng bộ element hiện tại",
+      "Tab Layouts: thanh tab + trang grid / list / detail dựng thành prefab, không cần script",
+      "Tab Templates dựng scene demo đã nối sẵn (Home → Play / Shop / Settings / Daily Reward)",
+      "4.239 icon từ game-icons.net và 208 texture VFX, áp style và import ngay trong cùng cửa sổ"
+    ]
+  },
+  "tech": [
+    "Unity Editor",
+    "C#",
+    "UI Toolkit",
+    "UGUI",
+    "TextMeshPro"
+  ],
+  "links": {},
+  "access": "internal",
+  "poster": "images/uib-screen-home.webp",
+  "screenshots": [
+    {
+      "src": "images/uib-screen-home.webp",
+      "caption": {
+        "en": "Screens preview — a Home screen rendered with the current style",
+        "vi": "Preview Screens — màn Home vẽ bằng style hiện tại"
+      }
+    },
+    {
+      "src": "images/uib-screen-shop.webp",
+      "caption": {
+        "en": "Screens preview — Shop",
+        "vi": "Preview Screens — màn Shop"
+      }
+    },
+    {
+      "src": "images/uib-elements.webp",
+      "caption": {
+        "en": "Elements — every state of a button, with the element inspector",
+        "vi": "Elements — mọi trạng thái của nút, kèm inspector của element"
+      }
+    },
+    {
+      "src": "images/uib-layouts.webp",
+      "caption": {
+        "en": "Layouts — tab bar and pages built as a prefab",
+        "vi": "Layouts — thanh tab và các trang dựng thành prefab"
+      }
+    },
+    {
+      "src": "images/uib-templates.webp",
+      "caption": {
+        "en": "Templates — built-in style templates",
+        "vi": "Templates — các style template có sẵn"
+      }
+    },
+    {
+      "src": "images/uib-icons.webp",
+      "caption": {
+        "en": "Icons — game-icons.net library styled with the current look",
+        "vi": "Icons — thư viện game-icons.net áp style hiện tại"
+      }
+    },
+    {
+      "src": "images/uib-particles.webp",
+      "caption": {
+        "en": "Particles — VFX textures and a procedural generator",
+        "vi": "Particles — texture VFX và bộ sinh procedural"
+      }
+    },
+    {
+      "src": "images/uib-demo.webp",
+      "caption": {
+        "en": "The generated demo scene in Play Mode",
+        "vi": "Scene demo được sinh ra, chạy trong Play Mode"
+      }
+    }
+  ]
+}
