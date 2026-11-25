@@ -1,0 +1,50 @@
+{
+  "publish": true,
+  "aiCoding": true,
+  "category": "other",
+  "title": "Egg Merge: Pet Match",
+  "studio": "GEMINIX",
+  "accentColor": "#7c4dff",
+  "store": {
+    "itchio": "https://tiennix.itch.io/egg-merge"
+  },
+  "poster": "images/poster.png",
+  "icon": "images/icon.png",
+  "tagline": {
+    "en": "Drop cute pet bubbles, merge them and grow all the way to the King Lion.",
+    "vi": "Thả bong bóng thú cưng, ghép chúng lại và tiến hoá tới Vua Sư Tử."
+  },
+  "team": 2,
+  "teamDetail": {
+    "en": "",
+    "vi": "1 Developer, 1 Artist"
+  },
+  "duration": {
+    "en": "",
+    "vi": "1 Week"
+  },
+  "status": {
+    "en": "",
+    "vi": "Yet Publish"
+  },
+  "platform": "Android",
+  "overview": {
+    "en": "A cozy merge puzzle with physics: move the claw, drop pet bubbles into the box, and when two of the same pet touch they merge into the next one, up a 10-pet chain to the King Lion. Keep the pile below the red line, chain merges for combos, and use boosters like the Magic Egg, Shake Box and Clear Egg. Missions and a 7-day daily gift reward coins and boosters.",
+    "vi": "Game puzzle ghép thú cưng có vật lý: điều khiển càng gắp thả bong bóng vào hộp, hai bong bóng cùng loại chạm nhau sẽ hợp thành con lớn hơn, lần lượt qua 10 loài cho tới Vua Sư Tử. Người chơi phải giữ chồng bong bóng dưới vạch đỏ, tạo chuỗi ghép để ăn combo và dùng các booster như Magic Egg, Shake Box, Clear Egg. Nhiệm vụ và quà đăng nhập 7 ngày thưởng thêm xu và booster."
+  },
+  "roles": [
+    {
+      "name": {
+        "en": "",
+        "vi": "Programmer"
+      }
+    }
+  ],
+  "screenshots": [
+    "images/screenshot-1.png",
+    "images/screenshot-2.png",
+    "images/screenshot-3.png",
+    "images/screenshot-4.png",
+    "images/screenshot-5.png"
+  ]
+}

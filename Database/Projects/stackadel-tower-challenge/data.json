@@ -1,0 +1,30 @@
+{
+  "publish": true,
+  "aiCoding": true,
+  "category": "other",
+  "title": "Stackadel: Tower Challenge",
+  "studio": "GEMINIX",
+  "accentColor": "#7c4dff",
+  "store": {
+    "itchio": "https://tiennix.itch.io/stackadel-tower-challenge"
+  },
+  "poster": "images/poster.png",
+  "icon": "images/icon.png",
+  "tagline": {
+    "en": "Tap, swipe and stack Tetris-style blocks to reach the goal.",
+    "vi": "Chạm, vuốt và xếp khối kiểu Tetris để chạm tới đích."
+  },
+  "platform": "Android",
+  "overview": {
+    "en": "A 2D stacking puzzle where players tap and swipe to place Tetris-style blocks and build a tower up to the goal. Timing and precise placement decide each run, and players replay to beat their own high score.",
+    "vi": "Game puzzle xếp khối 2D: người chơi chạm và vuốt để đặt các khối kiểu Tetris, xây tháp lên tới đích. Mỗi lượt chơi phụ thuộc vào canh thời điểm và đặt khối chính xác, chơi lại để phá kỷ lục điểm của chính mình."
+  },
+  "screenshots": [
+    "images/screenshot-1.png",
+    "images/screenshot-2.png",
+    "images/screenshot-3.png",
+    "images/screenshot-4.png",
+    "images/screenshot-5.png",
+    "images/screenshot-6.png"
+  ]
+}
