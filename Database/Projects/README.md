@@ -32,11 +32,12 @@ File paths are relative to the project folder (e.g. `images/screenshot-1.jpg`); 
 | Field | Example | Notes |
 |---|---|---|
 | `publish` | `true` / `false` | `false` hides the project from the site (Studio's delete button just sets this) |
+| `aiCoding` | `true` / `false` | shows the "AI Coding" tag: a project I directed and reviewed, with AI writing most of the code |
 | `title` | `"Jelly Master: Mukbang Asmr"` | |
 | `studio` | `"Champion Game Studio"` | |
 | `accentColor` | `"#f48fb1"` | placeholder color when there is no image |
 | `downloads` | `"70M+"` | |
-| `store` | `{ "googlePlay": "https://…", "appStore": "", "apk": "" }` | each button shows only when its link is set; `apk` = external URL or a file in the project folder |
+| `store` | `{ "googlePlay": "https://…", "appStore": "", "apk": "", "itchio": "" }` | each button shows only when its link is set; `apk` = external URL or a file in the project folder; `itchio` = the game's itch.io page |
 | `video.youtube` | `"Yd7vDterctQ"` | YouTube id (Shorts ids work too) |
 | `video.file` | `"video.mp4"` | local file; used instead of YouTube when set |
 | `video.orientation` | `"landscape"` / `"portrait"` | `portrait` shows the video in a phone frame |

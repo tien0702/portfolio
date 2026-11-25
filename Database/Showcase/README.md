@@ -19,6 +19,8 @@ Every text field can be a plain string or `{ "en": "...", "vi": "..." }`.
 | Field | Example | Notes |
 |---|---|---|
 | `publish` | `true` / `false` | `false` hides the item |
+| `aiCoding` | `true` / `false` | shows the "AI Coding" tag (same as in Projects) |
+| `store.itchio` | `"https://…itch.io/…"` | itch.io button |
 | `kind` | `"prototype"` / `"tool"` | which group it shows in (`"tool"` = Frameworks) |
 | `title` | `"NIX Audio · Audio Studio"` | |
 | `year` | `2026` | optional; shown next to the type when set |

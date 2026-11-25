@@ -77,14 +77,14 @@ function confirmDlg(title, html, yesLabel) {
 // ══════════════════════════════
 // DATA ↔ FORM
 // ══════════════════════════════
-var KEY_ORDER = ['publish', 'placeholder', 'category', 'title', 'studio', 'accentColor', 'downloads', 'store', 'video', 'poster', 'icon', 'tagline', 'team', 'teamDetail', 'duration', 'status', 'platform', 'engine', 'year', 'overview', 'roles', 'learned', 'challenges', 'results', 'screenshots'];
+var KEY_ORDER = ['publish', 'aiCoding', 'placeholder', 'category', 'title', 'studio', 'accentColor', 'downloads', 'store', 'video', 'poster', 'icon', 'tagline', 'team', 'teamDetail', 'duration', 'status', 'platform', 'engine', 'year', 'overview', 'roles', 'learned', 'challenges', 'results', 'screenshots'];
 
 function toDraft(o) {
   o = o || {};
   var v = o.video || {}, st = o.store || {};
   return {
-    publish: o.publish !== false, placeholder: !!o.placeholder, other: o.category === 'other', title: o.title || '', studio: o.studio || '', accentColor: o.accentColor || '#7c4dff', downloads: o.downloads || '',
-    store: { googlePlay: st.googlePlay || '', appStore: st.appStore || '', apk: st.apk || '' },
+    publish: o.publish !== false, aiCoding: !!o.aiCoding, placeholder: !!o.placeholder, other: o.category === 'other', title: o.title || '', studio: o.studio || '', accentColor: o.accentColor || '#7c4dff', downloads: o.downloads || '',
+    store: { googlePlay: st.googlePlay || '', appStore: st.appStore || '', apk: st.apk || '', itchio: st.itchio || '' },
     video: { youtube: v.youtube || '', file: v.file || '', orientation: v.orientation === 'portrait' ? 'portrait' : 'landscape' },
     poster: o.poster || '', icon: o.icon || '',
     tagline: L(o.tagline), team: o.team == null ? '' : String(o.team), teamDetail: L(o.teamDetail), duration: L(o.duration), status: L(o.status),
@@ -118,13 +118,13 @@ function fromDraft(d, orig, vsrc) {
   var s = function (v) { v = String(v == null ? '' : v).trim(); return v || undefined; };
   var l = function (x) { var en = (x.en || '').trim(), vi = (x.vi || '').trim(); return en || vi ? { en: en, vi: vi } : undefined; };
   var list = function (arr, fn) { var out = arr.map(fn).filter(Boolean); return out.length ? out : undefined; };
-  var store = {}; if (s(d.store.googlePlay)) store.googlePlay = s(d.store.googlePlay); if (s(d.store.appStore)) store.appStore = s(d.store.appStore); if (s(d.store.apk)) store.apk = s(d.store.apk);
+  var store = {}; if (s(d.store.googlePlay)) store.googlePlay = s(d.store.googlePlay); if (s(d.store.appStore)) store.appStore = s(d.store.appStore); if (s(d.store.apk)) store.apk = s(d.store.apk); if (s(d.store.itchio)) store.itchio = s(d.store.itchio);
   var video;
   if (vsrc === 'youtube' && s(d.video.youtube)) video = { youtube: s(d.video.youtube), orientation: d.video.orientation };
   if (vsrc === 'file' && s(d.video.file)) video = { file: s(d.video.file), orientation: d.video.orientation };
   var team = s(d.team);
   var known = {
-    publish: !!d.publish, placeholder: d.placeholder ? true : undefined, category: d.other ? 'other' : undefined,
+    publish: !!d.publish, aiCoding: d.aiCoding ? true : undefined, placeholder: d.placeholder ? true : undefined, category: d.other ? 'other' : undefined,
     title: (d.title || '').trim(), studio: s(d.studio), accentColor: s(d.accentColor), downloads: s(d.downloads),
     store: Object.keys(store).length ? store : undefined, video: video, poster: s(d.poster), icon: s(d.icon),
     tagline: l(d.tagline), team: team && /^\d+$/.test(team) ? +team : team, teamDetail: (function (x) { return x && !x.vi ? x.en : x; })(l(d.teamDetail)), duration: l(d.duration), status: l(d.status),
@@ -394,7 +394,9 @@ function renderEditor() {
     '<div class="grid2">' + inp('store.googlePlay', 'Google Play', { key: 'store.googlePlay', type: 'url', ph: 'https://play.google.com/store/apps/details?id=…' }) +
       inp('store.appStore', 'App Store', { key: 'store.appStore', type: 'url', ph: 'https://apps.apple.com/…' }) + '</div>' +
     inp('store.apk', 'Link tải APK', { key: 'store.apk', ph: 'https://drive.google.com/… hoặc game.apk', hint: 'Dùng khi game không có trên store. Có thể là link ngoài, hoặc tên file .apk đặt trong thư mục dự án (GitHub chặn file > 100 MB — file lớn nên để link ngoài).' }) +
+    inp('store.itchio', 'itch.io', { key: 'store.itchio', type: 'url', ph: 'https://tiennix.itch.io/…', hint: 'Trang game trên itch.io — hiện nút itch.io cạnh các nút store.' }) +
     '<label class="check"><input type="checkbox" data-path="publish"' + (d.publish ? ' checked' : '') + '> <b style="color:var(--bright)">Hiển thị</b> trên portfolio (<code>publish</code>)</label>' +
+    '<label class="check"><input type="checkbox" data-path="aiCoding"' + (d.aiCoding ? ' checked' : '') + '> Gắn tag <b style="color:var(--bright)">AI Coding</b> — dự án tôi chỉ đạo &amp; kiểm soát, AI viết code là chính (<code>aiCoding</code>)</label>' +
     '<label class="check"><input type="checkbox" data-path="placeholder"' + (d.placeholder ? ' checked' : '') + '> Đánh dấu là <b style="color:var(--gold)">dữ liệu mẫu</b> (hiện nhãn "sample data" trên site)</label>' +
     '<label class="check"><input type="checkbox" data-path="other"' + (d.other ? ' checked' : '') + '> Là <b style="color:var(--bright)">Other Project</b> — hiện ở Showcase › Other Projects với trang chi tiết rút gọn (<code>"category": "other"</code>)</label>');
 

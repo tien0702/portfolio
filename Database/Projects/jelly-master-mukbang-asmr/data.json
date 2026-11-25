@@ -1,12 +1,14 @@
 {
   "publish": true,
+  "aiCoding": false,
   "title": "Jelly Master: Mukbang Asmr",
   "studio": "Champion Game Studio",
   "accentColor": "#f48fb1",
   "downloads": "70M+",
   "store": {
     "googlePlay": "https://play.google.com/store/apps/details?id=com.fc.p.cp.jelly.mukbang.asmr.live.diy&hl=vi",
-    "appStore": "https://apps.apple.com/vn/app/jelly-master-mukbang-asmr/id6738694162"
+    "appStore": "https://apps.apple.com/vn/app/jelly-master-mukbang-asmr/id6738694162",
+    "itchio": ""
   },
   "video": {
     "youtube": "bd1-CtXfTS0",

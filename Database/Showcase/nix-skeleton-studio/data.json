@@ -1,5 +1,9 @@
 {
   "publish": true,
+  "aiCoding": false,
+  "store": {
+    "itchio": ""
+  },
   "kind": "tool",
   "accentColor": "#ff2d75",
   "glyph": "🦴",

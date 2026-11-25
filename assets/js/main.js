@@ -80,7 +80,8 @@ var IC = {
   github: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>',
   x: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932zM17.61 20.644h2.039L6.486 3.24H4.298z"/></svg>',
   threads: '<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.964-.065-1.19.408-2.285 1.33-3.082.88-.76 2.119-1.207 3.583-1.291a13.853 13.853 0 0 1 3.02.142c-.126-.742-.375-1.332-.75-1.757-.513-.586-1.308-.883-2.359-.89h-.029c-.844 0-1.992.232-2.721 1.32L7.734 7.847c.98-1.454 2.568-2.256 4.478-2.256h.044c3.194.02 5.097 1.975 5.287 5.388.108.046.216.094.321.142 1.49.7 2.58 1.761 3.154 3.07.797 1.82.871 4.79-1.548 7.158-1.85 1.81-4.094 2.628-7.277 2.65zm1.003-11.69c-.242 0-.487.007-.739.021-1.836.103-2.98.946-2.916 2.143.067 1.256 1.452 1.839 2.784 1.767 1.224-.065 2.818-.543 3.086-3.71a10.5 10.5 0 0 0-2.215-.221z"/></svg>',
-  itchio: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3.13 1.338C2.08 1.96.02 4.328 0 4.95v1.03c0 1.303 1.22 2.45 2.325 2.45 1.33 0 2.436-1.102 2.436-2.41 0 1.308 1.07 2.41 2.4 2.41 1.328 0 2.362-1.102 2.362-2.41 0 1.308 1.104 2.41 2.432 2.41h.024c1.33 0 2.432-1.102 2.432-2.41 0 1.308 1.034 2.41 2.363 2.41 1.33 0 2.4-1.102 2.4-2.41 0 1.308 1.105 2.41 2.435 2.41C22.78 8.43 24 7.282 24 5.98V4.95c-.02-.622-2.08-2.99-3.13-3.612C19.948 1 12.588 1 12 1c-.588 0-7.948 0-8.87.338z"/></svg>',
+  spark: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>',
+  itchio: '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3.13 1.338C2.08 1.96.02 4.328 0 4.95v1.03c0 1.303 1.22 2.45 2.325 2.45 1.33 0 2.436-1.102 2.436-2.41 0 1.308 1.07 2.41 2.4 2.41 1.328 0 2.362-1.102 2.362-2.41 0 1.308 1.104 2.41 2.432 2.41h.024c1.33 0 2.432-1.102 2.432-2.41 0 1.308 1.034 2.41 2.363 2.41 1.33 0 2.4-1.102 2.4-2.41 0 1.308 1.105 2.41 2.435 2.41C22.78 8.43 24 7.282 24 5.98V4.95c-.02-.622-2.08-2.99-3.13-3.612C19.948 1 12.588 1 12 1c-.588 0-7.948 0-8.87.338z"/><path fill-rule="evenodd" d="M2.2 10.2h19.6v10.6c0 .9-.7 1.6-1.6 1.6H3.8c-.9 0-1.6-.7-1.6-1.6zM9.6 14.2h4.8v8.2H9.6z"/></svg>',
   code: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>',
   design: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4z"/></svg>',
   vfx: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
@@ -127,6 +128,8 @@ function socialHTML() {
   }).join('');
 }
 function stat(re) { return (CONFIG.profile.stats || []).filter(function (s) { return re.test(loc(s.label)) || re.test(s.label.en || ''); })[0]; }
+// "AI Coding" tag (data.json → aiCoding: true): first chip of the role / tech row
+function aiTag(p) { return p.aiCoding ? '<span class="ai-tag" title="' + esc(t('ai_tip')) + '">' + IC.spark + 'AI Coding</span>' : ''; }
 function sample(on) { return on ? ' <span class="sample">' + t('sample') + '</span>' : ''; }
 
 // ── projects (one folder per project) ──
@@ -147,7 +150,7 @@ function iconHTML(p) { return imgOrPh(p, p.icon ? pAsset(p, p.icon) : posterOf(p
 function rolesOf(p) { return (p.roles || []).map(function (r) { return loc(r.name); }).filter(Boolean); }
 function projectURL(p) { return p._dir === SHOWCASE_DIR ? 'project.html?s=' + encodeURIComponent(p.id) : 'project.html?p=' + encodeURIComponent(p.id); }
 function roleChips(p) {
-  return '<div class="roles">' + rolesOf(p).map(function (r) { return '<span class="role"><i>' + roleIcon(r) + '</i>' + esc(r) + '</span>'; }).join('') + '</div>';
+  return '<div class="roles">' + aiTag(p) + rolesOf(p).map(function (r) { return '<span class="role"><i>' + roleIcon(r) + '</i>' + esc(r) + '</span>'; }).join('') + '</div>';
 }
 function storeButtons(p, cls) {
   var s = p.store || {}, h = '';
@@ -156,6 +159,7 @@ function storeButtons(p, cls) {
   if (s.apk) h += isURL(s.apk)
     ? '<a class="btn ' + cls[1] + '" href="' + esc(s.apk) + '" target="_blank" rel="noopener">' + IC.dl + t('download_apk') + '</a>'
     : '<a class="btn ' + cls[1] + '" href="' + esc(pAsset(p, s.apk)) + '" download>' + IC.dl + t('download_apk') + '</a>'; // file inside the project folder
+  if (s.itchio) h += '<a class="btn btn-itch ' + (h ? cls[1] : cls[0]) + '" href="' + esc(s.itchio) + '" target="_blank" rel="noopener">' + IC.itchio + 'itch.io</a>';
   var l = p.links || {}; // optional: web build / itch.io page, source repo
   if (l.play) h += '<a class="btn ' + (h ? cls[1] : cls[0]) + '" href="' + esc(l.play) + '" target="_blank" rel="noopener">' + t('sc_play') + ' →</a>';
   if (l.source) h += '<a class="btn ' + cls[1] + '" href="' + esc(l.source) + '" target="_blank" rel="noopener">' + IC.github + t('sc_source') + '</a>';
@@ -432,14 +436,14 @@ function renderExperience() {
 }
 
 // ══════════════════════════════
-// SHOWCASE — prototypes (3D carousel) · tools (one large block each) · other projects (grid)
+// SHOWCASE — tools (3D carousel) · prototypes (one large block each) · other projects (grid)
 // ══════════════════════════════
 var SC = { list: [], cur: 0, timer: null, paused: false, AUTO_MS: 5000 };
 var LOCK_IC = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
 function scOf(kind) { return SHOWCASE.filter(function (it) { return it.kind === kind; }); }
 // poster (or YouTube thumbnail) — else the accent gradient with the item's glyph
 function scMedia(it) { var src = posterOf(it); return src ? '<img src="' + esc(src) + '" alt="" loading="lazy">' : '<div class="sc-ph">' + esc(it.glyph || String(it.title).charAt(0)) + '</div>'; }
-function scChips(it) { return '<div class="chips">' + (it.tech || []).map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div>'; }
+function scChips(it) { return '<div class="chips">' + aiTag(it) + (it.tech || []).map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div>'; }
 // Minimal C# highlighter for the API snippets: one pass, each token escaped on its own.
 var CS_KW = /^(public|private|protected|internal|override|virtual|abstract|sealed|static|readonly|const|class|struct|interface|enum|new|var|void|return|if|else|for|foreach|in|while|using|await|async|int|float|double|string|bool|object|true|false|null|this|base|out|ref|params)$/;
 function hlCS(code) {
@@ -462,12 +466,13 @@ function scActions(it, big) {
   var l = it.links || {}, h = '', sz = big ? '' : ' btn-sm';
   if (!big) h += '<a class="btn btn-ghost btn-sm" href="' + esc(projectURL(it)) + '">' + t('sc_details') + '</a>';
   if (l.play) h += '<a class="btn btn-pri' + sz + '" href="' + esc(l.play) + '" target="_blank" rel="noopener">' + t('sc_explore') + ' →</a>';
+  if ((it.store || {}).itchio) h += '<a class="btn btn-ghost btn-itch' + sz + '" href="' + esc(it.store.itchio) + '" target="_blank" rel="noopener">' + IC.itchio + 'itch.io</a>';
   if (l.source) h += '<a class="btn btn-ghost' + sz + '" href="' + esc(l.source) + '" target="_blank" rel="noopener">' + t('sc_source') + '</a>';
   if (l.post) h += '<a class="btn btn-ghost' + sz + '" href="' + esc(l.post) + '" target="_blank" rel="noopener">' + t('sc_post') + '</a>';
-  if (!l.play && !l.source && !l.post && it.access === 'internal') h += '<span class="sc-lock">' + LOCK_IC + t('sc_internal') + '</span>';
+  if (!l.play && !l.source && !l.post && !(it.store || {}).itchio && it.access === 'internal') h += '<span class="sc-lock">' + LOCK_IC + t('sc_internal') + '</span>';
   return h ? '<div class="sc-act">' + h + '</div>' : '';
 }
-// details block: carousel info (with title) or under a tool (title is above the media there)
+// details block: carousel info (with title) or under a prototype block (title is above the media there)
 function scInfo(it, noTitle) {
   var tool = it.kind === 'tool', proof = '';
   if (tool && (it.impact || (it.usedIn || []).length)) {
@@ -493,7 +498,7 @@ function renderShowcase() {
     document.querySelectorAll('a[href="#' + id + '"]').forEach(function (a) { a.hidden = !groups[id]; });
   });
 
-  $('scToolList').innerHTML = scOf('tool').map(function (it) {
+  $('scProtoList').innerHTML = scOf('prototype').map(function (it) {
     return '<article class="sc-tool rv" style="--ac:' + esc(it.accentColor || '#00e5ff') + '">' +
       '<a class="sc-media" href="' + esc(projectURL(it)) + '" aria-label="' + esc(it.title) + '">' + scMedia(it) + '</a>' +
       '<div class="sc-tbody"><h3><a href="' + esc(projectURL(it)) + '">' + esc(it.title) + '</a>' + sample(it.placeholder) + '</h3>' +
@@ -507,16 +512,16 @@ function renderShowcase() {
       '<div class="sc-gbody">' + (p.year ? '<small>' + esc(p.year) + '</small>' : '') +
       '<h4>' + esc(p.title) + sample(p.placeholder) + '</h4>' +
       (loc(p.tagline) ? '<p>' + esc(loc(p.tagline)) + '</p>' : '') +
-      (tech.length ? '<div class="chips">' + tech.map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div>' : '') +
+      (tech.length || p.aiCoding ? '<div class="chips">' + aiTag(p) + tech.map(function (x) { return '<span>' + esc(x) + '</span>'; }).join('') + '</div>' : '') +
       '</div></a>';
   }).join('');
 
   // carousel: build the cards once per render; moving only updates CSS vars
   var keep = SC.list.length ? SC.cur : 0;
-  SC.list = scOf('prototype');
+  SC.list = scOf('tool');
   $('scTrack').innerHTML = SC.list.map(function (it, i) {
     return '<div class="sc-card" data-i="' + i + '" style="--ac:' + esc(it.accentColor || '#00e5ff') + '">' +
-      '<span class="sc-kind">' + t('sc_prototype') + '</span>' + scMedia(it) +
+      '<span class="sc-kind">' + t('sc_tool') + '</span>' + scMedia(it) +
       '<a class="sc-hit" href="' + esc(projectURL(it)) + '" aria-label="' + esc(it.title) + '"></a></div>';
   }).join('');
   $('scDots').innerHTML = SC.list.map(function (it, i) { return '<button type="button" data-i="' + i + '" aria-label="' + esc(it.title) + '"></button>'; }).join('');
@@ -550,7 +555,7 @@ function scRestart() {
 }
 function bindShowcase() {
   if (!$('scStage')) return;
-  var box = $('scProto');
+  var box = $('scTools');
   ['mouseenter', 'focusin'].forEach(function (ev) { box.addEventListener(ev, function () { SC.paused = true; }); });
   ['mouseleave', 'focusout'].forEach(function (ev) { box.addEventListener(ev, function () { SC.paused = false; }); });
   $('scPrev').onclick = function () { scGo(SC.cur - 1); };
@@ -639,7 +644,7 @@ function renderProject() {
         (kicker ? '<div class="sh-k" style="margin-bottom:8px">' + esc(kicker) + '</div>' : '') + '<h1>' + esc(p.title) + '</h1></div></div>' +
       (tool ? '<div class="sc-badges pj-badges"><span class="prod"><span class="dot"></span>' + t('sc_prod') + '</span></div>' : '') +
       '<p class="tagline">' + (tagline ? esc(tagline) + sample(ph) : '<span class="muted">' + t('no_desc') + '</span>') + '</p>' +
-      (full ? roleChips(p) : '') +
+      (full ? roleChips(p) : p.aiCoding ? '<div class="roles">' + aiTag(p) + '</div>' : '') +
       (sc ? scActions(p, true).replace('class="sc-act"', 'class="cta"') :
         '<div class="cta">' + storeButtons(p, ['btn-pri', 'btn-ghost']) +
         (vid ? '<button class="btn btn-ghost" type="button" id="watchBtn">🔊 ' + t('watch') + '</button>' : '') + '</div>') +

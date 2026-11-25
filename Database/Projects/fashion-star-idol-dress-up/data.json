@@ -1,10 +1,12 @@
 {
   "publish": true,
+  "aiCoding": false,
   "title": "Fashion Star: Idol Dress up",
   "studio": "Champion Game Studio",
   "accentColor": "#ce93d8",
   "store": {
-    "apk": "https://drive.google.com/file/d/1jp0D9TV7SO95etmrDcHBopUwnAKd_zE4/view?usp=drive_link"
+    "apk": "https://drive.google.com/file/d/1jp0D9TV7SO95etmrDcHBopUwnAKd_zE4/view?usp=drive_link",
+    "itchio": ""
   },
   "video": {
     "youtube": "FMr91afriiI",

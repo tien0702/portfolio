@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AI Coding tag + itch.io button — Preview</title>
+<link rel="icon" type="image/png" href="../assets/logo/favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../assets/css/style.css" />
+<style>
+/* ── preview-only ── */
+.rv{opacity:1!important;transform:none!important}
+main.wrap{padding-bottom:180px}
+.pv-k{font-family:var(--mono);font-size:.7rem;letter-spacing:.18em;color:var(--pink);text-transform:uppercase;margin:90px 0 22px;padding-top:24px;border-top:1px dashed var(--line2)}
+.pv-k:first-of-type{margin-top:40px}
+.pv-intro{max-width:720px;margin-top:110px}
+.pv-intro h1{font-size:clamp(2rem,4.5vw,3rem);font-weight:900;color:var(--bright);letter-spacing:-.03em;line-height:1.05}
+.pv-intro p{margin-top:12px;color:var(--dim)}
+.picker{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:150;display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:center;padding:8px;border-radius:14px;background:rgba(14,19,29,.95);border:1px solid var(--line2);backdrop-filter:blur(10px);box-shadow:0 20px 60px rgba(0,0,0,.5);max-width:calc(100vw - 24px)}
+.picker b{font-family:var(--mono);font-size:.68rem;color:var(--gold);padding:0 8px}
+.picker button{font:inherit;font-size:.8rem;font-weight:600;padding:8px 12px;border-radius:9px;border:0;background:none;color:var(--dim);cursor:pointer}
+.picker button.on{background:var(--cyan);color:#001318}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+.pv-hero{border-radius:20px;overflow:hidden;border:1px solid var(--line)}
+.pv-hero .pj-hero{padding:56px 0 48px}
+.pv-hero .wrap{padding:0 36px}
+
+/* ══ the part that would ship ══ */
+/* AI Coding tag — one look, three placements (picked below) */
+.ai-tag{display:inline-flex;align-items:center;gap:6px;vertical-align:middle;white-space:nowrap;
+  font-family:var(--mono);font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--bright);
+  padding:4px 10px 4px 8px;border-radius:999px;border:1px solid transparent;cursor:help;
+  background:linear-gradient(var(--card2),var(--card2)) padding-box,linear-gradient(100deg,var(--cyan),var(--purple),var(--pink)) border-box}
+.ai-tag svg{width:12px;height:12px;color:var(--cyan);flex-shrink:0}
+/* corner badge on the image */
+.ai-corner{position:absolute;top:14px;left:14px;z-index:6;background:linear-gradient(rgba(7,9,15,.8),rgba(7,9,15,.8)) padding-box,linear-gradient(100deg,var(--cyan),var(--purple),var(--pink)) border-box;backdrop-filter:blur(6px)}
+.sc-card .ai-corner,.sc-media .ai-corner{top:12px;left:auto;right:12px}
+/* placements: A next to the title · B on the image · C first chip of the role row */
+body:not(.v-a) .ai-at-title,body:not(.v-b) .ai-corner,body:not(.v-c) .ai-at-row{display:none!important}
+h1 .ai-tag,h3 .ai-tag,h4 .ai-tag{margin-left:10px;transform:translateY(-.15em)}
+.roles .ai-tag,.chips span.ai-tag{padding:6px 12px 6px 9px;font-size:.66rem;color:var(--bright);border-color:transparent;
+  background:linear-gradient(var(--card2),var(--card2)) padding-box,linear-gradient(100deg,var(--cyan),var(--purple),var(--pink)) border-box}
+
+/* itch.io button: ghost, takes itch's red on hover */
+.btn-itch svg{width:16px;height:16px}
+.btn-itch:hover{border-color:#fa5c5c!important;color:#fa5c5c!important}
+</style>
+</head>
+<body class="v-a">
+<main class="wrap">
+  <div class="pv-intro">
+    <h1>AI Coding tag + itch.io</h1>
+    <p>Chọn vị trí tag ở thanh dưới cùng: <b>A</b> cạnh tên dự án · <b>B</b> góc ảnh · <b>C</b> đầu hàng chip. Di chuột lên tag để xem chú thích. Nút itch.io giống nút store, hover chuyển sang màu đỏ của itch.</p>
+  </div>
+
+  <!-- 1 · home project row -->
+  <div class="pv-k">1 · Projects (trang chủ)</div>
+  <div class="prj-list">
+    <article class="prj">
+      <div class="prj-media">
+        <div class="vbox-static"><img src="../Database/Projects/jelly-master-mukbang-asmr/images/poster.png" alt="" style="width:100%;height:100%;object-fit:cover"></div>
+        <span class="ai-tag ai-corner" data-tip>AI_IC AI Coding</span>
+        <span class="dlb">70M+<small>DOWNLOADS</small></span>
+      </div>
+      <div class="prj-body">
+        <h3><a href="#">Jelly Master: Mukbang Asmr</a><span class="ai-tag ai-at-title" data-tip>AI_IC AI Coding</span></h3>
+        <p class="tagline">Casual ASMR game — make jelly, eat it on stream.</p>
+        <div class="roles"><span class="ai-tag ai-at-row" data-tip>AI_IC AI Coding</span><span class="role">Team Leader</span><span class="role">Dev</span></div>
+        <div class="cta">
+          <a class="btn btn-pri btn-sm" href="#">Read more →</a>
+          <a class="btn btn-ghost btn-sm" href="#">Google Play</a>
+          <a class="btn btn-ghost btn-sm btn-itch" href="#">ITCH_IC itch.io</a>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <!-- 2 · other projects grid -->
+  <div class="pv-k">2 · Other Projects (có tag / không tag)</div>
+  <div class="sc-grid">
+    <a class="sc-gcard" href="#" style="--ac:#ce93d8">
+      <div class="sc-media"><img src="../Database/Projects/grow-a-graden/images/cover.jpg" alt=""><span class="ai-tag ai-corner" data-tip>AI_IC AI Coding</span></div>
+      <div class="sc-gbody"><small>2025</small>
+        <h4>Grow a Garden<span class="ai-tag ai-at-title" data-tip>AI_IC AI Coding</span></h4>
+        <p>Plant, merge and grow.</p>
+        <div class="chips"><span class="ai-tag ai-at-row" data-tip>AI_IC AI Coding</span><span>Unity</span><span>Mobile</span></div>
+      </div>
+    </a>
+    <a class="sc-gcard" href="#" style="--ac:#7c4dff">
+      <div class="sc-media"><div class="sc-ph">F</div></div>
+      <div class="sc-gbody"><small>2025</small><h4>Find The Capy: Spot It!</h4><p>Không bật aiCoding → không có tag.</p>
+        <div class="chips"><span>Unity</span><span>Mobile</span></div></div>
+    </a>
+  </div>
+
+  <!-- 3 · frameworks block -->
+  <div class="pv-k">3 · Frameworks / Prototypes</div>
+  <div class="sc-tools">
+    <article class="sc-tool" style="--ac:#69ff47">
+      <a class="sc-media" href="#"><img src="../Database/Showcase/nix-uibuilder/images/uib-screen-home.webp" alt=""><span class="ai-tag ai-corner" data-tip>AI_IC AI Coding</span></a>
+      <div class="sc-tbody"><h3><a href="#">UIBuilder</a><span class="ai-tag ai-at-title" data-tip>AI_IC AI Coding</span></h3>
+        <div class="sc-info">
+          <div class="sc-badges"><span class="prod"><span class="dot"></span>In production</span><span>Framework · 2026</span></div>
+          <p class="sc-tag">Editor tool that draws game UI sprites from parameters.</p>
+          <div class="chips"><span class="ai-tag ai-at-row" data-tip>AI_IC AI Coding</span><span>Unity</span><span>C#</span><span>Editor</span></div>
+          <div class="sc-act"><a class="btn btn-ghost btn-sm" href="#">Details</a><a class="btn btn-ghost btn-sm btn-itch" href="#">ITCH_IC itch.io</a></div>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <!-- 4 · detail page hero -->
+  <div class="pv-k">4 · Trang chi tiết</div>
+  <div class="pv-hero">
+    <header class="pj-hero">
+      <div class="pj-banner"><img src="../Database/Projects/jelly-master-mukbang-asmr/images/poster.png" alt=""></div>
+      <div class="wrap pj-head"><div class="pj-info">
+        <a class="back" href="#">← All projects</a>
+        <div class="pj-title"><div class="pj-icon"><img src="../Database/Projects/jelly-master-mukbang-asmr/images/icon.png" alt=""></div><div>
+          <div class="sh-k" style="margin-bottom:8px">Champion Game Studio</div>
+          <h1>Jelly Master<span class="ai-tag ai-at-title" data-tip>AI_IC AI Coding</span></h1></div></div>
+        <p class="tagline">Casual ASMR game — make jelly, eat it on stream.</p>
+        <div class="roles"><span class="ai-tag ai-at-row" data-tip>AI_IC AI Coding</span><span class="role">Team Leader</span><span class="role">Dev</span></div>
+        <div class="cta"><a class="btn btn-pri" href="#">Google Play</a><a class="btn btn-ghost" href="#">App Store</a><a class="btn btn-ghost btn-itch" href="#">ITCH_IC itch.io</a></div>
+      </div></div>
+    </header>
+  </div>
+  <p style="margin-top:14px;font-size:.8rem;color:var(--dim)">Ở trang chi tiết, kiểu B (góc ảnh) không có ảnh để gắn nên tag sẽ hiện cạnh tên như kiểu A.</p>
+</main>
+
+<div class="picker"><b>VỊ TRÍ TAG</b>
+  <button data-v="a" class="on">A · cạnh tên</button>
+  <button data-v="b">B · góc ảnh</button>
+  <button data-v="c">C · đầu hàng chip</button>
+</div>
+
+<script>
+var AI_IC = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l1.9 6.1L20 10l-6.1 1.9L12 18l-1.9-6.1L4 10l6.1-1.9z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>';
+var ITCH_IC = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.13 1.338C2.08 1.96.02 4.328 0 4.95v1.03c0 1.303 1.22 2.45 2.325 2.45 1.33 0 2.436-1.102 2.436-2.41 0 1.308 1.07 2.41 2.4 2.41 1.328 0 2.362-1.102 2.362-2.41 0 1.308 1.104 2.41 2.432 2.41h.024c1.33 0 2.432-1.102 2.432-2.41 0 1.308 1.034 2.41 2.363 2.41 1.33 0 2.4-1.102 2.4-2.41 0 1.308 1.105 2.41 2.435 2.41C22.78 8.43 24 7.282 24 5.98V4.95c-.02-.622-2.08-2.99-3.13-3.612C19.948 1 12.588 1 12 1c-.588 0-7.948 0-8.87.338z"/><path fill-rule="evenodd" d="M2.2 10.2h19.6v10.6c0 .9-.7 1.6-1.6 1.6H3.8c-.9 0-1.6-.7-1.6-1.6zM9.6 14.2h4.8v8.2H9.6z"/></svg>';
+var TIP = 'Directed & reviewed by me — most of the code written with AI';
+document.querySelectorAll('.ai-tag').forEach(function (el) { el.innerHTML = el.innerHTML.replace('AI_IC', AI_IC); el.title = TIP; });
+document.querySelectorAll('.btn-itch').forEach(function (el) { el.innerHTML = el.innerHTML.replace('ITCH_IC', ITCH_IC); });
+document.querySelectorAll('.picker button').forEach(function (b) {
+  b.onclick = function () {
+    document.querySelectorAll('.picker button').forEach(function (x) { x.classList.toggle('on', x === b); });
+    document.body.className = 'v-' + b.dataset.v;
+    history.replaceState(null, '', '#' + b.dataset.v);
+  };
+});
+var start = document.querySelector('.picker button[data-v="' + location.hash.slice(1) + '"]'); if (start) start.click(); // #a / #b / #c
+</script>
+</body>
+</html>

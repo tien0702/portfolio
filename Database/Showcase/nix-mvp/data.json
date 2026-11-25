@@ -1,5 +1,9 @@
 {
   "publish": true,
+  "aiCoding": false,
+  "store": {
+    "itchio": ""
+  },
   "kind": "tool",
   "accentColor": "#7c4dff",
   "glyph": "MVP",

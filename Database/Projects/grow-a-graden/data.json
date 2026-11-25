@@ -1,11 +1,13 @@
 {
   "publish": true,
+  "aiCoding": false,
   "category": "other",
   "title": "Grow a Garden",
   "studio": "Champion Game Studio",
   "accentColor": "#ce93d8",
   "store": {
-    "googlePlay": "https://play.google.com/store/apps/details?id=com.fc.p.cp.transform.game.tricky.puzzle&hl=vi"
+    "googlePlay": "https://play.google.com/store/apps/details?id=com.fc.p.cp.transform.game.tricky.puzzle&hl=vi",
+    "itchio": ""
   },
   "video": {
     "youtube": "Yd7vDterctQ",
